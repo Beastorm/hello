@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hello/CommonModules/AppColors.dart';
+import 'package:get/get.dart';
+import 'package:hello/controllers/register_controller.dart';
 
+import '../style/AppColors.dart';
+
+// ignore: must_be_immutable
 class RegisterScreen extends StatelessWidget {
-  AppColors appColors = AppColors();
+  var _formKey = GlobalKey<FormState>();
+  final RegisterController _registerController = Get.put(RegisterController());
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +27,21 @@ class RegisterScreen extends StatelessWidget {
                   children: [
                     Image.asset(
                       'assets/images/logo.png',
-                      height: 45.0,
+                      height: 72.0,
                     )
                   ],
                 ),
 
                 //Email TextField
                 Card(
-                  shadowColor: AppColors.themeColor,
-                  elevation: 4.0,
-                  margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 40.0),
+                  shadowColor: AppColors.themeColor.withOpacity(0.5),
+                  elevation: 1.0,
+                  margin: EdgeInsets.only(left: 16.0, right: 16.0, top: 40.0),
                   child: Container(
                     child: Column(
                       children: [
                         Form(
-                          // key: _formKey,
+                          key: _formKey,
                           child: Column(
                             children: [
                               Container(
@@ -44,21 +49,22 @@ class RegisterScreen extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                     left: 35.0, right: 35.0, top: 50.0),
                                 child: TextFormField(
-                                    //  controller: loginController.emailTextController,
+                                    controller:
+                                        _registerController.nameController,
                                     decoration: InputDecoration(
-                                  hintText: 'Enter name',
-                                  labelText: 'Name',
-                                  labelStyle: TextStyle(
-                                    fontSize: 15,
-                                    color: AppColors.themeColor,
-                                    fontWeight: FontWeight.w600,
-                                    // light
-                                    fontStyle: FontStyle.normal,
-                                  ),
-                                  border: OutlineInputBorder(
-                                      borderSide: new BorderSide(
-                                          color: AppColors.themeColor)),
-                                )),
+                                      hintText: 'Enter name',
+                                      labelText: 'Name',
+                                      labelStyle: TextStyle(
+                                        fontSize: 15,
+                                        color: AppColors.themeColor,
+                                        fontWeight: FontWeight.w600,
+                                        // light
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                      border: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: AppColors.themeColor)),
+                                    )),
                               ),
 
                               //Email TextField
@@ -67,7 +73,8 @@ class RegisterScreen extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                     left: 35.0, right: 35.0, top: 10.0),
                                 child: TextFormField(
-                                    //controller: loginController.passwordTextController,
+                                    controller:
+                                        _registerController.emailController,
                                     decoration: InputDecoration(
                                       hintText: 'Enter email',
                                       labelText: 'Email',
@@ -89,7 +96,8 @@ class RegisterScreen extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                     left: 35.0, right: 35.0, top: 10.0),
                                 child: TextFormField(
-                                    //controller: loginController.passwordTextController,
+                                    controller:
+                                        _registerController.mobileController,
                                     decoration: InputDecoration(
                                       hintText: 'Enter mobile',
                                       labelText: 'Mobile',
@@ -111,7 +119,8 @@ class RegisterScreen extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                     left: 35.0, right: 35.0, top: 10.0),
                                 child: TextFormField(
-                                    //controller: loginController.passwordTextController,
+                                    controller:
+                                        _registerController.pwdController,
                                     obscureText: true,
                                     decoration: InputDecoration(
                                       hintText: 'Enter password',
@@ -160,19 +169,19 @@ class RegisterScreen extends StatelessWidget {
                                 child: TextFormField(
                                     //controller: loginController.passwordTextController,
                                     decoration: InputDecoration(
-                                      hintText: 'Enter city',
-                                      labelText: 'City',
-                                      labelStyle: TextStyle(
-                                        fontSize: 15,
-                                        color: AppColors.themeColor,
-                                        fontWeight: FontWeight.w600,
-                                        // light
-                                        fontStyle: FontStyle.normal,
-                                      ),
-                                      border: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: AppColors.themeColor)),
-                                    )),
+                                  hintText: 'Enter city',
+                                  labelText: 'City',
+                                  labelStyle: TextStyle(
+                                    fontSize: 15,
+                                    color: AppColors.themeColor,
+                                    fontWeight: FontWeight.w600,
+                                    // light
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                  border: OutlineInputBorder(
+                                      borderSide: new BorderSide(
+                                          color: AppColors.themeColor)),
+                                )),
                               ),
                               Container(
                                 margin: EdgeInsets.only(
@@ -185,41 +194,43 @@ class RegisterScreen extends StatelessWidget {
                                       width: 110.0,
                                       height: 48,
                                       child: TextFormField(
-                                          //controller: loginController.passwordTextController,
-                                          decoration: InputDecoration(
-                                        hintText: 'Enter age',
-                                        labelText: 'Age',
-                                        labelStyle: TextStyle(
-                                          fontSize: 15,
-                                          color: AppColors.themeColor,
-                                          fontWeight: FontWeight.w600,
-                                          // light
-                                          fontStyle: FontStyle.normal,
+                                        //controller: loginController.passwordTextController,
+                                        decoration: InputDecoration(
+                                          hintText: 'Enter age',
+                                          labelText: 'Age',
+                                          labelStyle: TextStyle(
+                                            fontSize: 15,
+                                            color: AppColors.themeColor,
+                                            fontWeight: FontWeight.w600,
+                                            // light
+                                            fontStyle: FontStyle.normal,
+                                          ),
+                                          border: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: AppColors.themeColor)),
                                         ),
-                                        border: OutlineInputBorder(
-                                            borderSide: new BorderSide(
-                                                color: AppColors.themeColor)),
-                                      )),
+                                      ),
                                     ),
                                     Container(
                                       width: 110.0,
                                       height: 48,
                                       child: TextFormField(
-                                          //controller: loginController.passwordTextController,
-                                          decoration: InputDecoration(
-                                        hintText: 'Enter age',
-                                        labelText: 'Age',
-                                        labelStyle: TextStyle(
-                                          fontSize: 15,
-                                          color: AppColors.themeColor,
-                                          fontWeight: FontWeight.w600,
-                                          // light
-                                          fontStyle: FontStyle.normal,
+                                        //controller: loginController.passwordTextController,
+                                        decoration: InputDecoration(
+                                          hintText: 'Enter age',
+                                          labelText: 'Age',
+                                          labelStyle: TextStyle(
+                                            fontSize: 15,
+                                            color: AppColors.themeColor,
+                                            fontWeight: FontWeight.w600,
+                                            // light
+                                            fontStyle: FontStyle.normal,
+                                          ),
+                                          border: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: AppColors.themeColor)),
                                         ),
-                                        border: OutlineInputBorder(
-                                            borderSide: new BorderSide(
-                                                color: AppColors.themeColor)),
-                                      )),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -233,49 +244,52 @@ class RegisterScreen extends StatelessWidget {
 //Login button
                         Card(
                           shadowColor: AppColors.themeColor,
-                          elevation: 6.0,
+                          elevation: 1.0,
                           margin: EdgeInsets.only(
                               left: 40.0, right: 40.0, top: 50.0, bottom: 30.0),
                           child: Container(
                             height: 40,
+                            width: 160.0,
                             child: RaisedButton(
-                                color: AppColors.themeColor,
-                                child: Text(
-                                  'REGISTER',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 12.0,
-                                      color: AppColors.white),
-                                ),
-                                onPressed: () {
-                                  // if(_formKey.currentState.validate()){
-                                  //
-                                  //   loginController.getLoginFormValue();
-                                  //
-                                  // }
+                              color: AppColors.themeColor,
+                              child: Text(
+                                'REGISTER',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 12.0,
+                                    color: AppColors.white),
+                              ),
+                              onPressed: () {
+                                // if(_formKey.currentState.validate()){
+                                //
+                                //   loginController.getLoginFormValue();
+                                //
+                                // }
 
-                                  // Get.offAll(HomePage());
+                                // Get.offAll(HomePage());
 
-                                  // print('Email: '+.text+" "+'Password: '+_passwordTextController.text);
-                                }),
+                                // print('Email: '+.text+" "+'Password: '+_passwordTextController.text);
+                              },
+                            ),
                           ),
                         ),
 
                         Container(
-                            margin: EdgeInsets.only(bottom: 30.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('Already have account? '),
-                                Text(
-                                  'Login',
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: AppColors.themeColor,
-                                      fontWeight: FontWeight.w800),
-                                ),
-                              ],
-                            )),
+                          margin: EdgeInsets.only(bottom: 30.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Already have account? '),
+                              Text(
+                                'Login',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: AppColors.themeColor,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hello/CommonModules/AppColors.dart';
-import 'package:hello/ViewModule/SplashScreen.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:global_configuration/global_configuration.dart';
+import 'file:///C:/Users/Sanjay/FlutterProjects/hello/lib/style/AppColors.dart';
+import 'package:hello/views/SplashScreen.dart';
 
-void main() {
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await GlobalConfiguration().loadFromAsset("config");
+  await GetStorage.init();
   runApp(MyApp());
 }
 
@@ -12,7 +18,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Hello App',
       theme: ThemeData(
         // This is the theme of your application.
         //

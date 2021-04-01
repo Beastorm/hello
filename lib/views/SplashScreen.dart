@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:hello/views/pages.dart';
 
 import '../style/AppColors.dart';
 import 'LoginScreen.dart';
@@ -9,14 +11,15 @@ import 'LoginScreen.dart';
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Timer(Duration(seconds: 4), () {
-      Get.offAll(LoginScreen());
-      // if (loginStatus == 'true') {
-      //   Get.offAll(HomeScreen());
-      // } else {
-      //   Get.offAll(LoginScreen());
-      // }
-    });
+    var pref = GetStorage();
+    print("''''''''''''''''''");
+    Timer(
+        Duration(seconds: 5),
+        () => pref.hasData("isLogin")
+            ? Get.to(() => PagesScreen(
+                currentIndex: 0,
+              ))
+            : Get.to(LoginScreen()));
 
     return Scaffold(
       body: Container(

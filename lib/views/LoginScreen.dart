@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hello/controllers/login_controller.dart';
 
 import '../style/AppColors.dart';
 import 'RegisterScreen.dart';
 
 // ignore: must_be_immutable
 class LoginScreen extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
+  final LoginController _loginController = Get.put(LoginController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +42,7 @@ class LoginScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Form(
-                          // key: _formKey,
+                          key: _formKey,
                           child: Column(
                             children: [
                               Container(
@@ -46,7 +50,11 @@ class LoginScreen extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                     left: 35.0, right: 35.0, top: 50.0),
                                 child: TextFormField(
-                                  //  controller: loginController.emailTextController,
+                                  keyboardType: TextInputType.emailAddress,
+                                  validator: (input) => !input.contains("@")
+                                      ? "invalid email Format"
+                                      : null,
+                                  controller: _loginController.emailController,
                                   decoration: InputDecoration(
                                     hintText: 'Enter email',
                                     labelText: 'Email',
@@ -70,7 +78,10 @@ class LoginScreen extends StatelessWidget {
                                 margin: EdgeInsets.only(
                                     left: 35.0, right: 35.0, top: 20.0),
                                 child: TextFormField(
-                                  //controller: loginController.passwordTextController,
+                                  validator: (input) => input.length < 8
+                                      ? "should_be_more_than_7_chars"
+                                      : null,
+                                  controller: _loginController.pwdController,
                                   obscureText: true,
                                   decoration: InputDecoration(
                                     hintText: 'Enter password',
@@ -126,15 +137,9 @@ class LoginScreen extends StatelessWidget {
                                     color: AppColors.white),
                               ),
                               onPressed: () {
-                                // if(_formKey.currentState.validate()){
-                                //
-                                //   loginController.getLoginFormValue();
-                                //
-                                // }
-
-                                // Get.offAll(HomePage());
-
-                                // print('Email: '+.text+" "+'Password: '+_passwordTextController.text);
+                                if (_formKey.currentState.validate()) {
+                                  _loginController.requestForLoginProcess();
+                                }
                               },
                             ),
                           ),
@@ -167,9 +172,19 @@ class LoginScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Image.asset('assets/images/fb.png', height: 30.0),
-                              Image.asset('assets/images/google.png',
-                                  height: 30.0),
+                              GestureDetector(
+                                  onTap: () =>
+                                      _loginController.handleFacebookLogin(),
+                                  child: Image.asset('assets/images/fb.png',
+                                      height: 30.0)),
+                              GestureDetector(
+                                onTap: () =>
+                                    _loginController.handleGoogleLoginIn(),
+                                child: Image.asset(
+                                  'assets/images/google.png',
+                                  height: 30.0,
+                                ),
+                              ),
                             ],
                           ),
                         )

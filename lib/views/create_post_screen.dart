@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chewie/chewie.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hello/controllers/post_controller.dart';
@@ -9,14 +10,29 @@ import 'package:hello/views/post_permission_screen.dart';
 import 'package:hello/views/tag_screen.dart';
 import 'package:video_player/video_player.dart';
 
-class CreatePostScreenWidget extends StatelessWidget {
+class CreatePostScreenWidget extends StatefulWidget {
   final File file;
-  final String fileType;
+  final String postType;
 
-  CreatePostScreenWidget({this.file, this.fileType});
+  CreatePostScreenWidget({this.file, this.postType});
 
+  @override
+  _CreatePostScreenWidgetState createState() => _CreatePostScreenWidgetState();
+}
+
+class _CreatePostScreenWidgetState extends State<CreatePostScreenWidget> {
   final PostController postController = Get.put(PostController());
+
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    if (widget.postType != "text") {
+      postController.file.value = widget.file;
+    }
+    postController.postType.value = widget.postType;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,22 +63,42 @@ class CreatePostScreenWidget extends StatelessWidget {
           children: [
             Form(
               key: _formKey,
-              child: TextFormField(
-                controller: postController.textEditingController,
-                validator: (input) =>
-                    input.length < 5 ? "at least 5 characters" : null,
-                textInputAction: TextInputAction.newline,
-                keyboardType: TextInputType.multiline,
-                minLines: 5,
-                maxLines: 100,
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0,
+              child: Obx(
+                () => Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: TextFormField(
+                    controller: postController.textEditingController,
+                    validator: (input) =>
+                        input.length < 5 ? "at least 5 characters" : null,
+                    textInputAction: TextInputAction.newline,
+                    keyboardType: TextInputType.multiline,
+                    minLines: 5,
+                    maxLines: 100,
+                    style: TextStyle(
+                        color: postController.bgColorList[postController
+                                        .selectedBgColorIndex.value]
+                                    .computeLuminance() >
+                                0.5
+                            ? Colors.black
+                            : Colors.white),
+                    decoration: InputDecoration(
+                      filled: true,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                      fillColor: postController.bgColorList[
+                          postController.selectedBgColorIndex.value],
+                      hintText: 'What would you like to say?',
+                      hintStyle: TextStyle(
+                          color: postController.bgColorList[postController
+                                          .selectedBgColorIndex.value]
+                                      .computeLuminance() >
+                                  0.5
+                              ? Colors.black
+                              : Colors.white),
+                    ),
                   ),
-                  fillColor: Colors.grey.shade300,
-                  hintText: 'What would you like to say?',
-                  hintStyle: TextStyle(color: Colors.black38),
                 ),
               ),
             ),
@@ -70,15 +106,6 @@ class CreatePostScreenWidget extends StatelessWidget {
               height: 32.0,
             ),
             GetX<PostController>(
-              initState: (context) {
-                if (postController.postType.value != "") {
-                  postController.file.value = file;
-                  postController.postType.value = fileType;
-                  print("...............");
-                  print(fileType);
-                  print(file.path);
-                }
-              },
               builder: (controller) {
                 return controller.postType.value != ""
                     ? controller.postType?.value == "img"
@@ -92,12 +119,14 @@ class CreatePostScreenWidget extends StatelessWidget {
                           )
                         : controller.postType?.value == "video"
                             ? Container(
+                                height: 160,
+                                alignment: Alignment.center,
                                 child: Chewie(
                                   controller: ChewieController(
                                     videoPlayerController:
                                         VideoPlayerController.file(
                                             controller.file.value),
-                                    aspectRatio: 5 / 8,
+                                    aspectRatio: 4 / 4,
                                     autoInitialize: true,
                                     autoPlay: false,
                                     looping: false,
@@ -112,7 +141,17 @@ class CreatePostScreenWidget extends StatelessWidget {
                                   ),
                                 ),
                               )
-                            : SizedBox()
+                            : controller.postType?.value == "text"
+                                ? Container(
+                                    alignment: Alignment.center,
+                                    padding: EdgeInsets.all(4.0),
+                                    child: Wrap(
+                                      spacing: 4.0,
+                                      runSpacing: 4.0,
+                                      children: getColorWidget(controller),
+                                    ),
+                                  )
+                                : SizedBox()
                     : SizedBox();
               },
             ),
@@ -284,6 +323,29 @@ class CreatePostScreenWidget extends StatelessWidget {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  List<Widget> getColorWidget(PostController controller) {
+    return List<Widget>.generate(
+      controller.bgColorList.length,
+      (int index) => GestureDetector(
+        onTap: () {
+          controller.selectedBgColorIndex.value = index;
+        },
+        child: Container(
+          width: 48,
+          height: 48,
+          decoration: new BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(6.0)),
+            color: controller.bgColorList[index],
+            border: controller.selectedBgColorIndex.value == index
+                ? Border.all(
+                    color: Colors.black, width: 4.0, style: BorderStyle.solid)
+                : Border.all(color: Colors.grey.withOpacity(0.5), width: 1.0),
+          ),
         ),
       ),
     );

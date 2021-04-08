@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hello/controllers/home_controller.dart';
 import 'package:hello/style/AppColors.dart';
-import 'package:hello/views/create_post_screen.dart';
 import 'package:hello/views/home_screen.dart';
 import 'package:hello/views/profile_screen.dart';
 
@@ -100,7 +99,7 @@ class _PagesScreenState extends State<PagesScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.to(CreatePostScreenWidget());
+                      _pagesController.createTextPost();
                     },
                     child: Column(
                       children: [

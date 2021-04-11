@@ -5,13 +5,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:hello/common_components/MySnackBar.dart';
 import 'package:hello/controllers/home_controller.dart';
 import 'package:hello/style/AppColors.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:video_player/video_player.dart';
 
+import '../style/AppColors.dart';
+
 class HomeScreen extends StatelessWidget {
   final HomeController _homeController = Get.put(HomeController());
+  String reactionStr = 'React';
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +26,121 @@ class HomeScreen extends StatelessWidget {
             color: Colors.grey.shade100,
             child: Column(
               children: [
+                Container(
+                  margin: EdgeInsets.only(left: 15, right: 15),
+                  height: 60,
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          MySnackbar.infoSnackBar('Coming Soon', '');
+                        },
+                        child: Container(
+                          child: SvgPicture.asset(
+                            "assets/images/language_color.svg",
+                            width: 24.0,
+                            height: 24.0,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          MySnackbar.infoSnackBar('Coming Soon', '');
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade300,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(40.0))),
+                          height: 35,
+                          width: 220,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 18, top: 8, bottom: 8),
+                            child: Text(
+                              'Search anything',
+                              style: TextStyle(
+                                  color: Colors.black54, fontSize: 13),
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            MySnackbar.infoSnackBar('Coming Soon', '');
+                          },
+                          child: Icon(Icons.person_pin, size: 30))
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 10, right: 10, top: 20),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            MySnackbar.infoSnackBar('Coming Soon', 'sotries comming soon');
+                          },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0))),
+                              height: 120,
+                              width: 80,
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                        margin: EdgeInsets.only(
+                                            left: 18,
+                                            right: 18,
+                                            top: 18,
+                                            ),
+                                        child: SvgPicture.asset(
+                                            'assets/images/add.svg')),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 20, top: 6),
+                                    child: Text('add story',
+                                        style: TextStyle(fontSize: 11)),
+                                  ),
+                                ],
+                              ))),
+                      GestureDetector(
+                          onTap: () {
+                            MySnackbar.infoSnackBar('Coming Soon', 'sotries comming soon');
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 6),
+                              decoration: BoxDecoration(
+                                  color: Colors.lightBlue.shade100,
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0))),
+                              height: 120,
+                              width: 80,
+                              child: Row(
+
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                        margin: EdgeInsets.only(
+                                          top: 60,
+                                        ),
+                                        child: Icon(Icons.person_pin)),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(right: 6, top: 60),
+                                    child: Text('Hello all',
+                                        style: TextStyle(fontSize: 11)),
+                                  ),
+                                ],
+                              ))),
+                    ],
+                  ),
+                ),
                 SizedBox(
                   height: 24.0,
                 ),
@@ -29,7 +148,7 @@ class HomeScreen extends StatelessWidget {
                   child: Container(
                     width: 80,
                     padding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 8.0),
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 8.0),
                     child: Text(
                       "Posts",
                       style: TextStyle(color: Colors.white, fontSize: 16.0),
@@ -63,40 +182,39 @@ class HomeScreen extends StatelessWidget {
                                 Row(
                                   children: [
                                     controller.postList[index].user[0].image ==
-                                        "https://sritsolution.com/hello/"
+                                            "https://sritsolution.com/hello/"
                                         ? Icon(
-                                      Icons.account_circle_rounded,
-                                      size: 48.0,
-                                      color: Colors.grey.shade400,
-                                    )
+                                            Icons.account_circle_rounded,
+                                            size: 48.0,
+                                            color: Colors.grey.shade400,
+                                          )
                                         : ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(50)),
-                                      child: CachedNetworkImage(
-                                        width: 48,
-                                        height: 48,
-                                        fit: BoxFit.cover,
-                                        imageUrl: controller
-                                            .postList[index]
-                                            .user[0]
-                                            .image,
-                                        placeholder: (context, url) =>
-                                            Image.asset(
-                                              'assets/images/loading.gif',
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(50)),
+                                            child: CachedNetworkImage(
+                                              width: 48,
+                                              height: 48,
                                               fit: BoxFit.cover,
+                                              imageUrl: controller
+                                                  .postList[index]
+                                                  .user[0]
+                                                  .image,
+                                              placeholder: (context, url) =>
+                                                  Image.asset(
+                                                'assets/images/loading.gif',
+                                                fit: BoxFit.cover,
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) => Icon(
+                                                Icons.account_circle_rounded,
+                                                size: 48.0,
+                                                color: Colors.grey.shade400,
+                                              ),
                                             ),
-                                        errorWidget:
-                                            (context, url, error) =>
-                                            Icon(
-                                              Icons.account_circle_rounded,
-                                              size: 48.0,
-                                              color: Colors.grey.shade400,
-                                            ),
-                                      ),
-                                    ),
+                                          ),
                                     Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           controller
@@ -131,13 +249,13 @@ class HomeScreen extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(
                                       vertical: 10.0, horizontal: 12.0),
                                   color: controller.postList[index].type !=
-                                      "text"
+                                          "text"
                                       ? Colors.grey.shade50
                                       : controller.postList[index].color !=
-                                      "null"
-                                      ? HexColor(
-                                      controller.postList[index].color)
-                                      : Colors.grey.shade50,
+                                              "null"
+                                          ? HexColor(
+                                              controller.postList[index].color)
+                                          : Colors.grey.shade50,
                                   child: Column(
                                     children: [
                                       Align(
@@ -147,21 +265,21 @@ class HomeScreen extends StatelessWidget {
                                           style: TextStyle(
                                             fontSize: 18.0,
                                             color: controller
-                                                .postList[index].type !=
-                                                "text"
+                                                        .postList[index].type !=
+                                                    "text"
                                                 ? Colors.grey
                                                 : controller.postList[index]
-                                                .color !=
-                                                "null"
-                                                ? HexColor(controller
-                                                .postList[
-                                            index]
-                                                .color)
-                                                .computeLuminance() >
-                                                0.5
-                                                ? Colors.black
-                                                : Colors.white
-                                                : Colors.grey.shade50,
+                                                            .color !=
+                                                        "null"
+                                                    ? HexColor(controller
+                                                                    .postList[
+                                                                        index]
+                                                                    .color)
+                                                                .computeLuminance() >
+                                                            0.5
+                                                        ? Colors.black
+                                                        : Colors.white
+                                                    : Colors.grey.shade50,
                                           ),
                                         ),
                                         alignment: Alignment.center,
@@ -173,103 +291,118 @@ class HomeScreen extends StatelessWidget {
                                   height: 12.0,
                                 ),
                                 controller.postList[index].content !=
-                                    "https://sritsolution.com/hello/"
+                                        "https://sritsolution.com/hello/"
                                     ? controller.postList[index].type == "img"
-                                    ? ClipRRect(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(2.0)),
-                                  child: CachedNetworkImage(
-                                    width: double.infinity,
-                                    height: 180,
-                                    fit: BoxFit.cover,
-                                    imageUrl: controller
-                                        .postList[index].content,
-                                    placeholder: (context, url) =>
-                                        Image.asset(
-                                          'assets/images/loading.gif',
-                                          fit: BoxFit.cover,
-                                        ),
-                                    errorWidget:
-                                        (context, url, error) =>
-                                        SizedBox(),
-                                  ),
-                                )
-                                    : Container(
-                                  height: 220,
-                                  alignment: Alignment.center,
-                                  child: Chewie(
-                                    controller: ChewieController(
-                                      videoPlayerController:
-                                      VideoPlayerController
-                                          .network(controller
-                                          .postList[index]
-                                          .content),
-                                      aspectRatio: 3 / 2,
-                                      allowedScreenSleep: false,
-                                      autoInitialize: true,
-                                      autoPlay: false,
-                                      looping: false,
-                                      deviceOrientationsAfterFullScreen: [
-                                        DeviceOrientation.portraitUp,
-                                        DeviceOrientation
-                                            .portraitDown,
-                                      ],
-                                      // customControls: Container(
-                                      //   height: videoPlayerController.value.size.height,
-                                      //   width: videoPlayerController.value.size.width,
-                                      //   child: Column(
-                                      //     mainAxisAlignment: MainAxisAlignment.center,
-                                      //     children: [
-                                      //       Center(
-                                      //         child: Container(
-                                      //           height: 70,
-                                      //           width: 70,
-                                      //           decoration: BoxDecoration(
-                                      //             borderRadius: BorderRadius.circular(18),
-                                      //             color: Colors.black.withOpacity(0.5),
-                                      //             shape: BoxShape.rectangle,
-                                      //               border: Border.all(
-                                      //                 width: 4,
-                                      //                 color: Colors.white
-                                      //               )
-                                      //           ),
-                                      //           child: IconButton(
-                                      //             icon: Icon(Icons.play_arrow_rounded,color: Colors.white,),
-                                      //             onPressed: () {
-                                      //               if (videoPlayerController.value.isPlaying) {
-                                      //                 videoPlayerController.pause();
-                                      //               } else {
-                                      //                 // If the video is paused, play it.
-                                      //                 videoPlayerController.play();
-                                      //               }
-                                      //             },
-                                      //           ),
-                                      //         ),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // ),
-                                      errorBuilder:
-                                          (context, errorMessage) {
-                                        return Center(
-                                          child: Text(
-                                            errorMessage,
-                                            style: TextStyle(
-                                                color: Colors.white),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                )
+                                        ? ClipRRect(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(2.0)),
+                                            child: CachedNetworkImage(
+                                              width: double.infinity,
+                                              height: 180,
+                                              fit: BoxFit.cover,
+                                              imageUrl: controller
+                                                  .postList[index].content,
+                                              placeholder: (context, url) =>
+                                                  Image.asset(
+                                                'assets/images/loading.gif',
+                                                fit: BoxFit.cover,
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      SizedBox(),
+                                            ),
+                                          )
+                                        : Container(
+                                            height: 220,
+                                            alignment: Alignment.center,
+                                            child: Chewie(
+                                              controller: ChewieController(
+                                                videoPlayerController:
+                                                    VideoPlayerController
+                                                        .network(controller
+                                                            .postList[index]
+                                                            .content),
+                                                aspectRatio: 3 / 2,
+                                                allowedScreenSleep: false,
+                                                autoInitialize: true,
+                                                autoPlay: false,
+                                                looping: false,
+                                                deviceOrientationsAfterFullScreen: [
+                                                  DeviceOrientation.portraitUp,
+                                                  DeviceOrientation
+                                                      .portraitDown,
+                                                ],
+                                                // customControls: Container(
+                                                //   height: videoPlayerController.value.size.height,
+                                                //   width: videoPlayerController.value.size.width,
+                                                //   child: Column(
+                                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                                //     children: [
+                                                //       Center(
+                                                //         child: Container(
+                                                //           height: 70,
+                                                //           width: 70,
+                                                //           decoration: BoxDecoration(
+                                                //             borderRadius: BorderRadius.circular(18),
+                                                //             color: Colors.black.withOpacity(0.5),
+                                                //             shape: BoxShape.rectangle,
+                                                //               border: Border.all(
+                                                //                 width: 4,
+                                                //                 color: Colors.white
+                                                //               )
+                                                //           ),
+                                                //           child: IconButton(
+                                                //             icon: Icon(Icons.play_arrow_rounded,color: Colors.white,),
+                                                //             onPressed: () {
+                                                //               if (videoPlayerController.value.isPlaying) {
+                                                //                 videoPlayerController.pause();
+                                                //               } else {
+                                                //                 // If the video is paused, play it.
+                                                //                 videoPlayerController.play();
+                                                //               }
+                                                //             },
+                                                //           ),
+                                                //         ),
+                                                //       ),
+                                                //     ],
+                                                //   ),
+                                                // ),
+                                                errorBuilder:
+                                                    (context, errorMessage) {
+                                                  return Center(
+                                                    child: Text(
+                                                      errorMessage,
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          )
                                     : SizedBox(),
                                 SizedBox(
                                   height: 24.0,
                                 ),
                                 Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceAround,
+                                      MainAxisAlignment.spaceAround,
                                   children: [
+                                    Column(
+                                      children: [
+                                        Icon(
+                                          Icons.share_outlined,
+                                          color: Colors.grey.shade700,
+                                          size: 22,
+                                        ),
+                                        Text(
+                                          "Share",
+                                          style: TextStyle(
+                                              color: Colors.grey.shade700,
+                                              fontSize: 13),
+                                        ),
+                                      ],
+                                    ),
                                     Column(
                                       children: [
                                         FlutterReactionButtonCheck(
@@ -282,7 +415,7 @@ class HomeScreen extends StatelessWidget {
                                             Reaction(
                                               icon: Icon(
                                                 Icons.thumb_up,
-                                                color: Colors.orangeAccent,
+                                                color: AppColors.blueColor,
                                               ),
                                             ),
                                             Reaction(
@@ -294,13 +427,13 @@ class HomeScreen extends StatelessWidget {
                                             ),
                                             Reaction(
                                                 icon: SvgPicture.asset(
-                                                  "assets/images/sad.svg",
-                                                  width: 24.0,
-                                                  height: 24.0,
-                                                )),
+                                              "assets/images/sad.svg",
+                                              width: 24.0,
+                                              height: 24.0,
+                                            )),
                                             Reaction(
                                               icon: SvgPicture.asset(
-                                                "assets/images/in-love.svg",
+                                                "assets/images/love.svg",
                                                 width: 24.0,
                                                 height: 24.0,
                                               ),
@@ -316,40 +449,27 @@ class HomeScreen extends StatelessWidget {
                                           initialReaction: Reaction(
                                             icon: Icon(
                                               Icons.thumb_up_alt_outlined,
-                                              color: Colors.grey.shade400,
+                                              color: Colors.grey.shade700,
+                                              size: 23,
                                             ),
                                           ),
                                           selectedReaction: Reaction(
                                             icon: Icon(
-                                              Icons.thumb_up_alt_outlined,
-                                              color: Colors.orangeAccent,
+                                              Icons.thumb_up,
+                                              color: AppColors.blueColor,
                                             ),
                                           ),
                                           boxItemsSpacing: 8.0,
                                           boxPadding: EdgeInsets.all(4.0),
                                           boxAlignment: Alignment.bottomLeft,
                                           boxDuration:
-                                          const Duration(milliseconds: 100),
+                                              const Duration(milliseconds: 100),
                                         ),
                                         Text(
-                                          "Like",
+                                          reactionStr,
                                           style: TextStyle(
-                                            color: Colors.grey.shade400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: [
-                                        Icon(
-                                          Icons.share_outlined,
-                                          color: Colors.grey.shade400,
-                                        ),
-                                        Text(
-                                          "Share",
-                                          style: TextStyle(
-                                            color: Colors.grey.shade400,
-                                          ),
+                                              color: Colors.grey.shade700,
+                                              fontSize: 13),
                                         ),
                                       ],
                                     ),
@@ -361,13 +481,14 @@ class HomeScreen extends StatelessWidget {
                                         children: [
                                           Icon(
                                             Icons.comment_outlined,
-                                            color: Colors.grey.shade400,
+                                            color: Colors.grey.shade700,
+                                            size: 22,
                                           ),
                                           Text(
                                             "Comment",
                                             style: TextStyle(
-                                              color: Colors.grey.shade400,
-                                            ),
+                                                color: Colors.grey.shade700,
+                                                fontSize: 13),
                                           ),
                                         ],
                                       ),
@@ -375,14 +496,30 @@ class HomeScreen extends StatelessWidget {
                                     Column(
                                       children: [
                                         Icon(
+                                          Icons.repeat,
+                                          color: Colors.grey.shade700,
+                                          size: 22,
+                                        ),
+                                        Text(
+                                          "Repost",
+                                          style: TextStyle(
+                                              color: Colors.grey.shade700,
+                                              fontSize: 13),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        Icon(
                                           Icons.save_alt,
-                                          color: Colors.grey.shade400,
+                                          color: Colors.grey.shade700,
+                                          size: 22,
                                         ),
                                         Text(
                                           "Save",
                                           style: TextStyle(
-                                            color: Colors.grey.shade400,
-                                          ),
+                                              color: Colors.grey.shade700,
+                                              fontSize: 13),
                                         ),
                                       ],
                                     )
@@ -442,10 +579,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      bottom: MediaQuery
-                          .of(context)
-                          .viewInsets
-                          .bottom),
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
                   child: TextField(
                     keyboardType: TextInputType.multiline,
                     decoration: InputDecoration(hintText: 'Write something...'),
@@ -466,7 +600,10 @@ class HomeScreen extends StatelessWidget {
                         borderRadius: new BorderRadius.circular(30.0)),
                     textColor: AppColors.white,
                     color: AppColors.themeColor,
-                    child: Text('send', style: TextStyle(fontSize: 12),),
+                    child: Text(
+                      'send',
+                      style: TextStyle(fontSize: 12),
+                    ),
                   ),
                 )
               ],

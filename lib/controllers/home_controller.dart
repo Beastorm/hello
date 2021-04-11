@@ -9,7 +9,8 @@ import 'package:image_picker/image_picker.dart';
 class HomeController extends GetxController {
   var videoFile = File("").obs;
   var imageFile = File("").obs;
-
+  ImagePicker picker = ImagePicker();
+  PickedFile _pickedFile;
   var postList = List<Datum>().obs;
 
   @override
@@ -19,31 +20,34 @@ class HomeController extends GetxController {
   }
 
   pickVideoFromGallery() async {
-    final picker = ImagePicker();
     File _videoFile;
-    var pickedFile = await picker.getVideo(source: ImageSource.gallery);
-    if (pickedFile == null) {
+    _pickedFile = await picker.getVideo(source: ImageSource.gallery);
+    if (_pickedFile == null) {
       return;
     }
-    _videoFile = File(pickedFile.path);
+    _videoFile = File(_pickedFile.path);
     videoFile.value = _videoFile;
-    Get.to(
-        () => CreatePostScreenWidget(file: videoFile.value, fileType: "video"));
+    Get.off(
+        () => CreatePostScreenWidget(file: videoFile.value, postType: "video"));
     update();
   }
 
   pickImageFromGallery() async {
-    final picker = ImagePicker();
     File _imageFile;
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    if (pickedFile == null) {
+    _pickedFile = await picker.getImage(source: ImageSource.gallery);
+    if (_pickedFile == null) {
       return;
     }
-    _imageFile = File(pickedFile.path);
+    _imageFile = File(_pickedFile.path);
     imageFile.value = _imageFile;
     print(_imageFile.path);
-    Get.to(
-        () => CreatePostScreenWidget(file: imageFile.value, fileType: "img"));
+    Get.off(
+        () => CreatePostScreenWidget(file: imageFile.value, postType: "img"));
+    update();
+  }
+
+  createTextPost() {
+    Get.off(() => CreatePostScreenWidget(file: null, postType: "text"));
     update();
   }
 

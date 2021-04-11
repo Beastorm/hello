@@ -40,7 +40,7 @@ class PostController extends GetxController {
         textEditingController.text.trim(),
         postType.value != "text"
             ? "#ffffff"
-            : bgColorList[selectedBgColorIndex.value].toString(),
+            : '#${bgColorList[selectedBgColorIndex.value].value.toRadixString(16).substring(2, 8)}',
         appliedTags.value,
         city.value,
         "",

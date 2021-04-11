@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_reaction_button/flutter_reaction_button.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hello/controllers/home_controller.dart';
 import 'package:hello/style/AppColors.dart';
@@ -27,7 +29,7 @@ class HomeScreen extends StatelessWidget {
                   child: Container(
                     width: 80,
                     padding:
-                        EdgeInsets.symmetric(vertical: 10, horizontal: 8.0),
+                    EdgeInsets.symmetric(vertical: 10, horizontal: 8.0),
                     child: Text(
                       "Posts",
                       style: TextStyle(color: Colors.white, fontSize: 16.0),
@@ -61,39 +63,40 @@ class HomeScreen extends StatelessWidget {
                                 Row(
                                   children: [
                                     controller.postList[index].user[0].image ==
-                                            "https://sritsolution.com/hello/"
+                                        "https://sritsolution.com/hello/"
                                         ? Icon(
-                                            Icons.account_circle_rounded,
-                                            size: 48.0,
-                                            color: Colors.grey.shade400,
-                                          )
+                                      Icons.account_circle_rounded,
+                                      size: 48.0,
+                                      color: Colors.grey.shade400,
+                                    )
                                         : ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50)),
-                                            child: CachedNetworkImage(
-                                              width: 48,
-                                              height: 48,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(50)),
+                                      child: CachedNetworkImage(
+                                        width: 48,
+                                        height: 48,
+                                        fit: BoxFit.cover,
+                                        imageUrl: controller
+                                            .postList[index]
+                                            .user[0]
+                                            .image,
+                                        placeholder: (context, url) =>
+                                            Image.asset(
+                                              'assets/images/loading.gif',
                                               fit: BoxFit.cover,
-                                              imageUrl: controller
-                                                  .postList[index]
-                                                  .user[0]
-                                                  .image,
-                                              placeholder: (context, url) =>
-                                                  Image.asset(
-                                                'assets/images/loading.gif',
-                                                fit: BoxFit.cover,
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) => Icon(
-                                                Icons.account_circle_rounded,
-                                                size: 48.0,
-                                                color: Colors.grey.shade400,
-                                              ),
                                             ),
-                                          ),
+                                        errorWidget:
+                                            (context, url, error) =>
+                                            Icon(
+                                              Icons.account_circle_rounded,
+                                              size: 48.0,
+                                              color: Colors.grey.shade400,
+                                            ),
+                                      ),
+                                    ),
                                     Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           controller
@@ -128,13 +131,13 @@ class HomeScreen extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(
                                       vertical: 10.0, horizontal: 12.0),
                                   color: controller.postList[index].type !=
-                                          "text"
+                                      "text"
                                       ? Colors.grey.shade50
                                       : controller.postList[index].color !=
-                                              "null"
-                                          ? HexColor(
-                                              controller.postList[index].color)
-                                          : Colors.grey.shade50,
+                                      "null"
+                                      ? HexColor(
+                                      controller.postList[index].color)
+                                      : Colors.grey.shade50,
                                   child: Column(
                                     children: [
                                       Align(
@@ -144,21 +147,21 @@ class HomeScreen extends StatelessWidget {
                                           style: TextStyle(
                                             fontSize: 18.0,
                                             color: controller
-                                                        .postList[index].type !=
-                                                    "text"
+                                                .postList[index].type !=
+                                                "text"
                                                 ? Colors.grey
                                                 : controller.postList[index]
-                                                            .color !=
-                                                        "null"
-                                                    ? HexColor(controller
-                                                                    .postList[
-                                                                        index]
-                                                                    .color)
-                                                                .computeLuminance() >
-                                                            0.5
-                                                        ? Colors.black
-                                                        : Colors.white
-                                                    : Colors.grey.shade50,
+                                                .color !=
+                                                "null"
+                                                ? HexColor(controller
+                                                .postList[
+                                            index]
+                                                .color)
+                                                .computeLuminance() >
+                                                0.5
+                                                ? Colors.black
+                                                : Colors.white
+                                                : Colors.grey.shade50,
                                           ),
                                         ),
                                         alignment: Alignment.center,
@@ -170,108 +173,163 @@ class HomeScreen extends StatelessWidget {
                                   height: 12.0,
                                 ),
                                 controller.postList[index].content !=
-                                        "https://sritsolution.com/hello/"
+                                    "https://sritsolution.com/hello/"
                                     ? controller.postList[index].type == "img"
-                                        ? ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(2.0)),
-                                            child: CachedNetworkImage(
-                                              width: double.infinity,
-                                              height: 180,
-                                              fit: BoxFit.cover,
-                                              imageUrl: controller
-                                                  .postList[index].content,
-                                              placeholder: (context, url) =>
-                                                  Image.asset(
-                                                'assets/images/loading.gif',
-                                                fit: BoxFit.cover,
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      SizedBox(),
-                                            ),
-                                          )
-                                        : Container(
-                                            height: 220,
-                                            alignment: Alignment.center,
-                                            child: Chewie(
-                                              controller: ChewieController(
-                                                videoPlayerController:
-                                                    VideoPlayerController
-                                                        .network(controller
-                                                            .postList[index]
-                                                            .content),
-                                                aspectRatio: 3 / 2,
-                                                allowedScreenSleep: false,
-                                                autoInitialize: true,
-                                                autoPlay: false,
-                                                looping: false,
-                                                deviceOrientationsAfterFullScreen: [
-                                                  DeviceOrientation.portraitUp,
-                                                  DeviceOrientation
-                                                      .portraitDown,
-                                                ],
-                                                // customControls: Container(
-                                                //   height: videoPlayerController.value.size.height,
-                                                //   width: videoPlayerController.value.size.width,
-                                                //   child: Column(
-                                                //     mainAxisAlignment: MainAxisAlignment.center,
-                                                //     children: [
-                                                //       Center(
-                                                //         child: Container(
-                                                //           height: 70,
-                                                //           width: 70,
-                                                //           decoration: BoxDecoration(
-                                                //             borderRadius: BorderRadius.circular(18),
-                                                //             color: Colors.black.withOpacity(0.5),
-                                                //             shape: BoxShape.rectangle,
-                                                //               border: Border.all(
-                                                //                 width: 4,
-                                                //                 color: Colors.white
-                                                //               )
-                                                //           ),
-                                                //           child: IconButton(
-                                                //             icon: Icon(Icons.play_arrow_rounded,color: Colors.white,),
-                                                //             onPressed: () {
-                                                //               if (videoPlayerController.value.isPlaying) {
-                                                //                 videoPlayerController.pause();
-                                                //               } else {
-                                                //                 // If the video is paused, play it.
-                                                //                 videoPlayerController.play();
-                                                //               }
-                                                //             },
-                                                //           ),
-                                                //         ),
-                                                //       ),
-                                                //     ],
-                                                //   ),
-                                                // ),
-                                                errorBuilder:
-                                                    (context, errorMessage) {
-                                                  return Center(
-                                                    child: Text(
-                                                      errorMessage,
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          )
+                                    ? ClipRRect(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(2.0)),
+                                  child: CachedNetworkImage(
+                                    width: double.infinity,
+                                    height: 180,
+                                    fit: BoxFit.cover,
+                                    imageUrl: controller
+                                        .postList[index].content,
+                                    placeholder: (context, url) =>
+                                        Image.asset(
+                                          'assets/images/loading.gif',
+                                          fit: BoxFit.cover,
+                                        ),
+                                    errorWidget:
+                                        (context, url, error) =>
+                                        SizedBox(),
+                                  ),
+                                )
+                                    : Container(
+                                  height: 220,
+                                  alignment: Alignment.center,
+                                  child: Chewie(
+                                    controller: ChewieController(
+                                      videoPlayerController:
+                                      VideoPlayerController
+                                          .network(controller
+                                          .postList[index]
+                                          .content),
+                                      aspectRatio: 3 / 2,
+                                      allowedScreenSleep: false,
+                                      autoInitialize: true,
+                                      autoPlay: false,
+                                      looping: false,
+                                      deviceOrientationsAfterFullScreen: [
+                                        DeviceOrientation.portraitUp,
+                                        DeviceOrientation
+                                            .portraitDown,
+                                      ],
+                                      // customControls: Container(
+                                      //   height: videoPlayerController.value.size.height,
+                                      //   width: videoPlayerController.value.size.width,
+                                      //   child: Column(
+                                      //     mainAxisAlignment: MainAxisAlignment.center,
+                                      //     children: [
+                                      //       Center(
+                                      //         child: Container(
+                                      //           height: 70,
+                                      //           width: 70,
+                                      //           decoration: BoxDecoration(
+                                      //             borderRadius: BorderRadius.circular(18),
+                                      //             color: Colors.black.withOpacity(0.5),
+                                      //             shape: BoxShape.rectangle,
+                                      //               border: Border.all(
+                                      //                 width: 4,
+                                      //                 color: Colors.white
+                                      //               )
+                                      //           ),
+                                      //           child: IconButton(
+                                      //             icon: Icon(Icons.play_arrow_rounded,color: Colors.white,),
+                                      //             onPressed: () {
+                                      //               if (videoPlayerController.value.isPlaying) {
+                                      //                 videoPlayerController.pause();
+                                      //               } else {
+                                      //                 // If the video is paused, play it.
+                                      //                 videoPlayerController.play();
+                                      //               }
+                                      //             },
+                                      //           ),
+                                      //         ),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
+                                      errorBuilder:
+                                          (context, errorMessage) {
+                                        return Center(
+                                          child: Text(
+                                            errorMessage,
+                                            style: TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                )
                                     : SizedBox(),
                                 SizedBox(
                                   height: 24.0,
                                 ),
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  MainAxisAlignment.spaceAround,
                                   children: [
                                     Column(
                                       children: [
-                                        Icon(
-                                          Icons.thumb_up_alt_outlined,
-                                          color: Colors.grey.shade400,
+                                        FlutterReactionButtonCheck(
+                                          onReactionChanged:
+                                              (reaction, index, isChecked) {
+                                            print(
+                                                'reaction selected index: $index');
+                                          },
+                                          reactions: <Reaction>[
+                                            Reaction(
+                                              icon: Icon(
+                                                Icons.thumb_up,
+                                                color: Colors.orangeAccent,
+                                              ),
+                                            ),
+                                            Reaction(
+                                              icon: SvgPicture.asset(
+                                                "assets/images/happy.svg",
+                                                width: 24.0,
+                                                height: 24.0,
+                                              ),
+                                            ),
+                                            Reaction(
+                                                icon: SvgPicture.asset(
+                                                  "assets/images/sad.svg",
+                                                  width: 24.0,
+                                                  height: 24.0,
+                                                )),
+                                            Reaction(
+                                              icon: SvgPicture.asset(
+                                                "assets/images/in-love.svg",
+                                                width: 24.0,
+                                                height: 24.0,
+                                              ),
+                                            ),
+                                            Reaction(
+                                              icon: SvgPicture.asset(
+                                                "assets/images/angry.svg",
+                                                width: 24.0,
+                                                height: 24.0,
+                                              ),
+                                            ),
+                                          ],
+                                          initialReaction: Reaction(
+                                            icon: Icon(
+                                              Icons.thumb_up_alt_outlined,
+                                              color: Colors.grey.shade400,
+                                            ),
+                                          ),
+                                          selectedReaction: Reaction(
+                                            icon: Icon(
+                                              Icons.thumb_up_alt_outlined,
+                                              color: Colors.orangeAccent,
+                                            ),
+                                          ),
+                                          boxItemsSpacing: 8.0,
+                                          boxPadding: EdgeInsets.all(4.0),
+                                          boxAlignment: Alignment.bottomLeft,
+                                          boxDuration:
+                                          const Duration(milliseconds: 100),
                                         ),
                                         Text(
                                           "Like",
@@ -295,19 +353,24 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    Column(
-                                      children: [
-                                        Icon(
-                                          Icons.comment_outlined,
-                                          color: Colors.grey.shade400,
-                                        ),
-                                        Text(
-                                          "Comment",
-                                          style: TextStyle(
+                                    GestureDetector(
+                                      onTap: () {
+                                        showCommentBottomSheet(context);
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Icon(
+                                            Icons.comment_outlined,
                                             color: Colors.grey.shade400,
                                           ),
-                                        ),
-                                      ],
+                                          Text(
+                                            "Comment",
+                                            style: TextStyle(
+                                              color: Colors.grey.shade400,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                     Column(
                                       children: [
@@ -357,5 +420,58 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  showCommentBottomSheet(context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  // child: Text('Enter your address',),
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery
+                          .of(context)
+                          .viewInsets
+                          .bottom),
+                  child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration(hintText: 'Write something...'),
+                    autofocus: true,
+                    //controller: _newMediaLinkAddressController,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  alignment: Alignment.bottomRight,
+                  height: 30,
+                  child: RaisedButton(
+                    elevation: 0.0,
+                    onPressed: () {
+                      //Get.to(EditProfile());
+                    },
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0)),
+                    textColor: AppColors.white,
+                    color: AppColors.themeColor,
+                    child: Text('send', style: TextStyle(fontSize: 12),),
+                  ),
+                )
+              ],
+            ),
+          );
+        });
   }
 }

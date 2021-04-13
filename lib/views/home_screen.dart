@@ -45,6 +45,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+
                       GestureDetector(
                         onTap: () {
                           MySnackbar.infoSnackBar('Coming Soon', '');
@@ -72,6 +73,7 @@ class HomeScreen extends StatelessWidget {
                             MySnackbar.infoSnackBar('Coming Soon', '');
                           },
                           child: Icon(Icons.person_pin, size: 30))
+
                     ],
                   ),
                 ),

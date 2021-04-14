@@ -19,13 +19,13 @@ class ViewProfileModel {
   String message;
   String responseCode;
   bool status;
-  Data data;
+  DataProfile data;
 
   factory ViewProfileModel.fromJson(Map<String, dynamic> json) => ViewProfileModel(
     message: json["message"] == null ? null : json["message"],
     responseCode: json["response_code"] == null ? null : json["response_code"],
     status: json["status"] == null ? null : json["status"],
-    data: json["data"] == null ? null : Data.fromJson(json["data"]),
+    data: json["data"] == null ? null : DataProfile.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -36,14 +36,14 @@ class ViewProfileModel {
   };
 }
 
-class Data {
-  Data({
+class DataProfile {
+  DataProfile({
     this.personal,
   });
 
   Personal personal;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory DataProfile.fromJson(Map<String, dynamic> json) => DataProfile(
     personal: json["personal"] == null ? null : Personal.fromJson(json["personal"]),
   );
 

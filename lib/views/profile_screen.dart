@@ -1,18 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hello/controllers/home_controller.dart';
 import 'package:hello/style/AppColors.dart';
 import 'edit_profile_view.dart';
-
 
 class ProfileScreen extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -36,9 +33,8 @@ class ProfileScreen extends StatelessWidget {
                           SizedBox(height: 30),
                           Text('Sam Smith'),
                           Text('sam@gmail.com',
-                              style:
-                              TextStyle(color: Colors.black54, fontSize: 13)),
-
+                              style: TextStyle(
+                                  color: Colors.black54, fontSize: 13)),
                         ],
                       ),
                     ],
@@ -55,7 +51,6 @@ class ProfileScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-
               ],
             ),
             Positioned(
@@ -63,28 +58,28 @@ class ProfileScreen extends StatelessWidget {
               left: 15.0,
               child: controller.postList[0].user[0].image == ""
                   ? Icon(
-                Icons.account_circle_rounded,
-                size: 60.0,
-                color: Colors.grey.shade400,
-              )
+                      Icons.account_circle_rounded,
+                      size: 60.0,
+                      color: Colors.grey.shade400,
+                    )
                   : ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(50)),
-                child: CachedNetworkImage(
-                  width: 60,
-                  height: 60,
-                  fit: BoxFit.cover,
-                  imageUrl: controller.postList[0].user[0].image,
-                  placeholder: (context, url) => Image.asset(
-                    'assets/images/loading.gif',
-                    fit: BoxFit.cover,
-                  ),
-                  errorWidget: (context, url, error) => Icon(
-                    Icons.account_circle_rounded,
-                    size: 48.0,
-                    color: Colors.grey.shade400,
-                  ),
-                ),
-              ),
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      child: CachedNetworkImage(
+                        width: 60,
+                        height: 60,
+                        fit: BoxFit.cover,
+                        imageUrl: controller.postList[0].user[0].image,
+                        placeholder: (context, url) => Image.asset(
+                          'assets/images/loading.gif',
+                          fit: BoxFit.cover,
+                        ),
+                        errorWidget: (context, url, error) => Icon(
+                          Icons.account_circle_rounded,
+                          size: 48.0,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                    ),
             ),
             Positioned(
                 top: 180.0,
@@ -99,16 +94,13 @@ class ProfileScreen extends StatelessWidget {
                         borderRadius: new BorderRadius.circular(30.0)),
                     textColor: AppColors.white,
                     color: AppColors.themeColor,
-                    child: Text('Edit Profile', style: TextStyle(fontSize: 12),),
+                    child: Text(
+                      'Edit Profile',
+                      style: TextStyle(fontSize: 12),
+                    ),
                   ),
                 )),
-            Positioned(
-                top: 12,
-                left: 15,
-                child: Icon(Icons.arrow_back)
-
-            ),
-
+            Positioned(top: 12, left: 15, child: Icon(Icons.arrow_back)),
           ],
         ),
       ),

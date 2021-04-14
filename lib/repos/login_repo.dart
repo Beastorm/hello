@@ -37,6 +37,7 @@ Future<bool> loginProcess(String email, String pwd) async {
 
 void setCurrentUser(String email, String name, String mobile, String profilePic,
     String userId) {
+
   final pref = GetStorage();
   pref.write("isLogin", true);
   pref.write("name", name);

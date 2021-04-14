@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hello/repos/register_repo.dart';
-import 'package:hello/views/LoginScreen.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:hello/repos/edit_profile_repo.dart';
+import 'package:hello/views/profile_screen.dart';
 
-class RegisterController extends GetxController {
+
+class EditProfileController extends GetxController{
+var box = GetStorage();
   TextEditingController nameController;
-  TextEditingController emailController;
   TextEditingController mobileController;
-  TextEditingController pwdController;
   TextEditingController cityController;
   TextEditingController ageController;
   TextEditingController addressController;
@@ -15,51 +16,48 @@ class RegisterController extends GetxController {
   @override
   void onInit() {
     nameController = TextEditingController();
-    emailController = TextEditingController();
     mobileController = TextEditingController();
-    pwdController = TextEditingController();
     cityController = TextEditingController();
     ageController = TextEditingController();
     addressController = TextEditingController();
-    super.onInit();
 
+    super.onInit();
   }
 
-  requestForRegisterProcess() async {
+  requestForEditProfile() async {
+    String id = box.read('userId');
     int status = -5;
     Get.dialog(Center(child: CircularProgressIndicator()),
         barrierDismissible: false);
-    status = await registerProcess(
+    status = await editProfileProcess(
+      id,
       nameController.text,
-      emailController.text,
       nameController.text,
-      pwdController.text,
       cityController.text,
       ageController.text,
       addressController.text,
-
     );
 
     if (status == 0) {
       Get.back();
-      Get.offAll(LoginScreen());
+      Get.offAll(ProfileScreen());
       Get.snackbar(
         "Success",
-        "Registered Successfully",
+        "Profile updated Successfully",
         snackPosition: SnackPosition.BOTTOM,
       );
     } else if (status == 1) {
       Get.back();
       Get.snackbar(
         "Error",
-        "Already Registered",
+        "Server down please try again",
         snackPosition: SnackPosition.BOTTOM,
       );
     } else {
       Get.back();
       Get.snackbar(
         "Error",
-        "Something Went Wrong!",
+        "Server down please try again",
         snackPosition: SnackPosition.BOTTOM,
       );
     }

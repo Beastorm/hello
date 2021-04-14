@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,8 @@ import 'package:hello/style/AppColors.dart';
 import 'package:hello/views/post_permission_screen.dart';
 import 'package:hello/views/tag_screen.dart';
 import 'package:video_player/video_player.dart';
+
+
 
 class CreatePostScreenWidget extends StatefulWidget {
   final File file;

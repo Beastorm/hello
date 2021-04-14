@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hello/controllers/EditProfileController.dart';
 import 'package:hello/controllers/home_controller.dart';
 import 'package:hello/controllers/register_controller.dart';
 import 'package:hello/style/AppColors.dart';
@@ -9,7 +10,7 @@ import 'package:hello/style/AppColors.dart';
 class EditProfile extends StatelessWidget {
   var _formKey = GlobalKey<FormState>();
   final HomeController controller = Get.put(HomeController());
-  final RegisterController _registerController = Get.put(RegisterController());
+  final EditProfileController editProfileController = Get.put(EditProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +76,7 @@ class EditProfile extends StatelessWidget {
                           child:
                           TextFormField(
                               controller:
-                              _registerController.nameController,
+                              editProfileController.nameController,
                               keyboardType: TextInputType.name,
                               validator: (input) =>
                               input.length < 3
@@ -97,36 +98,6 @@ class EditProfile extends StatelessWidget {
                               )),
                         ),
 
-                        //Email TextField
-                        Container(
-                          height: 44,
-                          margin: EdgeInsets.only(
-                              left: 35.0, right: 35.0, top: 10.0),
-                          child: TextFormField(
-                            controller:
-                            _registerController.emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            //onSaved: (input) => _con.user.name = input,
-                            validator: (input) =>
-                            !input.contains("@")
-                                ? "invalid email Format"
-                                : null,
-                            decoration: InputDecoration(
-                              hintText: 'Enter email',
-                              labelText: 'Email',
-                              labelStyle: TextStyle(
-                                fontSize: 14,
-                                color: AppColors.themeColor,
-
-                                // light
-                                fontStyle: FontStyle.normal,
-                              ),
-                              border: OutlineInputBorder(
-                                  borderSide: new BorderSide(
-                                      color: AppColors.themeColor)),
-                            ),
-                          ),
-                        ),
                         //Mobile TextField
                         Container(
                           height: 44,
@@ -134,7 +105,7 @@ class EditProfile extends StatelessWidget {
                               left: 35.0, right: 35.0, top: 10.0),
                           child: TextFormField(
                             controller:
-                            _registerController.mobileController,
+                            editProfileController.mobileController,
                             keyboardType: TextInputType.phone,
                             validator: (input) =>
                             input.length != 10
@@ -157,35 +128,6 @@ class EditProfile extends StatelessWidget {
                             ),
                           ),
                         ),
-                        //password TextField
-                        Container(
-                          height: 44,
-                          margin: EdgeInsets.only(
-                              left: 35.0, right: 35.0, top: 10.0),
-                          child: TextFormField(
-                              controller:
-                              _registerController.pwdController,
-                              validator: (input) =>
-                              input.length < 8
-                                  ? "should be more than 7 characters"
-                                  : null,
-                              //obscureText: controller.hidePassword.value,
-
-                              decoration: InputDecoration(
-                                hintText: 'Enter password',
-                                labelText: 'Password',
-                                labelStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: AppColors.themeColor,
-
-                                  // light
-                                  fontStyle: FontStyle.normal,
-                                ),
-                                border: OutlineInputBorder(
-                                    borderSide: new BorderSide(
-                                        color: AppColors.themeColor)),
-                              )),
-                        ),
 
                         Container(
                           height: 44,
@@ -193,7 +135,7 @@ class EditProfile extends StatelessWidget {
                               left: 35.0, right: 35.0, top: 10.0),
                           child: TextFormField(
                               controller:
-                              _registerController.cityController,
+                              editProfileController.cityController,
                               validator: (input) =>
                               input.length < 1
                                   ? "should_be_not_empty"
@@ -218,7 +160,7 @@ class EditProfile extends StatelessWidget {
                           margin: EdgeInsets.only(
                               left: 35.0, right: 35.0, top: 10.0),
                           child: TextFormField(
-                            controller: _registerController.ageController,
+                            controller: editProfileController.ageController,
                             keyboardType: TextInputType.number,
                             validator: (input) =>
                             input.length < 1
@@ -247,7 +189,7 @@ class EditProfile extends StatelessWidget {
                           child: TextFormField(
 
                             controller:
-                            _registerController.addressController,
+                            editProfileController.addressController,
                             validator: (input) =>
                             input.length < 1
                                 ? "should_be_not_empty"
@@ -266,7 +208,31 @@ class EditProfile extends StatelessWidget {
                             ),
                           ),
                         ),
-
+                        Card(
+                          shadowColor: AppColors.themeColor,
+                          elevation: 1.0,
+                          margin: EdgeInsets.only(
+                              left: 40.0, right: 40.0, top: 30.0, bottom: 30.0),
+                          child: Container(
+                            height: 40,
+                            width: 160.0,
+                            child: RaisedButton(
+                              color: AppColors.themeColor,
+                              child: Text(
+                                'Update',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w900,
+                                    fontSize: 12.0,
+                                    color: AppColors.white),
+                              ),
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                 editProfileController.requestForEditProfile();
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                         //Email TextField
                       ],
                     ),

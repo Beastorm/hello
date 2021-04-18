@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:global_configuration/global_configuration.dart';
-import 'package:hello/models/tag_response_model.dart';
-import 'package:hello/models/tags_model.dart';
+import '../models/tag_response_model.dart';
+import '../models/tags_model.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<TagData>> viewTags() async {

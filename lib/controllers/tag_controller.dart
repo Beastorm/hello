@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hello/models/tags_model.dart';
-import 'package:hello/repos/tag_repo.dart';
+
+import '../models/tags_model.dart';
+import '../repos/tag_repo.dart';
 
 class TagController extends GetxController {
   var tagList = List<TagData>().obs;

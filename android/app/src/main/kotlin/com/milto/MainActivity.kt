@@ -1,4 +1,4 @@
-package com.live.hello
+package com.milto
 
 import io.flutter.embedding.android.FlutterActivity
 

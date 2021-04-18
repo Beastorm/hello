@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hello/controllers/login_controller.dart';
+import '../controllers/login_controller.dart';
 
 import '../style/AppColors.dart';
 import 'RegisterScreen.dart';
@@ -46,9 +46,9 @@ class LoginScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                height: 50,
+                                height: 48,
                                 margin: EdgeInsets.only(
-                                    left: 35.0, right: 35.0, top: 50.0),
+                                    left: 20.0, right: 20.0, top: 50.0),
                                 child: TextFormField(
                                   keyboardType: TextInputType.emailAddress,
                                   validator: (input) => !input.contains("@")
@@ -76,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                               Container(
                                 height: 48,
                                 margin: EdgeInsets.only(
-                                    left: 35.0, right: 35.0, top: 20.0),
+                                    left: 20.0, right: 20.0, top: 20.0),
                                 child: TextFormField(
                                   validator: (input) => input.length < 8
                                       ? "should_be_more_than_7_chars"

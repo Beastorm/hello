@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hello/repos/post_repo.dart';
-import 'package:hello/utils/location_util.dart';
+
+import '../repos/language_repo.dart';
+import '../repos/post_repo.dart';
+import '../utils/location_util.dart';
 
 class PostController extends GetxController {
   TextEditingController textEditingController;
@@ -21,11 +23,14 @@ class PostController extends GetxController {
   var bgColorList = List<Color>().obs;
   var selectedBgColorIndex = 0.obs;
   var bgColor = Color(0xffffffff).obs;
+  var currentPostLanguage = "English".obs;
+  var languageList = List<String>().obs;
 
   @override
   void onInit() {
     textEditingController = TextEditingController();
     bgColorList.assignAll(getColors());
+    requestForLanguageList();
     super.onInit();
   }
 
@@ -113,6 +118,13 @@ class PostController extends GetxController {
       Colors.amber,
       Colors.brown
     ];
+  }
+
+  requestForLanguageList() async {
+    var languages = await getLanguages();
+    for (var item in languages) {
+      languageList.add(item.name);
+    }
   }
 
   @override

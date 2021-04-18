@@ -1,15 +1,17 @@
 import 'dart:io';
+
 import 'package:chewie/chewie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hello/controllers/post_controller.dart';
-import 'package:hello/style/AppColors.dart';
-import 'package:hello/views/post_permission_screen.dart';
-import 'package:hello/views/tag_screen.dart';
 import 'package:video_player/video_player.dart';
 
-
+import '../controllers/post_controller.dart';
+import '../style/AppColors.dart';
+import '../views/post_permission_screen.dart';
+import '../views/tag_screen.dart';
+import 'select_language_view.dart';
 
 class CreatePostScreenWidget extends StatefulWidget {
   final File file;
@@ -51,9 +53,10 @@ class _CreatePostScreenWidgetState extends State<CreatePostScreenWidget> {
               "Post",
               style: TextStyle(color: AppColors.themeColor, fontSize: 16.0),
             ),
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState.validate()) {
-                postController.requestForCreatePost();
+                await postController.requestForCreatePost();
+                Get.back();
               }
             },
           )
@@ -120,17 +123,22 @@ class _CreatePostScreenWidgetState extends State<CreatePostScreenWidget> {
                           )
                         : controller.postType?.value == "video"
                             ? Container(
-                                height: 160,
+                                height: 260,
                                 alignment: Alignment.center,
                                 child: Chewie(
                                   controller: ChewieController(
                                     videoPlayerController:
                                         VideoPlayerController.file(
                                             controller.file.value),
-                                    aspectRatio: 4 / 4,
                                     autoInitialize: true,
                                     autoPlay: false,
                                     looping: false,
+                                    showControlsOnInitialize: false,
+                                    deviceOrientationsAfterFullScreen: [
+                                      DeviceOrientation.portraitUp,
+                                      DeviceOrientation.portraitDown,
+                                    ],
+                                    aspectRatio: 3 / 2,
                                     errorBuilder: (context, errorMessage) {
                                       return Center(
                                         child: Text(
@@ -322,6 +330,55 @@ class _CreatePostScreenWidgetState extends State<CreatePostScreenWidget> {
                   ],
                 ),
               ),
+            ),
+            SizedBox(
+              height: 2.0,
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.to(SelectLanguageView());
+              },
+              child: Container(
+                color: Colors.grey.shade100,
+                width: double.infinity,
+                height: 56.0,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 16.0,
+                    ),
+                    Icon(
+                      Icons.language,
+                      color: Colors.teal,
+                    ),
+                    SizedBox(
+                      width: 8.0,
+                    ),
+                    Text(
+                      "Post Language",
+                      style: TextStyle(fontSize: 14.0),
+                    ),
+                    Spacer(),
+                    Obx(
+                      () => Text(
+                        postController.currentPostLanguage.value,
+                        style: TextStyle(fontSize: 12.0, color: Colors.grey),
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios_sharp,
+                      color: Colors.grey,
+                      size: 20.0,
+                    ),
+                    SizedBox(
+                      width: 16.0,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 56.0,
             )
           ],
         ),

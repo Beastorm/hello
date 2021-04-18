@@ -41,6 +41,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505404369455:android:a88c33ce92a564faa3f4da",
+        "android_client_info": {
+          "package_name": "com.milto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505404369455-v5mqjg5jm5gbn8hb80d5rign963gic7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_SENiAp-UioLi1nISpn5XhIRZe_F04yI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505404369455-v5mqjg5jm5gbn8hb80d5rign963gic7n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

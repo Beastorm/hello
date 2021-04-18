@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/register_controller.dart';
+import 'package:intl/intl.dart';
 
+import '../controllers/register_controller.dart';
 import '../style/AppColors.dart';
 
 // ignore: must_be_immutable
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
+  @override
+  _RegisterScreenState createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   var _formKey = GlobalKey<FormState>();
   final RegisterController _registerController = Get.put(RegisterController());
+  DateTime selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +38,6 @@ class RegisterScreen extends StatelessWidget {
                     )
                   ],
                 ),
-
-                //Email TextField
                 Card(
                   shadowColor: AppColors.themeColor.withOpacity(0.5),
                   elevation: 1.0,
@@ -71,7 +76,6 @@ class RegisterScreen extends StatelessWidget {
                                     )),
                               ),
 
-                              //Email TextField
                               Container(
                                 height: 50,
                                 margin: EdgeInsets.only(
@@ -90,8 +94,6 @@ class RegisterScreen extends StatelessWidget {
                                     labelStyle: TextStyle(
                                       fontSize: 14,
                                       color: AppColors.themeColor,
-
-                                      // light
                                       fontStyle: FontStyle.normal,
                                     ),
                                     border: OutlineInputBorder(
@@ -118,8 +120,6 @@ class RegisterScreen extends StatelessWidget {
                                     labelStyle: TextStyle(
                                       fontSize: 14,
                                       color: AppColors.themeColor,
-
-                                      // light
                                       fontStyle: FontStyle.normal,
                                     ),
                                     border: OutlineInputBorder(
@@ -140,16 +140,12 @@ class RegisterScreen extends StatelessWidget {
                                     validator: (input) => input.length < 8
                                         ? "should be more than 7 characters"
                                         : null,
-                                    //obscureText: controller.hidePassword.value,
-
                                     decoration: InputDecoration(
                                       hintText: 'Enter password',
                                       labelText: 'Password',
                                       labelStyle: TextStyle(
                                         fontSize: 14,
                                         color: AppColors.themeColor,
-
-                                        // light
                                         fontStyle: FontStyle.normal,
                                       ),
                                       border: OutlineInputBorder(
@@ -174,8 +170,6 @@ class RegisterScreen extends StatelessWidget {
                                       labelStyle: TextStyle(
                                         fontSize: 14,
                                         color: AppColors.themeColor,
-
-                                        // light
                                         fontStyle: FontStyle.normal,
                                       ),
                                       border: OutlineInputBorder(
@@ -183,58 +177,52 @@ class RegisterScreen extends StatelessWidget {
                                               color: AppColors.themeColor)),
                                     )),
                               ),
-                              Container(
-                                height: 50,
-                                margin: EdgeInsets.only(
-                                    left: 35.0, right: 35.0, top: 10.0),
-                                child: TextFormField(
-                                  controller: _registerController.ageController,
-                                  keyboardType: TextInputType.number,
-                                  validator: (input) => input.length < 1
-                                      ? "should be not be Empty"
-                                      : null,
-                                  decoration: InputDecoration(
-                                    hintText: 'Enter DOB',
-                                    labelText: 'eg. 25/06/1995',
-                                    labelStyle: TextStyle(
-                                      fontSize: 14,
-                                      color: AppColors.themeColor,
-
-                                      // light
-                                      fontStyle: FontStyle.normal,
+                              InkWell(
+                                onTap: () {
+                                  _selectDate(context);
+                                },
+                                child: Container(
+                                  height: 50,
+                                  margin: EdgeInsets.only(
+                                      left: 35.0, right: 35.0, top: 10.0),
+                                  child: TextFormField(
+                                    validator: (input) => input.length < 1
+                                        ? "should_be_not_empty"
+                                        : null,
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: AppColors.themeColor),
+                                    textAlign: TextAlign.start,
+                                    enabled: false,
+                                    keyboardType: TextInputType.datetime,
+                                    controller:
+                                        _registerController.dobController,
+                                    decoration: InputDecoration(
+                                      hintText: "Date Of Birth",
+                                      labelText: "DOB",
+                                      labelStyle: TextStyle(
+                                        fontSize: 14,
+                                        color: AppColors.themeColor,
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                      disabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide.none),
+                                      contentPadding:
+                                          EdgeInsets.only(top: 16.0),
+                                      prefixIcon: Icon(
+                                        Icons.calendar_today_rounded,
+                                        color: AppColors.themeColor,
+                                      ),
                                     ),
-                                    border: OutlineInputBorder(
-                                        borderSide: new BorderSide(
-                                            color: AppColors.themeColor)),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(4.0),
+                                    ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                height: 50,
-                                margin: EdgeInsets.only(
-                                    left: 35.0, right: 35.0, top: 10.0),
-                                child: TextFormField(
-                                  controller:
-                                      _registerController.addressController,
-                                  validator: (input) => input.length < 1
-                                      ? "should_be_not_empty"
-                                      : null,
-                                  decoration: InputDecoration(
-                                    hintText: 'Enter Address',
-                                    labelText: 'address',
-                                    labelStyle: TextStyle(
-                                      fontSize: 14,
-                                      color: AppColors.themeColor,
-                                      fontStyle: FontStyle.normal,
-                                    ),
-                                    border: OutlineInputBorder(
-                                        borderSide: new BorderSide(
-                                            color: AppColors.themeColor)),
-                                  ),
-                                ),
-                              ),
-
-                              //Email TextField
                             ],
                           ),
                         ),
@@ -293,5 +281,20 @@ class RegisterScreen extends StatelessWidget {
         ],
       )),
     );
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate.subtract(Duration(days: 15 * 365)),
+        initialDatePickerMode: DatePickerMode.day,
+        firstDate: DateTime(1940, 1, 13),
+        lastDate: selectedDate.subtract(Duration(days: 15 * 365)));
+    if (picked != null)
+      setState(() {
+        selectedDate = picked;
+        _registerController.dobController.text =
+            DateFormat.yMd().format(selectedDate);
+      });
   }
 }

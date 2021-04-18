@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:global_configuration/global_configuration.dart';
-import 'package:hello/models/register_response_model.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/register_response_model.dart';
+
 Future<int> registerProcess(String mobile, String email, String name,
-    String pwd, String city, String age, String address) async {
+    String pwd, String city, String dob) async {
   final String url = '${GlobalConfiguration().getValue('base_url')}register';
   var client = http.Client();
   final msg = jsonEncode(
@@ -15,9 +16,9 @@ Future<int> registerProcess(String mobile, String email, String name,
       "email": email,
       "mobile": mobile,
       "password": pwd,
-      "gender": city,
-      "age": age,
-      "address": address
+      "gender": null,
+      "age": dob,
+      "address": city
     },
   );
   var response = await client.post(

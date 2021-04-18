@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:hello/controllers/home_controller.dart';
-import 'package:hello/style/AppColors.dart';
-import 'package:hello/views/home_screen.dart';
-import 'package:hello/views/profile_screen.dart';
+
+import '../controllers/home_controller.dart';
+import '../style/AppColors.dart';
+import '../views/home_screen.dart';
+import '../views/profile_screen.dart';
 
 // ignore: must_be_immutable
 class PagesScreen extends StatefulWidget {
@@ -37,10 +39,11 @@ class _PagesScreenState extends State<PagesScreen> {
           widget.currentPage = HomeScreen();
           break;
         case 1:
-          widget.currentPage = ProfileScreen();
+          //  widget.currentPage = ProfileScreen();
           break;
 
         case 2:
+          showPostOptions();
           break;
 
         case 3:
@@ -48,7 +51,7 @@ class _PagesScreenState extends State<PagesScreen> {
           break;
 
         case 4:
-          //  widget.currentPage = AlertView();
+          widget.currentPage = ProfileScreen();
 
           break;
       }
@@ -63,92 +66,16 @@ class _PagesScreenState extends State<PagesScreen> {
       //     // key: scaffoldKey,
       //     ),
 
-      floatingActionButton: new FloatingActionButton(
-        backgroundColor: AppColors.themeColorLight,
-        onPressed: () {
-          Get.snackbar("", "",
-              margin: EdgeInsets.symmetric(
-                horizontal: 10.0,
-                vertical: 10.0,
-              ),
-              borderRadius: 4.0,
-              duration: Duration(hours: 1),
-              titleText: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      _pagesController.pickVideoFromGallery();
-                    },
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.video_collection_outlined,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          height: 4.0,
-                        ),
-                        Text(
-                          "Video",
-                          style:
-                              TextStyle(color: Colors.white70, fontSize: 16.0),
-                        )
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      _pagesController.createTextPost();
-                    },
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.text_fields,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          height: 4.0,
-                        ),
-                        Text(
-                          "Text",
-                          style:
-                              TextStyle(color: Colors.white70, fontSize: 16.0),
-                        )
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      _pagesController.pickImageFromGallery();
-                    },
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.image,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          height: 4.0,
-                        ),
-                        Text(
-                          "Photo",
-                          style:
-                              TextStyle(color: Colors.white70, fontSize: 16.0),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: AppColors.themeColor);
-        },
-        child: const Icon(
-          Icons.add,
-          color: Colors.black54,
-        ),
-      ),
+      // floatingActionButton: new FloatingActionButton(
+      //   backgroundColor: AppColors.themeColorLight,
+      //   onPressed: () {
+      //     showPostOptions();
+      //   },
+      //   child: const Icon(
+      //     Icons.add,
+      //     color: Colors.black54,
+      //   ),
+      // ),
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         child: BottomNavigationBar(
@@ -166,30 +93,119 @@ class _PagesScreenState extends State<PagesScreen> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),
-              label: "Home",
+              label: "",
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_pin_outlined),
-              label: "Profile",
-            ),
-            BottomNavigationBarItem(icon: Icon(null), label: "Create"),
             BottomNavigationBarItem(
               icon: new Icon(Icons.search),
-              label: "Search",
+              label: "",
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.settings_outlined),
-              label: "Setting",
+              icon: Container(
+                width: 38,
+                height: 38,
+                child: Icon(Icons.add),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black54,
+                      width: 2.0,
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(50.0))),
+              ),
+              label: "",
             ),
-            // BottomNavigationBarItem(
-            //   icon: new Icon(Icons.notifications_none_rounded),
-            //   label: "Alert",
-            // ),
+            BottomNavigationBarItem(
+              icon: new Icon(Icons.notifications_none),
+              label: "",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline_sharp),
+              label: "",
+            ),
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: widget.currentPage,
     );
+  }
+
+  showPostOptions() {
+    Get.snackbar("", "",
+        margin: EdgeInsets.symmetric(
+          horizontal: 10.0,
+          vertical: 10.0,
+        ),
+        borderRadius: 4.0,
+        duration: Duration(hours: 1),
+        titleText: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () {
+                _pagesController.pickVideoFromGallery();
+              },
+              child: Column(
+                children: [
+                  SvgPicture.asset(
+                    "assets/images/video.svg",
+                    width: 56,
+                    height: 56,
+                  ),
+                  SizedBox(
+                    height: 4.0,
+                  ),
+                  Text(
+                    "Video",
+                    style: TextStyle(color: Colors.black54, fontSize: 16.0),
+                  )
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                _pagesController.createTextPost();
+              },
+              child: Column(
+                children: [
+                  SvgPicture.asset(
+                    "assets/images/text.svg",
+                    width: 56,
+                    height: 56,
+                  ),
+                  SizedBox(
+                    height: 4.0,
+                  ),
+                  Text(
+                    "Text",
+                    style: TextStyle(color: Colors.black54, fontSize: 16.0),
+                  )
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                _pagesController.pickImageFromGallery();
+              },
+              child: Column(
+                children: [
+                  SvgPicture.asset(
+                    "assets/images/image.svg",
+                    width: 56,
+                    height: 56,
+                  ),
+                  SizedBox(
+                    height: 4.0,
+                  ),
+                  Text(
+                    "Photo",
+                    style: TextStyle(color: Colors.black54, fontSize: 16.0),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.grey.shade200);
   }
 }

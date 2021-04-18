@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:hello/controllers/post_controller.dart';
-import 'package:hello/style/AppColors.dart';
+import '../controllers/post_controller.dart';
+import '../style/AppColors.dart';
 
 class PostPermissionScreenWidget extends StatelessWidget {
   final PostController _postController = Get.find<PostController>();

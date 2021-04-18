@@ -6,9 +6,11 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hello/repos/login_repo.dart';
-import 'package:hello/views/pages.dart';
 import 'package:http/http.dart' as http;
+
+import '../repos/login_repo.dart';
+import '../views/RegisterScreen.dart';
+import '../views/pages.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailController;
@@ -73,9 +75,10 @@ class LoginController extends GetxController {
         final pref = GetStorage();
         pref.write("isLogin", true);
         Get.back();
-        Get.offAll(PagesScreen(
-          currentIndex: 0,
-        ));
+        // Get.offAll(PagesScreen(
+        //   currentIndex: 0,
+        // ));
+        Get.to(RegisterScreen());
         Get.snackbar("Success", "Login!", snackPosition: SnackPosition.BOTTOM);
       }
     } catch (error) {
@@ -98,9 +101,10 @@ class LoginController extends GetxController {
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         Get.back();
-        Get.offAll(PagesScreen(
-          currentIndex: 0,
-        ));
+        // Get.offAll(PagesScreen(
+        //   currentIndex: 0,
+        // ));
+        Get.to(RegisterScreen());
         Get.snackbar("Success", "Login!", snackPosition: SnackPosition.BOTTOM);
         final FacebookAccessToken accessToken = result.accessToken;
         final graphResponse = await http.get(

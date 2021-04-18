@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hello/repos/register_repo.dart';
-import 'package:hello/views/LoginScreen.dart';
+
+import '../repos/register_repo.dart';
+import '../views/LoginScreen.dart';
 
 class RegisterController extends GetxController {
   TextEditingController nameController;
@@ -9,8 +10,10 @@ class RegisterController extends GetxController {
   TextEditingController mobileController;
   TextEditingController pwdController;
   TextEditingController cityController;
-  TextEditingController ageController;
+
+  // TextEditingController ageController;
   TextEditingController addressController;
+  TextEditingController dobController;
 
   @override
   void onInit() {
@@ -19,10 +22,8 @@ class RegisterController extends GetxController {
     mobileController = TextEditingController();
     pwdController = TextEditingController();
     cityController = TextEditingController();
-    ageController = TextEditingController();
-    addressController = TextEditingController();
+    dobController = TextEditingController();
     super.onInit();
-
   }
 
   requestForRegisterProcess() async {
@@ -30,14 +31,12 @@ class RegisterController extends GetxController {
     Get.dialog(Center(child: CircularProgressIndicator()),
         barrierDismissible: false);
     status = await registerProcess(
-      nameController.text,
+      mobileController.text,
       emailController.text,
       nameController.text,
       pwdController.text,
       cityController.text,
-      ageController.text,
-      addressController.text,
-
+      dobController.text,
     );
 
     if (status == 0) {

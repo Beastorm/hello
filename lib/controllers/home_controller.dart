@@ -1,22 +1,45 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hello/models/view_response_model.dart';
-import 'package:hello/repos/post_repo.dart';
-import 'package:hello/views/create_post_screen.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../common_components/langugae_dialog.dart';
+import '../models/comment_model.dart';
+import '../models/post_model.dart';
+import '../repos/comment_repo.dart';
+import '../repos/language_repo.dart';
+import '../repos/post_repo.dart';
+import '../repos/reaction_repo.dart';
+import '../views/create_post_screen.dart';
+
 class HomeController extends GetxController {
+  final pref = GetStorage();
   var videoFile = File("").obs;
   var imageFile = File("").obs;
   ImagePicker picker = ImagePicker();
   PickedFile _pickedFile;
-  var postList = List<Datum>().obs;
+  var postList = List<PostData>().obs;
+  TextEditingController commentContentController = TextEditingController();
+  var currentUserPostList = List<PostData>().obs;
+  var commentList = List<CommentData>().obs;
+
+  var languageList = List<String>().obs;
+  var selectedLanguagesByUser = List<String>().obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    requestALLPost();
+    await requestALLPost();
+    await requestForLanguageList();
+
+    if (pref.hasData("isDialogShown") != true) {
+      await languageDialog(true);
+      pref.write("isDialogShown", true);
+    }
+
+    selectedLanguagesByUser.assignAll(stringToList());
   }
 
   pickVideoFromGallery() async {
@@ -58,6 +81,107 @@ class HomeController extends GetxController {
     if (posts != null) {
       /// Get.back();
       postList.assignAll(posts);
+      getCurrentUserPost(posts);
     }
+  }
+
+  getCurrentUserPost(posts) {
+    if (posts.isNotEmpty)
+      for (var item in posts) {
+        if (item.user[0].id == pref.read("userId")) {
+          currentUserPostList.add(item);
+        }
+      }
+    print(currentUserPostList.length);
+  }
+
+  requestForSendComment(String postId, String parent) async {
+    await sendComment(
+        pref.read("userId"), "0", postId, commentContentController.text);
+    commentContentController.clear();
+  }
+
+  requestForCommentListOfPost(String postId) async {
+    var data = await getComments(postId);
+    if (data != null || data.length > 0) {
+      commentList.clear();
+      commentList.assignAll(data);
+      commentList.refresh();
+    }
+  }
+
+  // send reaction of current user of a post
+  requestForToSendReaction(String postId, String reactionId) async {
+    print("................");
+    print(postId);
+    print(reactionId);
+    print(pref.read("userId"));
+    await sendReaction(pref.read("userId"), reactionId, postId);
+  }
+
+  // here we are checking reaction of current user of a post
+  String checkCurrentUserReaction(List<PostReaction> postReactions) {
+    if (postReactions.isNotEmpty) {
+      for (var item in postReactions)
+        if (item.user == pref.read("userId")) {
+          return getReactionList()[item.reaction];
+        }
+    }
+
+    return getReactionList()["-1"];
+  }
+
+  Map<String, String> getReactionList() {
+    return {
+      "-1": "",
+      "1": " ",
+      "2": "assets/images/happy.svg",
+      "3": "assets/images/love.svg",
+      "4": "assets/images/sad.svg",
+      "5": "assets/images/angry.svg",
+    };
+  }
+
+  requestForLanguageList() async {
+    var languages = await getLanguages();
+    for (var item in languages) {
+      languageList.add(item.name);
+    }
+  }
+
+  bool checkLanguage(String languageItem) {
+    bool isFound = false;
+    if (selectedLanguagesByUser.indexOf(languageItem) != -1) {
+      isFound = true;
+    } else {
+      isFound = false;
+    }
+    print(isFound);
+
+    update();
+    selectedLanguagesByUser.refresh();
+    return isFound;
+  }
+
+  addLanguageOrDeleteLanguage(String languageItem) {
+    languageList.refresh();
+    if (selectedLanguagesByUser.indexOf(languageItem) != -1) {
+      selectedLanguagesByUser.remove(languageItem);
+    } else {
+      selectedLanguagesByUser.add(languageItem);
+    }
+
+    selectedLanguagesByUser.refresh();
+    pref.write("languages", selectedLanguagesByUser.join(","));
+    print("......................");
+    print(selectedLanguagesByUser.join(","));
+    update();
+  }
+
+  List<String> stringToList() {
+    if (pref.read("languages") != "") {
+      return pref.read("languages").split(",");
+    }
+    return ["English"];
   }
 }

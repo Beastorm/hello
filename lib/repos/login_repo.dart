@@ -3,9 +3,10 @@ import 'dart:io';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:hello/models/register_response_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+
+import '../models/register_response_model.dart';
 
 Future<bool> loginProcess(String email, String pwd) async {
   final String url = '${GlobalConfiguration().getValue('base_url')}login';
@@ -26,29 +27,24 @@ Future<bool> loginProcess(String email, String pwd) async {
 
     user = decodedToken["data"]["data"][0];
 
-    print(jsonEncode(decodedToken["data"]["data"][0]["name"]));
+    // print(jsonEncode(decodedToken["data"]["data"][0]["name"]));
 
-    setCurrentUser(
-        user["email"], user["name"], user["mobile"], user["image"], user["id"]);
+    setCurrentUser(user["email"], user["name"], user["mobile"], user["image"],
+        user["id"], user["address"], user["age"]);
     return userRegisterResponseFromJson(response.body).status;
   }
   return userRegisterResponseFromJson(response.body).status;
 }
 
 void setCurrentUser(String email, String name, String mobile, String profilePic,
-    String userId) {
-
+    String userId, String city, String dob) {
   final pref = GetStorage();
   pref.write("isLogin", true);
   pref.write("name", name);
   pref.write("email", email);
   pref.write("mobile", mobile);
-  // pref.write("veg", veg);
   pref.write("pic", profilePic);
   pref.write("userId", userId);
-  // print(name);
-  // print(email);
-  // print(mobile);
-  // print(profilePic);
-  // print(veg);
+  pref.write("city", city);
+  pref.write("dob", dob);
 }

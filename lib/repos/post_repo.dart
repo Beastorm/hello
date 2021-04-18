@@ -3,12 +3,12 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:hello/models/post_model.dart';
-import 'package:hello/models/view_response_model.dart';
+import '../models/post_model.dart';
+import '../models/view_response_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
-Future<PostModel> createPost(
+Future<PostResponseModel> createPost(
   String userId,
   String postType,
   String description,
@@ -50,19 +50,19 @@ Future<PostModel> createPost(
   );
   print(response.statusCode);
   if (response.statusCode == 200) {
-    return postModelFromJson(response.body);
+    return postResponseModelFromJson(response.body);
   } else
-    return postModelFromJson(response.body);
+    return postResponseModelFromJson(response.body);
 }
 
-Future<List<Datum>> viewPost() async {
+Future<List<PostData>> viewPost() async {
   final String url = '${GlobalConfiguration().getValue('base_url')}posts';
   var client = http.Client();
   var response = await client.post(url);
   print(response.statusCode);
   if (response.statusCode == 200) {
-    if (postResponseModelFromJson(response.body).status) {
-      return postResponseModelFromJson(response.body).data;
+    if (postModelFromJson(response.body).status) {
+      return postModelFromJson(response.body).data;
     }
     return null;
   } else

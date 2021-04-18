@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hello/controllers/post_controller.dart';
-import 'package:hello/controllers/tag_controller.dart';
-import 'package:hello/style/AppColors.dart';
+import '../controllers/post_controller.dart';
+import '../controllers/tag_controller.dart';
+import '../style/AppColors.dart';
 
 class TagScreenWidget extends StatelessWidget {
   final TagController _tagController = Get.put(TagController());

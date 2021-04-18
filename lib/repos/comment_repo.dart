@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:global_configuration/global_configuration.dart';
-import 'package:hello/models/post_model.dart';
+import '../models/comment_model.dart';
+import '../models/post_model.dart';
 import 'package:http/http.dart' as http;
 
-Future<PostModel> getComments(String postId) async {
+Future<List<CommentData>> getComments(String postId) async {
   final String url = '${GlobalConfiguration().getValue('base_url')}comments';
 
   var client = http.Client();
@@ -17,12 +18,15 @@ Future<PostModel> getComments(String postId) async {
   );
   print(response.statusCode);
   if (response.statusCode == 200) {
-    return null;
+    if (commentModelFromJson(response.body).status)
+      return commentModelFromJson(response.body).data;
+    else
+      return null;
   } else
     return null;
 }
 
-Future<PostModel> sendComment(
+Future<bool> sendComment(
     String userId, String parent, String postId, String content) async {
   final String url = '${GlobalConfiguration().getValue('base_url')}comments';
 
@@ -36,9 +40,9 @@ Future<PostModel> sendComment(
   );
   print(response.statusCode);
   if (response.statusCode == 200) {
-    return null;
+    return true;
   } else
-    return null;
+    return false;
 }
 
 Future<PostModel> editComment(

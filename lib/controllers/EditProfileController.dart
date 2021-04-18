@@ -1,41 +1,47 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hello/repos/edit_profile_repo.dart';
-import 'package:hello/views/profile_screen.dart';
+import 'package:image_picker/image_picker.dart';
+import '../repos/edit_profile_repo.dart';
+import '../views/profile_screen.dart';
 
-
-class EditProfileController extends GetxController{
-var box = GetStorage();
+class EditProfileController extends GetxController {
+  var pref = GetStorage();
   TextEditingController nameController;
   TextEditingController mobileController;
   TextEditingController cityController;
-  TextEditingController ageController;
-  TextEditingController addressController;
+  TextEditingController dobController;
+  var file = File("").obs;
+  var isFileSelected = false.obs;
 
   @override
   void onInit() {
     nameController = TextEditingController();
     mobileController = TextEditingController();
     cityController = TextEditingController();
-    ageController = TextEditingController();
-    addressController = TextEditingController();
+    dobController = TextEditingController();
+
+    nameController.text = pref.read("name");
+    mobileController.text = pref.read("mobile");
+    cityController.text = pref.read("city");
+    dobController.text = pref.read("age");
 
     super.onInit();
   }
 
   requestForEditProfile() async {
-    String id = box.read('userId');
+    String id = pref.read('userId');
     int status = -5;
     Get.dialog(Center(child: CircularProgressIndicator()),
         barrierDismissible: false);
     status = await editProfileProcess(
       id,
+      mobileController.text,
       nameController.text,
-      nameController.text,
+      dobController.text,
       cityController.text,
-      ageController.text,
-      addressController.text,
     );
 
     if (status == 0) {
@@ -61,5 +67,19 @@ var box = GetStorage();
         snackPosition: SnackPosition.BOTTOM,
       );
     }
+  }
+
+  requestForImageUpload() async {
+    final picker = ImagePicker();
+    File _imageFile;
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    if (pickedFile == null) return;
+    _imageFile = File(pickedFile.path);
+    file.value = _imageFile;
+    isFileSelected(true);
+    await editUserImage(file.value, pref.read("userId"));
+
+    // await requestForUserAccount();
+    update();
   }
 }

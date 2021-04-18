@@ -2,22 +2,24 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:global_configuration/global_configuration.dart';
-import 'package:hello/models/EditProfileModel.dart';
 import 'package:http/http.dart' as http;
-
-Future<int> editProfileProcess(String id, String mobile, String name, String city, String age, String address) async {
-  print('edit value api: id: $id, mobile: $mobile, name: $name, city: $city, age: $age, adress: $address');
-
-  final String url = '${GlobalConfiguration().getValue('base_url')}myprofileedit';
+import 'package:async/async.dart';
+import '../models/EditProfileModel.dart';
+import 'package:path/path.dart';
+Future<int> editProfileProcess(
+    String id, String mobile, String name, String dob, String city) async {
+  final String url =
+      '${GlobalConfiguration().getValue('base_url')}myprofileedit';
   var client = http.Client();
   final msg = jsonEncode(
     {
       "id": id,
+      "email": null,
       "name": name,
       "mobile": mobile,
-      "gender": city,
-      "age": age,
-      "address": address
+      "gender": null,
+      "age": dob,
+      "address": city
     },
   );
   var response = await client.post(
@@ -40,4 +42,27 @@ Future<int> editProfileProcess(String id, String mobile, String name, String cit
     print(e);
     return -1;
   }
+}
+
+editUserImage(File imageFile, String userId) async {
+  final String url =
+      '${GlobalConfiguration().getValue('base_url')}myprofilepictureedit';
+
+  var stream =
+  new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+  var length = await imageFile.length();
+
+  var uri = Uri.parse(url);
+
+  var request = new http.MultipartRequest("POST", uri);
+  request.fields['id'] = userId;
+  var multipartFile = new http.MultipartFile('item_image', stream, length,
+      filename: basename(imageFile.path));
+  //contentType: new MediaType('image', 'png'));
+  request.files.add(multipartFile);
+  var response = await request.send();
+  print(response.statusCode);
+  response.stream.transform(utf8.decoder).listen((value) {
+    print(value);
+  });
 }

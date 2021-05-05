@@ -49,7 +49,7 @@ class ProfileController extends GetxController {
 
   logOut() async {
     if (pref.read("isLogin") == true) {
-      await pref.remove("isLogin");
+      await pref.erase();
       Get.offAll(() => LoginScreen());
     }
   }

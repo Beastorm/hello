@@ -28,7 +28,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     Image.asset(
                       'assets/images/logo.png',
-                      height: 72.0,
+                      height: 100.0,
                     )
                   ],
                 ),
@@ -147,7 +147,7 @@ class LoginScreen extends StatelessWidget {
 
                         InkWell(
                           onTap: () {
-                            Get.to(RegisterScreen());
+                            Get.offAll(RegisterScreen());
                           },
                           child: Container(
                             margin: EdgeInsets.only(bottom: 30.0),

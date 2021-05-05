@@ -16,7 +16,6 @@ import 'select_language_view.dart';
 class CreatePostScreenWidget extends StatefulWidget {
   final File file;
   final String postType;
-
   CreatePostScreenWidget({this.file, this.postType});
 
   @override
@@ -25,7 +24,6 @@ class CreatePostScreenWidget extends StatefulWidget {
 
 class _CreatePostScreenWidgetState extends State<CreatePostScreenWidget> {
   final PostController postController = Get.put(PostController());
-
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -56,7 +54,7 @@ class _CreatePostScreenWidgetState extends State<CreatePostScreenWidget> {
             onPressed: () async {
               if (_formKey.currentState.validate()) {
                 await postController.requestForCreatePost();
-                Get.back();
+
               }
             },
           )

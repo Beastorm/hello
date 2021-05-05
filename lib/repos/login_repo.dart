@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:get_storage/get_storage.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
-
-import '../models/register_response_model.dart';
 
 Future<bool> loginProcess(String email, String pwd) async {
   final String url = '${GlobalConfiguration().getValue('base_url')}login';
@@ -26,14 +23,11 @@ Future<bool> loginProcess(String email, String pwd) async {
         JwtDecoder.decode(response.headers["data"]);
 
     user = decodedToken["data"]["data"][0];
-
-    // print(jsonEncode(decodedToken["data"]["data"][0]["name"]));
-
     setCurrentUser(user["email"], user["name"], user["mobile"], user["image"],
         user["id"], user["address"], user["age"]);
-    return userRegisterResponseFromJson(response.body).status;
+    return true;
   }
-  return userRegisterResponseFromJson(response.body).status;
+  return false;
 }
 
 void setCurrentUser(String email, String name, String mobile, String profilePic,

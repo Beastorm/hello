@@ -9,8 +9,10 @@ import '../repos/post_repo.dart';
 import '../utils/location_util.dart';
 
 class PostController extends GetxController {
+
   TextEditingController textEditingController;
 
+  var pref = GetStorage();
   var postType = "".obs;
   var file = File("").obs;
   var city = "".obs;
@@ -35,8 +37,6 @@ class PostController extends GetxController {
   }
 
   requestForCreatePost() async {
-    var pref = GetStorage();
-
     Get.dialog(Center(child: CircularProgressIndicator()),
         barrierDismissible: false);
     var response = await createPost(
@@ -54,23 +54,25 @@ class PostController extends GetxController {
         isShareAllowed.value.toString(),
         isSaveAllowed.value.toString(),
         showInNearByChannel.value.toString(),
-        "1");
+        "1",
+        language: currentPostLanguage.value);
 
     if (response.message == "User New Post Successfully Done.") {
       if (postType.value != "text") {
         await uploadPostFile(file.value, response.data.id, postType.value);
       }
       Get.back();
-      textEditingController.text = "";
-      city.value = "";
-      appliedTags.value = "";
-      postVisibility.value = 1;
-      whoComment.value = 1;
-      isShareAllowed.value = true;
-      isSaveAllowed.value = true;
-      showInNearByChannel.value = true;
-      postType.value = "";
-      update();
+      Get.back();
+      // textEditingController.text = "";
+      // city.value = "";
+      // appliedTags.value = "";
+      // postVisibility.value = 1;
+      // whoComment.value = 1;
+      // isShareAllowed.value = true;
+      // isSaveAllowed.value = true;
+      // showInNearByChannel.value = true;
+      // postType.value = "";
+      // update();
       Get.snackbar("Post", "Created!", snackPosition: SnackPosition.BOTTOM);
     }
 
@@ -129,7 +131,7 @@ class PostController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
+
     super.onClose();
   }
 }

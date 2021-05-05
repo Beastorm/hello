@@ -27,19 +27,18 @@ class RegisterController extends GetxController {
   }
 
   requestForRegisterProcess() async {
-    int status = -5;
     Get.dialog(Center(child: CircularProgressIndicator()),
         barrierDismissible: false);
-    status = await registerProcess(
-      mobileController.text,
-      emailController.text,
-      nameController.text,
-      pwdController.text,
-      cityController.text,
-      dobController.text,
-    );
+    var response = await registerProcess(
+        mobileController.text,
+        emailController.text,
+        nameController.text,
+        pwdController.text,
+        cityController.text,
+        dobController.text,
+        "general");
 
-    if (status == 0) {
+    if (response.status == true) {
       Get.back();
       Get.offAll(LoginScreen());
       Get.snackbar(
@@ -47,18 +46,11 @@ class RegisterController extends GetxController {
         "Registered Successfully",
         snackPosition: SnackPosition.BOTTOM,
       );
-    } else if (status == 1) {
-      Get.back();
-      Get.snackbar(
-        "Error",
-        "Already Registered",
-        snackPosition: SnackPosition.BOTTOM,
-      );
     } else {
       Get.back();
       Get.snackbar(
         "Error",
-        "Something Went Wrong!",
+        "Already Registered",
         snackPosition: SnackPosition.BOTTOM,
       );
     }

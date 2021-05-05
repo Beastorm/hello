@@ -1,3 +1,4 @@
+import 'package:Milto/views/image_viewer_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final HomeController _homeController = Get.put(HomeController());
-
   var refreshKey = GlobalKey<RefreshIndicatorState>();
-
   var _formKey = GlobalKey<FormState>();
   TabController _tabController;
 
@@ -50,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             child: Container(
               color: Colors.grey.shade100,
               child: LimitedBox(
-                maxHeight: 10000,
+                maxHeight: 20000,
                 child: Column(
                   children: [
                     Container(
@@ -377,27 +376,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               ? controller.postList[index]
                                                           .type ==
                                                       "img"
-                                                  ? ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  2.0)),
-                                                      child: CachedNetworkImage(
-                                                        width: double.infinity,
-                                                        height: 420,
-                                                        fit: BoxFit.cover,
-                                                        imageUrl: controller
-                                                            .postList[index]
-                                                            .content,
-                                                        placeholder:
-                                                            (context, url) =>
-                                                                Image.asset(
-                                                          'assets/images/loading.gif',
+                                                  ? GestureDetector(
+                                                      onTap: () {
+                                                        Get.to(ImageViewerView(
+                                                            controller
+                                                                .postList[index]
+                                                                .content));
+                                                      },
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    2.0)),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          width:
+                                                              double.infinity,
+                                                          height: 420,
                                                           fit: BoxFit.cover,
+                                                          imageUrl: controller
+                                                              .postList[index]
+                                                              .content,
+                                                          placeholder:
+                                                              (context, url) =>
+                                                                  Image.asset(
+                                                            'assets/images/loading.gif',
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              SizedBox(),
                                                         ),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            SizedBox(),
                                                       ),
                                                     )
                                                   : Container(
@@ -414,13 +423,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                           index]
                                                                       .content),
                                                           aspectRatio: 3 / 2,
-                                                          allowedScreenSleep:
-                                                              false,
                                                           autoInitialize: true,
                                                           autoPlay: false,
+                                                          showControlsOnInitialize: false,
                                                           looping: false,
-                                                          showControlsOnInitialize:
-                                                              false,
 
                                                           deviceOrientationsAfterFullScreen: [
                                                             DeviceOrientation
@@ -554,8 +560,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                           ? Icon(
                                                               Icons
                                                                   .thumb_up_alt_outlined,
-                                                              color: Colors.grey
-                                                                  .shade400,
+                                                              color: Colors
+                                                                  .black54,
                                                             )
                                                           : controller.checkCurrentUserReaction(controller
                                                                       .postList[
@@ -586,20 +592,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     boxDuration: const Duration(
                                                         milliseconds: 100),
                                                   ),
-                                                  Text(
-                                                    "Like",
-                                                    style: TextStyle(
-                                                      color:
-                                                          Colors.grey.shade400,
-                                                    ),
-                                                  ),
+                                                  controller.postList[index]
+                                                          .postReaction.isEmpty
+                                                      ? Text(
+                                                          "Like",
+                                                          style: TextStyle(
+                                                            color: Colors
+                                                                .grey.shade400,
+                                                          ),
+                                                        )
+                                                      : Text(
+                                                          " ${controller.postList[index].postReaction.length} like",
+                                                          style: TextStyle(
+                                                            color: Colors
+                                                                .grey.shade500,
+                                                          ),
+                                                        ),
                                                 ],
                                               ),
                                               Column(
                                                 children: [
                                                   Icon(
                                                     Icons.share_outlined,
-                                                    color: Colors.grey.shade400,
+                                                    color: Colors.black54,
                                                   ),
                                                   Text(
                                                     "Share",
@@ -626,16 +641,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   children: [
                                                     Icon(
                                                       Icons.comment_outlined,
-                                                      color:
-                                                          Colors.grey.shade400,
+                                                      color: Colors.black54,
                                                     ),
-                                                    Text(
-                                                      "Comment",
-                                                      style: TextStyle(
-                                                        color: Colors
-                                                            .grey.shade400,
-                                                      ),
-                                                    ),
+                                                    controller.postList[index]
+                                                            .postComment.isEmpty
+                                                        ? Text(
+                                                            "Comment",
+                                                            style: TextStyle(
+                                                              color: Colors.grey
+                                                                  .shade400,
+                                                            ),
+                                                          )
+                                                        : Text(
+                                                            "${controller.postList[index].postComment.length} comment",
+                                                            style: TextStyle(
+                                                              color: Colors.grey
+                                                                  .shade500,
+                                                            )),
                                                   ],
                                                 ),
                                               ),
@@ -643,7 +665,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 children: [
                                                   Icon(
                                                     Icons.save_alt,
-                                                    color: Colors.grey.shade400,
+                                                    color: Colors.black54,
                                                   ),
                                                   Text(
                                                     "Save",

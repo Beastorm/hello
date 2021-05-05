@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../controllers/post_controller.dart';
 import '../controllers/tag_controller.dart';
 import '../style/AppColors.dart';
@@ -98,6 +99,7 @@ class TagScreenWidget extends StatelessWidget {
                     itemCount: controller.tagList.length,
                     itemBuilder: (context, index) {
                       return Container(
+                        height: 48.0,
                         margin: EdgeInsets.symmetric(vertical: 4.0),
                         color: Colors.grey.shade200,
                         padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -112,10 +114,10 @@ class TagScreenWidget extends StatelessWidget {
                               },
                               child: Container(
                                 padding: EdgeInsets.symmetric(
-                                  vertical: 8.0,
+                                  vertical: 16.0,
                                 ),
-                                width: 40.0,
-                                height: 40.0,
+                                width: 32.0,
+                                height: 32.0,
                                 child: controller.checkTag(
                                             controller.tagList[index]) ==
                                         true
@@ -128,8 +130,8 @@ class TagScreenWidget extends StatelessWidget {
                                     color: Colors.white,
                                     border:
                                         Border.all(color: Colors.grey.shade300),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(2.0))),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(40.0))),
                               ),
                             )
                           ],

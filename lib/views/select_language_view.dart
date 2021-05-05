@@ -20,75 +20,132 @@ class SelectLanguageView extends StatelessWidget {
           style: TextStyle(color: AppColors.themeColor, fontSize: 16.0),
         ),
       ),
-      body: LimitedBox(
-        maxHeight: 400,
-        child: GetX<PostController>(builder: (controller) {
-          return ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: controller.languageList.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                controller.currentPostLanguage.value =
-                    controller.languageList[index];
-                print(".................");
-                print(controller.currentPostLanguage.value);
-                Get.back();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 2.0),
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  padding:
-                      EdgeInsets.symmetric(vertical: 6.0, horizontal: 14.0),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.white.withOpacity(0.3),
-                        child: Text(
-                          controller.languageList[index][0].capitalize,
-                          style: TextStyle(color: AppColors.themeColor),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 12.0,
-                      ),
-                      Text(controller.languageList[index],
-                          style: TextStyle(color: Colors.grey)),
-                      Spacer(),
-                      Obx(
-                        () => Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 8.0,
-                          ),
-                          width: 32.0,
-                          height: 32.0,
-                          child: controller.languageList[index] ==
+      bottomNavigationBar: Container(
+        width: double.infinity,
+        height: 48.0,
+        child: RaisedButton(
+          color: AppColors.themeColor,
+          elevation: 0.0,
+          onPressed: () {
+            Get.back();
+          },
+          child: Text(
+            "save",
+            style: TextStyle(color: Colors.white, fontSize: 18.0),
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 16.0),
+        child: LimitedBox(
+          maxHeight: 400,
+          child: GetX<PostController>(
+            builder: (controller) {
+              return GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10.0,
+                  crossAxisSpacing: 8.0,
+                  childAspectRatio: 3.5,
+                ),
+                itemCount: controller.languageList.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    controller.currentPostLanguage.value =
+                        controller.languageList[index];
+                  },
+                  child: Obx(
+                    () => Container(
+                      width: 100,
+                      alignment: Alignment.centerLeft,
+                      padding: controller.languageList[index] ==
+                              controller.currentPostLanguage.value
+                          ? EdgeInsets.only(left: 16.0, right: 4.0)
+                          : EdgeInsets.symmetric(
+                              vertical: 6.0, horizontal: 0.0),
+                      child: Row(
+                        children: [
+                          controller.languageList[index] !=
                                   controller.currentPostLanguage.value
-                              ? Icon(
-                                  Icons.check,
-                                  color: AppColors.themeColor,
-                                  size: 16,
+                              ? CircleAvatar(
+                                  minRadius: 20.0,
+                                  backgroundColor:
+                                      AppColors.langColorList[index],
+                                  child: Text(
+                                    controller
+                                        .languageList[index][0].capitalize,
+                                    style: TextStyle(
+                                        color: AppColors.langColorList[index]
+                                                    .computeLuminance() >
+                                                0.5
+                                            ? Colors.black
+                                            : Colors.white,
+                                        fontSize: 14.0),
+                                  ),
                                 )
                               : SizedBox(),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(color: Colors.grey.shade300),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(40.0))),
+                          // SizedBox(
+                          //   width: 2.0,
+                          // ),
+                          Text(controller.languageList[index],
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: controller.languageList[index] ==
+                                          controller.currentPostLanguage.value
+                                      ? Colors.white
+                                      : Colors.black54,
+                                  fontSize: 12.0)),
+                          SizedBox(
+                            width: 2.0,
+                          ),
+                          Spacer(),
+                          controller.languageList[index] ==
+                                  controller.currentPostLanguage.value
+                              ? Container(
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 2.0,
+                                  ),
+                                  width: 22.0,
+                                  height: 22.0,
+                                  child: controller.languageList[index] ==
+                                          controller.currentPostLanguage.value
+                                      ? Icon(
+                                          Icons.check,
+                                          color: Colors.black,
+                                          size: 15,
+                                        )
+                                      : SizedBox(),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(40.0))),
+                                )
+                              : SizedBox(),
+                          SizedBox(
+                            width: 2.0,
+                          ),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(color: AppColors.langColorList[index]),
+                        color: controller.languageList[index] ==
+                                controller.currentPostLanguage.value
+                            ? AppColors.langColorList[index]
+                            : Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(100.0),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.all(Radius.circular(4.0))),
                 ),
-              ),
-            ),
-          );
-        }),
+              );
+            },
+          ),
+        ),
       ),
     );
   }

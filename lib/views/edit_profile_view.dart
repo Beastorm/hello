@@ -1,25 +1,19 @@
+import 'package:Milto/controllers/home_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../controllers/EditProfileController.dart';
-import '../controllers/home_controller.dart';
 import '../style/AppColors.dart';
 
 // ignore: must_be_immutable
-class EditProfile extends StatefulWidget {
-  @override
-  _EditProfileState createState() => _EditProfileState();
-}
-
-class _EditProfileState extends State<EditProfile> {
+class EditProfile extends StatelessWidget {
   var _formKey = GlobalKey<FormState>();
-  DateTime selectedDate = DateTime.now();
-  HomeController controller = Get.find<HomeController>();
+  final HomeController homeController = Get.find<HomeController>();
 
   final EditProfileController editProfileController =
-  Get.put(EditProfileController());
+      Get.put(EditProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -34,40 +28,36 @@ class _EditProfileState extends State<EditProfile> {
               children: [
                 SizedBox(height: 20),
                 Obx(
-                      () =>
-                      Container(
-                        child: editProfileController.isFileSelected.value ==
-                            false
-                            ? ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          child: CachedNetworkImage(
-                            width: 80,
-                            height: 80,
-                            fit: BoxFit.cover,
-                            imageUrl: editProfileController.pref.read("pic"),
-                            placeholder: (context, url) =>
-                                Image.asset(
-                                  'assets/images/loading.gif',
-                                  fit: BoxFit.cover,
-                                ),
-                            errorWidget: (context, url, error) =>
-                                Icon(
-                                  Icons.account_circle_rounded,
-                                  size: 50.0,
-                                  color: Colors.grey.shade400,
-                                ),
+                  () => Container(
+                    child: editProfileController.isFileSelected.value == false
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(80)),
+                            child: CachedNetworkImage(
+                              width: 80,
+                              height: 80,
+                              fit: BoxFit.cover,
+                              imageUrl: editProfileController.pref.read("pic"),
+                              placeholder: (context, url) => Image.asset(
+                                'assets/images/loading.gif',
+                                fit: BoxFit.cover,
+                              ),
+                              errorWidget: (context, url, error) => Icon(
+                                Icons.account_circle_rounded,
+                                size: 50.0,
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(80)),
+                            child: Image.asset(
+                              editProfileController.file.value.path,
+                              fit: BoxFit.cover,
+                              width: 80,
+                              height: 80,
+                            ),
                           ),
-                        )
-                            : ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(80)),
-                          child: Image.asset(
-                            editProfileController.file.value.path,
-                            fit: BoxFit.cover,
-                            width: 80,
-                            height: 80,
-                          ),
-                        ),
-                      ),
+                  ),
                 ),
                 RaisedButton.icon(
                   color: Colors.grey.shade100,
@@ -92,8 +82,7 @@ class _EditProfileState extends State<EditProfile> {
                           child: TextFormField(
                               controller: editProfileController.nameController,
                               keyboardType: TextInputType.name,
-                              validator: (input) =>
-                              input.length < 3
+                              validator: (input) => input.length < 3
                                   ? "should_be_more_than_3_chars"
                                   : null,
                               decoration: InputDecoration(
@@ -119,8 +108,7 @@ class _EditProfileState extends State<EditProfile> {
                           child: TextFormField(
                             controller: editProfileController.mobileController,
                             keyboardType: TextInputType.phone,
-                            validator: (input) =>
-                            input.length != 10
+                            validator: (input) => input.length != 10
                                 ? "should_be_equal_to_10_digits"
                                 : null,
                             decoration: InputDecoration(
@@ -135,7 +123,7 @@ class _EditProfileState extends State<EditProfile> {
                               ),
                               border: OutlineInputBorder(
                                 borderSide:
-                                new BorderSide(color: AppColors.themeColor),
+                                    new BorderSide(color: AppColors.themeColor),
                               ),
                             ),
                           ),
@@ -146,8 +134,7 @@ class _EditProfileState extends State<EditProfile> {
                               left: 35.0, right: 35.0, top: 10.0),
                           child: TextFormField(
                               controller: editProfileController.cityController,
-                              validator: (input) =>
-                              input.length < 1
+                              validator: (input) => input.length < 1
                                   ? "should_be_not_empty"
                                   : null,
                               decoration: InputDecoration(
@@ -167,31 +154,26 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                         InkWell(
                           onTap: () {
-                            _selectDate(context);
+                            _selectDate(
+                              context,
+                            );
                           },
                           child: Container(
                             height: 50,
                             margin: EdgeInsets.only(
                                 left: 35.0, right: 35.0, top: 10.0),
                             child: TextFormField(
-                              validator: (input) =>
-                              input.length < 1
+                              validator: (input) => input.length < 1
                                   ? "should_be_not_empty"
                                   : null,
                               style: TextStyle(
-                                  fontSize: 14.0, color: AppColors.themeColor),
+                                  fontSize: 14.0, color: Colors.black87),
                               textAlign: TextAlign.start,
                               enabled: false,
                               keyboardType: TextInputType.datetime,
                               controller: editProfileController.dobController,
                               decoration: InputDecoration(
                                 hintText: "Date Of Birth",
-                                labelText: "DOB",
-                                labelStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: AppColors.themeColor,
-                                  fontStyle: FontStyle.normal,
-                                ),
                                 disabledBorder: UnderlineInputBorder(
                                     borderSide: BorderSide.none),
                                 contentPadding: EdgeInsets.only(top: 16.0),
@@ -227,9 +209,10 @@ class _EditProfileState extends State<EditProfile> {
                                     fontSize: 12.0,
                                     color: AppColors.white),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState.validate()) {
-                                  editProfileController.requestForEditProfile();
+                                  await editProfileController
+                                      .requestForEditProfile();
                                 }
                               },
                             ),
@@ -251,15 +234,16 @@ class _EditProfileState extends State<EditProfile> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: selectedDate.subtract(Duration(days: 15 * 365)),
+        initialDate: editProfileController.selectedDate.value
+            .subtract(Duration(days: 15 * 365)),
         initialDatePickerMode: DatePickerMode.day,
         firstDate: DateTime(1940, 1, 13),
-        lastDate: selectedDate.subtract(Duration(days: 15 * 365)));
-    if (picked != null)
-      setState(() {
-        selectedDate = picked;
-        editProfileController.dobController.text =
-            DateFormat.yMd().format(selectedDate);
-      });
+        lastDate: editProfileController.selectedDate.value
+            .subtract(Duration(days: 15 * 365)));
+    if (picked != null) {
+      editProfileController.selectedDate.value = picked;
+      editProfileController.dobController.text =
+          DateFormat.yMd().format(editProfileController.selectedDate.value);
+    }
   }
 }

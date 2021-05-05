@@ -1,25 +1,27 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
 
+import '../repos/language_repo.dart';
 import '../repos/login_repo.dart';
-import '../views/RegisterScreen.dart';
+import '../repos/register_repo.dart';
+import '../views/multiple_language_selection_view.dart';
 import '../views/pages.dart';
 
 class LoginController extends GetxController {
+  final pref = GetStorage();
   TextEditingController emailController;
   TextEditingController pwdController;
   GoogleSignIn _googleSignIn;
   var facebookSignIn;
+  var languageList = List<String>().obs;
+  var selectedLanguageByUser = "English".obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     _googleSignIn = GoogleSignIn(
       scopes: [
         'email',
@@ -27,9 +29,10 @@ class LoginController extends GetxController {
       ],
     );
     facebookSignIn = FacebookLogin();
-
     emailController = TextEditingController();
     pwdController = TextEditingController();
+    await requestForLanguageList();
+    selectedLanguageByUser.value = getLanguageFromPref();
     super.onInit();
   }
 
@@ -44,14 +47,22 @@ class LoginController extends GetxController {
     if (status) {
       Get.back();
 
-      Get.offAll(PagesScreen(
-        currentIndex: 0,
-      ));
-      Get.snackbar("Success", "Login!", snackPosition: SnackPosition.BOTTOM);
+      if (pref.hasData("isLanguageOptionShown") != true) {
+        Get.offAll(MultipleLanguageSelView());
+        pref.write("isDialogShown", true);
+      } else
+        Get.offAll(PagesScreen(
+          currentIndex: 0,
+        ));
+
+      Get.snackbar("Success", "Login!",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.greenAccent);
     } else {
       Get.back();
-      Get.snackbar("Error", "Something Went Wrong!",
-          snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar("Error", "Wrong Credentials. Please Check!",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.redAccent);
     }
   }
 
@@ -70,15 +81,25 @@ class LoginController extends GetxController {
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
+        var authResult =
+            await FirebaseAuth.instance.signInWithCredential(credential);
 
-        await FirebaseAuth.instance.signInWithCredential(credential);
-        final pref = GetStorage();
+        var _user = authResult.user;
+        assert(!_user.isAnonymous);
+        assert(await _user.getIdToken() != null);
+
+        await registerProcess(_user.phoneNumber, _user.email, _user.displayName,
+            null, null, null, "gmail");
+
         pref.write("isLogin", true);
         Get.back();
-        // Get.offAll(PagesScreen(
-        //   currentIndex: 0,
-        // ));
-        Get.to(RegisterScreen());
+        if (pref.hasData("isLanguageOptionShown") != true) {
+          Get.offAll(MultipleLanguageSelView());
+          pref.write("isDialogShown", true);
+        } else
+          Get.offAll(PagesScreen(
+            currentIndex: 0,
+          ));
         Get.snackbar("Success", "Login!", snackPosition: SnackPosition.BOTTOM);
       }
     } catch (error) {
@@ -95,33 +116,42 @@ class LoginController extends GetxController {
     Get.dialog(Center(child: CircularProgressIndicator()),
         barrierDismissible: false);
     final FacebookLoginResult result = await facebookSignIn.logIn(['email']);
-    final pref = GetStorage();
     pref.write("isLogin", true);
 
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
-        Get.back();
-        // Get.offAll(PagesScreen(
-        //   currentIndex: 0,
-        // ));
-        Get.to(RegisterScreen());
-        Get.snackbar("Success", "Login!", snackPosition: SnackPosition.BOTTOM);
         final FacebookAccessToken accessToken = result.accessToken;
-        final graphResponse = await http.get(
-            'https://graph.facebook.com/v2.12/me?fields=first_name,picture&access_token=${accessToken.token}');
-        final profile = jsonDecode(graphResponse.body);
-        print(profile);
 
-        print('''
-         Logged in!
-         
-         Token: ${accessToken.token}
-         User id: ${accessToken.userId}
-         Expires: ${accessToken.expires}
-         Permissions: ${accessToken.permissions}
-         Declined permissions: ${accessToken.declinedPermissions}
-         ''');
+        final AuthCredential credential =
+            FacebookAuthProvider.credential(accessToken.token);
 
+        final User _user =
+            (await FirebaseAuth.instance.signInWithCredential(credential)).user;
+
+        assert(!_user.isAnonymous);
+        assert(await _user.getIdToken() != null);
+        var response = await registerProcess(_user.phoneNumber, _user.email,
+            _user.displayName, null, null, null, "facebook");
+
+        // print('''
+        //  Logged in!
+        //
+        //  Token: ${accessToken.token}
+        //  User id: ${accessToken.userId}
+        //  Expires: ${accessToken.expires}
+        //  Permissions: ${accessToken.permissions}
+        //  Declined permissions: ${accessToken.declinedPermissions}
+        //  ''');
+
+        Get.back();
+        if (pref.hasData("isLanguageOptionShown") != true) {
+          Get.offAll(MultipleLanguageSelView());
+          pref.write("isDialogShown", true);
+        } else
+          Get.offAll(PagesScreen(
+            currentIndex: 0,
+          ));
+        Get.snackbar("Success", "Login!", snackPosition: SnackPosition.BOTTOM);
         break;
       case FacebookLoginStatus.cancelledByUser:
         print('Login cancelled by the user.');
@@ -131,5 +161,35 @@ class LoginController extends GetxController {
             'Here\'s the error Facebook gave us: ${result.errorMessage}');
         break;
     }
+  }
+
+  requestForLanguageList() async {
+    var languages = await getLanguages();
+    for (var item in languages) {
+      languageList.add(item.name);
+    }
+  }
+
+  changeLanguage(String languageItem) {
+    selectedLanguageByUser.value = languageItem;
+  }
+
+  String getLanguageFromPref() {
+    if (pref.hasData("languages") != true) {
+      pref.write("languages", "English");
+    }
+    return pref.read("languages");
+  }
+
+  void setCurrentUser(String email, String name, String mobile,
+      String profilePic, String userId, String city, String dob) {
+    pref.write("isLogin", true);
+    pref.write("name", name);
+    pref.write("email", email);
+    pref.write("mobile", mobile);
+    pref.write("pic", profilePic);
+    pref.write("userId", userId);
+    pref.write("city", city);
+    pref.write("dob", dob);
   }
 }

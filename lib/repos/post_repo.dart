@@ -3,26 +3,27 @@ import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:global_configuration/global_configuration.dart';
-import '../models/post_model.dart';
-import '../models/view_response_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
+import '../models/post_model.dart';
+import '../models/view_response_model.dart';
+
 Future<PostResponseModel> createPost(
-  String userId,
-  String postType,
-  String description,
-  String bgColor,
-  String topic,
-  String location,
-  String tag,
-  String postVisibility,
-  String commentVisibility,
-  String isShareable,
-  String isSaveAllowed,
-  String isAllowedInNearbyChannel,
-  String status,
-) async {
+    String userId,
+    String postType,
+    String description,
+    String bgColor,
+    String topic,
+    String location,
+    String tag,
+    String postVisibility,
+    String commentVisibility,
+    String isShareable,
+    String isSaveAllowed,
+    String isAllowedInNearbyChannel,
+    String status,
+    {String language = "English"}) async {
   final String url = '${GlobalConfiguration().getValue('base_url')}posts';
 
   var client = http.Client();
@@ -41,6 +42,7 @@ Future<PostResponseModel> createPost(
       "is_save": isSaveAllowed,
       "is_nearby_show ": isAllowedInNearbyChannel,
       "status": status,
+      "language": language
     },
   );
   var response = await client.post(

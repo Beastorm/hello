@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
 
-import '../common_components/langugae_dialog.dart';
 import '../models/comment_model.dart';
 import '../models/post_model.dart';
 import '../repos/comment_repo.dart';
@@ -26,20 +28,24 @@ class HomeController extends GetxController {
   var commentList = List<CommentData>().obs;
 
   var languageList = List<String>().obs;
-  var selectedLanguagesByUser = List<String>().obs;
+  var selectedLanguageByUser = "English".obs;
+  VideoPlayerController videoPlayerController;
+  ChewieController chewieController;
 
   @override
   void onInit() async {
     super.onInit();
     await requestALLPost();
+
+
+    // if (pref.hasData("isDialogShown") != true) {
+    //   await languageDialog(true);
+    //   pref.write("isDialogShown", true);
+    // }
+    // await initializePlayer();
+
     await requestForLanguageList();
-
-    if (pref.hasData("isDialogShown") != true) {
-      await languageDialog(true);
-      pref.write("isDialogShown", true);
-    }
-
-    selectedLanguagesByUser.assignAll(stringToList());
+    selectedLanguageByUser.value = getLanguageFromPref();
   }
 
   pickVideoFromGallery() async {
@@ -149,39 +155,65 @@ class HomeController extends GetxController {
     }
   }
 
-  bool checkLanguage(String languageItem) {
-    bool isFound = false;
-    if (selectedLanguagesByUser.indexOf(languageItem) != -1) {
-      isFound = true;
-    } else {
-      isFound = false;
-    }
-    print(isFound);
-
-    update();
-    selectedLanguagesByUser.refresh();
-    return isFound;
+  changeLanguage(String languageItem) {
+    selectedLanguageByUser.value = languageItem;
   }
 
-  addLanguageOrDeleteLanguage(String languageItem) {
-    languageList.refresh();
-    if (selectedLanguagesByUser.indexOf(languageItem) != -1) {
-      selectedLanguagesByUser.remove(languageItem);
-    } else {
-      selectedLanguagesByUser.add(languageItem);
-    }
+  // addLanguageOrDeleteLanguage(String languageItem) {
+  //   languageList.refresh();
+  //   if (selectedLanguagesByUser.indexOf(languageItem) != -1) {
+  //     selectedLanguagesByUser.remove(languageItem);
+  //   } else {
+  //     selectedLanguagesByUser.add(languageItem);
+  //   }
+  //
+  //   selectedLanguagesByUser.refresh();
+  //   pref.write("languages", selectedLanguagesByUser.join(","));
+  //   print("......................");
+  //   print(selectedLanguagesByUser.join(","));
+  //   update();
+  // }
 
-    selectedLanguagesByUser.refresh();
-    pref.write("languages", selectedLanguagesByUser.join(","));
-    print("......................");
-    print(selectedLanguagesByUser.join(","));
-    update();
+  String getLanguageFromPref() {
+    if (pref.hasData("languages") != true) {
+      pref.write("languages", "English");
+    }
+    return pref.read("languages");
   }
 
-  List<String> stringToList() {
-    if (pref.read("languages") != "") {
-      return pref.read("languages").split(",");
-    }
-    return ["English"];
+  initializeVideoPlayer(String videoUrl) async {
+    videoPlayerController = VideoPlayerController.network(videoUrl);
+    await Future.wait([videoPlayerController.initialize()]);
+    chewieController = ChewieController(
+      videoPlayerController: videoPlayerController,
+      aspectRatio: 16 / 9,
+      allowedScreenSleep: true,
+      autoInitialize: true,
+      autoPlay: false,
+      looping: false,
+      showControlsOnInitialize: false,
+      deviceOrientationsAfterFullScreen: [
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ],
+      errorBuilder: (context, errorMessage) {
+        return Center(
+          child: Text(
+            errorMessage,
+            style: TextStyle(color: Colors.white),
+          ),
+        );
+      },
+    );
+
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+
+    videoPlayerController?.dispose();
+    chewieController?.dispose();
+    super.onClose();
   }
 }

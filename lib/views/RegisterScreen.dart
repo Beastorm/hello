@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../controllers/register_controller.dart';
 import '../style/AppColors.dart';
+import '../views/LoginScreen.dart';
 
 // ignore: must_be_immutable
 class RegisterScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     Image.asset(
                       'assets/images/logo.png',
-                      height: 72.0,
+                      height: 100.0,
                     )
                   ],
                 ),
@@ -261,12 +262,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text('Already have account? '),
-                              Text(
-                                'Login',
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: AppColors.themeColor,
-                                    fontWeight: FontWeight.w800),
+                              GestureDetector(
+                                onTap: () => Get.offAll(LoginScreen()),
+                                child: Text(
+                                  'Login',
+                                  style: TextStyle(
+                                      fontSize: 15.0,
+                                      color: AppColors.themeColor,
+                                      fontWeight: FontWeight.w800),
+                                ),
                               ),
                             ],
                           ),

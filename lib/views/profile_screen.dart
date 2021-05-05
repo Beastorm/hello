@@ -1,4 +1,4 @@
-import 'package:Milto/controllers/profile_controller.dart';
+import '../controllers/profile_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -607,9 +607,14 @@ class _ProfileScreenState extends State<ProfileScreen>
             Positioned(
                 top: 12,
                 left: 16,
-                child: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
                 )),
             Positioned(
                 right: 4,

@@ -37,7 +37,6 @@ class HomeController extends GetxController {
     super.onInit();
     await requestALLPost();
 
-
     // if (pref.hasData("isDialogShown") != true) {
     //   await languageDialog(true);
     //   pref.write("isDialogShown", true);
@@ -205,7 +204,6 @@ class HomeController extends GetxController {
         );
       },
     );
-
   }
 
   @override

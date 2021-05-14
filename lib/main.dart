@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:global_configuration/global_configuration.dart';
@@ -8,9 +9,14 @@ import './views/SplashScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize(
+      debug: true // optional: set false to disable printing logs to console
+  );
   await GlobalConfiguration().loadFromAsset("config");
   await GetStorage.init();
   await Firebase.initializeApp();
+
+
   runApp(MyApp());
 }
 

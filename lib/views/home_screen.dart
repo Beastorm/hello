@@ -3,10 +3,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:video_player/video_player.dart';
 
 import '../common_components/MySnackBar.dart';
@@ -250,8 +253,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    controller.postList[index]
-                                                        .user[0].name,
+                                                    (controller.postList[index]
+                                                            .user[0].name) ??
+                                                        "",
                                                     style: TextStyle(
                                                         fontSize: 16.0,
                                                         fontWeight:
@@ -425,7 +429,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                           aspectRatio: 3 / 2,
                                                           autoInitialize: true,
                                                           autoPlay: false,
-                                                          showControlsOnInitialize: false,
+                                                          showControlsOnInitialize:
+                                                              false,
                                                           looping: false,
 
                                                           deviceOrientationsAfterFullScreen: [
@@ -661,21 +666,69 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   ],
                                                 ),
                                               ),
-                                              Column(
-                                                children: [
-                                                  Icon(
-                                                    Icons.save_alt,
-                                                    color: Colors.black54,
-                                                  ),
-                                                  Text(
-                                                    "Save",
-                                                    style: TextStyle(
-                                                      color:
-                                                          Colors.grey.shade400,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
+                                              controller.postList[index].type !=
+                                                          "text" ||
+                                                      controller.postList[index]
+                                                              .content !=
+                                                          null ||
+                                                      controller.postList[index]
+                                                              .content !=
+                                                          "https://sritsolution.com/hello/"
+                                                  ? GestureDetector(
+                                                      onTap: () async {
+                                                        if (controller
+                                                                .postList[index]
+                                                                .type ==
+                                                            "img") {
+                                                          final status =
+                                                              await Permission
+                                                                  .storage
+                                                                  .request();
+                                                          final externalDir =
+                                                              await getExternalStorageDirectory();
+                                                          if (status
+                                                              .isGranted) {
+                                                            final id =
+                                                                await FlutterDownloader
+                                                                    .enqueue(
+                                                              url: controller
+                                                                  .postList[
+                                                                      index]
+                                                                  .content,
+                                                              savedDir:
+                                                                  externalDir
+                                                                      .path,
+                                                              fileName:
+                                                                  controller
+                                                                      .postList[
+                                                                          index]
+                                                                      .content,
+                                                              showNotification:
+                                                                  true,
+                                                              openFileFromNotification:
+                                                                  true,
+                                                            );
+                                                          }
+                                                        }
+                                                      },
+                                                      child: Column(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.save_alt,
+                                                            color:
+                                                                Colors.black54,
+                                                          ),
+                                                          Text(
+                                                            "Save",
+                                                            style: TextStyle(
+                                                              color: Colors.grey
+                                                                  .shade400,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : SizedBox()
                                             ],
                                           )
                                         ],

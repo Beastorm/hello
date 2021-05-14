@@ -45,6 +45,7 @@ class PostData {
     this.content,
     this.color,
     this.topic,
+    this.language,
     this.location,
     this.tag,
     this.isPostView,
@@ -66,6 +67,7 @@ class PostData {
   String content;
   String color;
   String topic;
+  String language;
   String location;
   String tag;
   String isPostView;
@@ -77,7 +79,7 @@ class PostData {
   DateTime createdAt;
   String updatedAt;
   List<PostReaction> postReaction;
-  List<dynamic> postComment;
+  List<PostComment> postComment;
 
   factory PostData.fromJson(Map<String, dynamic> json) => PostData(
     id: json["id"] == null ? null : json["id"],
@@ -87,6 +89,7 @@ class PostData {
     content: json["content"] == null ? null : json["content"],
     color: json["color"] == null ? null : json["color"],
     topic: json["topic"] == null ? null : json["topic"],
+    language: json["language"] == null ? null : json["language"],
     location: json["location"] == null ? null : json["location"],
     tag: json["tag"] == null ? null : json["tag"],
     isPostView: json["is_post_view"] == null ? null : json["is_post_view"],
@@ -98,7 +101,7 @@ class PostData {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : json["updated_at"],
     postReaction: json["post_reaction"] == null ? null : List<PostReaction>.from(json["post_reaction"].map((x) => PostReaction.fromJson(x))),
-    postComment: json["post_comment"] == null ? null : List<dynamic>.from(json["post_comment"].map((x) => x)),
+    postComment: json["post_comment"] == null ? null : List<PostComment>.from(json["post_comment"].map((x) => PostComment.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -109,6 +112,7 @@ class PostData {
     "content": content == null ? null : content,
     "color": color == null ? null : color,
     "topic": topic == null ? null : topic,
+    "language": language == null ? null : language,
     "location": location == null ? null : location,
     "tag": tag == null ? null : tag,
     "is_post_view": isPostView == null ? null : isPostView,
@@ -120,7 +124,47 @@ class PostData {
     "created_at": createdAt == null ? null : createdAt.toIso8601String(),
     "updated_at": updatedAt == null ? null : updatedAt,
     "post_reaction": postReaction == null ? null : List<dynamic>.from(postReaction.map((x) => x.toJson())),
-    "post_comment": postComment == null ? null : List<dynamic>.from(postComment.map((x) => x)),
+    "post_comment": postComment == null ? null : List<dynamic>.from(postComment.map((x) => x.toJson())),
+  };
+}
+
+class PostComment {
+  PostComment({
+    this.id,
+    this.parent,
+    this.user,
+    this.post,
+    this.content,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  String id;
+  String parent;
+  String user;
+  String post;
+  String content;
+  DateTime createdAt;
+  String updatedAt;
+
+  factory PostComment.fromJson(Map<String, dynamic> json) => PostComment(
+    id: json["id"] == null ? null : json["id"],
+    parent: json["parent"] == null ? null : json["parent"],
+    user: json["user"] == null ? null : json["user"],
+    post: json["post"] == null ? null : json["post"],
+    content: json["content"] == null ? null : json["content"],
+    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null ? null : json["updated_at"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id == null ? null : id,
+    "parent": parent == null ? null : parent,
+    "user": user == null ? null : user,
+    "post": post == null ? null : post,
+    "content": content == null ? null : content,
+    "created_at": createdAt == null ? null : createdAt.toIso8601String(),
+    "updated_at": updatedAt == null ? null : updatedAt,
   };
 }
 
@@ -170,9 +214,12 @@ class User {
     this.token,
     this.type,
     this.image,
+    this.cover,
     this.address,
     this.age,
     this.gender,
+    this.language,
+    this.logby,
     this.date,
   });
 
@@ -184,9 +231,12 @@ class User {
   String token;
   String type;
   String image;
+  String cover;
   String address;
   String age;
   String gender;
+  String language;
+  String logby;
   DateTime date;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -198,9 +248,12 @@ class User {
     token: json["token"] == null ? null : json["token"],
     type: json["type"] == null ? null : json["type"],
     image: json["image"] == null ? null : json["image"],
+    cover: json["cover"] == null ? null : json["cover"],
     address: json["address"] == null ? null : json["address"],
     age: json["age"] == null ? null : json["age"],
     gender: json["gender"] == null ? null : json["gender"],
+    language: json["language"] == null ? null : json["language"],
+    logby: json["logby"] == null ? null : json["logby"],
     date: json["date"] == null ? null : DateTime.parse(json["date"]),
   );
 
@@ -213,9 +266,12 @@ class User {
     "token": token == null ? null : token,
     "type": type == null ? null : type,
     "image": image == null ? null : image,
+    "cover": cover == null ? null : cover,
     "address": address == null ? null : address,
     "age": age == null ? null : age,
     "gender": gender == null ? null : gender,
+    "language": language == null ? null : language,
+    "logby": logby == null ? null : logby,
     "date": date == null ? null : date.toIso8601String(),
   };
 }

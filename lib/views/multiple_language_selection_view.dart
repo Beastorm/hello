@@ -1,6 +1,6 @@
-import 'package:Milto/controllers/login_controller.dart';
-import 'package:Milto/style/AppColors.dart';
-import 'package:Milto/views/pages.dart';
+import '../controllers/login_controller.dart';
+import '../style/AppColors.dart';
+import 'pages.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

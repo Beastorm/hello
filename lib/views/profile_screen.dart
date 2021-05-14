@@ -1,4 +1,3 @@
-import '../controllers/profile_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:video_player/video_player.dart';
 
 import '../controllers/home_controller.dart';
+import '../controllers/profile_controller.dart';
 import '../style/AppColors.dart';
 import 'edit_profile_view.dart';
 
@@ -33,6 +33,29 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.themeColor,
+
+        title: Padding(
+          padding: const EdgeInsets.only(left:16.0),
+          child: Text("Profile",style: TextStyle(fontWeight: FontWeight.w400),),
+        ),
+        elevation: 0.0,
+        titleSpacing: 0.0,
+        actions: [
+          RaisedButton(
+            elevation: 0.0,
+            color: Colors.transparent,
+            onPressed: () {
+              profileController.logOut();
+            },
+            child: Text(
+              "LogOut",
+              style: TextStyle(color: Colors.white),
+            ),
+          )
+        ],
+      ),
       body: SafeArea(
         child: Stack(
           children: [
@@ -604,31 +627,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ),
               ),
             ),
-            Positioned(
-                top: 12,
-                left: 16,
-                child: GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                )),
-            Positioned(
-                right: 4,
-                child: RaisedButton(
-                  elevation: 0.0,
-                  color: Colors.transparent,
-                  onPressed: () {
-                    profileController.logOut();
-                  },
-                  child: Text(
-                    "LogOut",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                )),
           ],
         ),
       ),

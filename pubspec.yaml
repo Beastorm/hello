@@ -48,6 +48,9 @@ dependencies:
   flutter_svg: ^0.19.0
   intl: ^0.16.0
   random_color: ^1.0.5
+  flutter_downloader: ^1.5.2
+  path_provider: ^1.6.24
+  permission_handler: 5.0.1+2
 
 dev_dependencies:
   flutter_test:

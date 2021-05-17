@@ -1,3 +1,4 @@
+import 'package:Milto/views/comment_view.dart';
 import 'package:Milto/views/image_viewer_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
@@ -630,17 +631,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   ),
                                                 ],
                                               ),
+
+                                              //comment button
                                               GestureDetector(
                                                 onTap: () async {
-                                                  await controller
-                                                      .requestForCommentListOfPost(
-                                                          controller
-                                                              .postList[index]
-                                                              .id);
-                                                  showCommentBottomSheet(
-                                                      context,
+                                                  Get.to(CommentView(
                                                       controller
-                                                          .postList[index]);
+                                                          .postList[index].id));
+                                                  // await controller
+                                                  //     .requestForCommentListOfPost(
+                                                  //         controller
+                                                  //             .postList[index]
+                                                  //             .id);
+                                                  // showCommentBottomSheet(
+                                                  //     context,
+                                                  //     controller
+                                                  //         .postList[index]);
                                                 },
                                                 child: Column(
                                                   children: [
@@ -779,7 +785,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         context: context,
         isScrollControlled: true,
         builder: (context) {
-          return Column(
+          return
+
+
+            Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -789,7 +798,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               LimitedBox(
                 maxHeight: double.infinity,
                 child: GetX<HomeController>(builder: (controller) {
-                  return ListView.builder(
+                  return
+
+                    ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: controller.commentList.length,
                     shrinkWrap: true,

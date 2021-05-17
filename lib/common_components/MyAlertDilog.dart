@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MyAlertDialog {
-  void alertDialog(String title, String middleText) {
+  static alertDialog(String title, String middleText) {
     Get.defaultDialog(
       title: title,
       titleStyle: TextStyle(fontSize: 20),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Milto/common_components/MyAlertDilog.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,6 +32,7 @@ class HomeController extends GetxController {
   var selectedLanguageByUser = "English".obs;
   VideoPlayerController videoPlayerController;
   ChewieController chewieController;
+  var isLoading = true.obs;
 
   @override
   void onInit() async {
@@ -101,17 +103,28 @@ class HomeController extends GetxController {
   }
 
   requestForSendComment(String postId, String parent) async {
+
+    MyAlertDialog.alertDialog('Sending comment', '');
     await sendComment(
-        pref.read("userId"), "0", postId, commentContentController.text);
+        pref.read("userId"), parent, postId, commentContentController.text);
     commentContentController.clear();
   }
 
   requestForCommentListOfPost(String postId) async {
-    var data = await getComments(postId);
-    if (data != null || data.length > 0) {
-      commentList.clear();
-      commentList.assignAll(data);
-      commentList.refresh();
+    try{
+      isLoading(true);
+      var data = await getComments(postId);
+      if (data != null || data.length > 0) {
+        // commentList.clear();
+        commentList.assignAll(data);
+        commentList.refresh();
+        update();
+      }
+    }finally{
+      isLoading(false);
+
+
+
     }
   }
 

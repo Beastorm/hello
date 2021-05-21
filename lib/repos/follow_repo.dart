@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Milto/models/response_model.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,7 +9,7 @@ Future<bool> follow(String userId, String followBy) async {
   final String url = '${GlobalConfiguration().getValue('base_url')}follow';
 
   var client = http.Client();
-  final msg = jsonEncode({"userid": userId, "followby": followBy});
+  final msg = jsonEncode({"userid": userId, "follow_by": followBy});
   var response = await client.post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},

@@ -76,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 40),
-                          Text(profileController.pref.read("name")),
+                          Text(profileController.name),
                           Text(profileController.pref.read("email"),
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 13)),

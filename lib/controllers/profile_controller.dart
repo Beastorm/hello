@@ -8,15 +8,19 @@ import '../repos/viewProfile_repo.dart';
 class ProfileController extends GetxController {
   var isLoading = true.obs;
   final pref = GetStorage();
+  var profileData = DataProfile();
+  String name;
 
   @override
   void onInit() {
+    //getUserProfileData();
     requestForUserProfile();
     super.onInit();
   }
 
   @override
   void onReady() {
+    //getUserProfileData();
     requestForUserProfile();
     super.onReady();
   }
@@ -30,6 +34,7 @@ class ProfileController extends GetxController {
           pref.write("pic", response.personal.image);
         }
         if (response.personal.name.isNotEmpty) {
+          name = response.personal.name;
           pref.write("name", response.personal.name);
         }
         if (response.personal.email.isNotEmpty) {
@@ -46,6 +51,19 @@ class ProfileController extends GetxController {
       isLoading(false);
     }
   }
+
+  // getUserProfileData() async {
+  //   try {
+  //     isLoading(true);
+  //     DataProfile profileData = await viewProfile(pref.read("userId"));
+  //     if (profileData != null) {
+  //      name = profileData.personal.name;
+  //      print('name ${profileData.personal.name}, namesing: $name');
+  //     }
+  //   } finally {
+  //     isLoading(false);
+  //   }
+  // }
 
   logOut() async {
     if (pref.read("isLogin") == true) {

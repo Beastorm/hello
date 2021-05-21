@@ -1,5 +1,6 @@
 import 'package:Milto/controllers/home_controller.dart';
 import 'package:Milto/style/AppColors.dart';
+import 'package:Milto/views/Comment_rply.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -58,7 +59,8 @@ class CommentView extends StatelessWidget {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    await homeController.requestForSendComment(postId, "0");
+                    homeController.requestForSendComment(postId, "0");
+                    homeController.requestForCommentListOfPost(postId);
                   }
                 },
               ),
@@ -67,7 +69,7 @@ class CommentView extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        title: Text('userid $userId, postid $postId'),
+        title: Text('Comments'),
       ),
       body: GetX<HomeController>(initState: (context) {
         homeController.requestForCommentListOfPost(postId);
@@ -75,84 +77,103 @@ class CommentView extends StatelessWidget {
         if (controller.isLoading.value) {
           return Center(child: CircularProgressIndicator());
         } else {
-          return
-
-            Container(
-              margin: EdgeInsets.only(bottom: 66),
-              child: GetX<HomeController>(builder: (controller) {
-                return ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: controller.commentList.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        color: Colors.grey.shade200,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  controller.commentList[index].user[0]
-                                      .image ==
-                                      "https://sritsolution.com/hello/"
-                                      ? Icon(
-                                    Icons.account_circle_rounded,
-                                    size: 48.0,
-                                    color: Colors.grey.shade400,
-                                  )
-                                      : ClipRRect(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(50)),
-                                    child: CachedNetworkImage(
-                                      width: 48,
-                                      height: 48,
-                                      fit: BoxFit.cover,
-                                      imageUrl: controller
-                                          .commentList[index]
-                                          .user[0]
-                                          .image,
-                                      placeholder: (context, url) =>
-                                          Image.asset(
-                                            'assets/images/loading.gif',
-                                            fit: BoxFit.cover,
-                                          ),
-                                      errorWidget:
-                                          (context, url, error) => Icon(
+          return Container(
+            margin: EdgeInsets.only(bottom: 66, left: 10, right: 10),
+            child: GetX<HomeController>(builder: (controller) {
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: controller.commentFilter.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: Container(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                controller.commentFilter[index].user[0].image ==
+                                        "https://sritsolution.com/hello/"
+                                    ? Icon(
                                         Icons.account_circle_rounded,
                                         size: 48.0,
                                         color: Colors.grey.shade400,
+                                      )
+                                    : ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(50)),
+                                        child: CachedNetworkImage(
+                                          width: 25,
+                                          height: 25,
+                                          fit: BoxFit.cover,
+                                          imageUrl: controller
+                                              .commentFilter[index].user[0].image,
+                                          placeholder: (context, url) =>
+                                              Image.asset(
+                                            'assets/images/loading.gif',
+                                            fit: BoxFit.cover,
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Icon(
+                                            Icons.account_circle_rounded,
+                                            size: 48.0,
+                                            color: Colors.grey.shade400,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 24.0,
-                                  ),
-                                  Text(
-                                    controller
-                                        .commentList[index].user[0].name,
-                                    style: TextStyle(
-                                        fontSize: 14.0,
-                                        color: Colors.grey.shade400,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                  Spacer(),
-                                ],
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text(
+                                  controller.commentFilter[index].user[0].name,
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                                Spacer(),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            //controller.commentList[index].content
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 30, right: 30, top: 6, bottom: 10),
+                              child: RichText(
+                                  text: TextSpan(
+                                      text:
+                                          controller.commentFilter[index].content,
+                                      style: TextStyle(color: Colors.black))),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(CommentReply(controller.commentFilter[index].id, controller.commentFilter[index].content,
+                                    postId));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 30, bottom: 10, top: 6),
+                                child: Text(
+                                  'Reply',
+                                  style: TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
-                              Text(controller.commentList[index].content),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
                       ),
-                    );
-                  },
-                );
-              }),
-            );
-         }
+                    ),
+                  );
+                },
+              );
+            }),
+          );
+        }
       }),
     );
   }

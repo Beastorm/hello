@@ -1,15 +1,15 @@
 // To parse this JSON data, do
 //
-//     final viewProfileModel = viewProfileModelFromJson(jsonString);
+//     final responseModel = responseModelFromJson(jsonString);
 
 import 'dart:convert';
 
-ViewProfileModel viewProfileModelFromJson(String str) => ViewProfileModel.fromJson(json.decode(str));
+ResponseModel responseModelFromJson(String str) => ResponseModel.fromJson(json.decode(str));
 
-String viewProfileModelToJson(ViewProfileModel data) => json.encode(data.toJson());
+String responseModelToJson(ResponseModel data) => json.encode(data.toJson());
 
-class ViewProfileModel {
-  ViewProfileModel({
+class ResponseModel {
+  ResponseModel({
     this.message,
     this.responseCode,
     this.status,
@@ -21,7 +21,7 @@ class ViewProfileModel {
   bool status;
   DataProfile data;
 
-  factory ViewProfileModel.fromJson(Map<String, dynamic> json) => ViewProfileModel(
+  factory ResponseModel.fromJson(Map<String, dynamic> json) => ResponseModel(
     message: json["message"] == null ? null : json["message"],
     responseCode: json["response_code"] == null ? null : json["response_code"],
     status: json["status"] == null ? null : json["status"],
@@ -60,6 +60,10 @@ class Personal {
     this.type,
     this.image,
     this.address,
+    this.language,
+    this.gender,
+    this.age,
+    this.cover,
   });
 
   String name;
@@ -68,6 +72,10 @@ class Personal {
   String type;
   String image;
   String address;
+  String language;
+  String gender;
+  String age;
+  String cover;
 
   factory Personal.fromJson(Map<String, dynamic> json) => Personal(
     name: json["name"] == null ? null : json["name"],
@@ -76,6 +84,10 @@ class Personal {
     type: json["type"] == null ? null : json["type"],
     image: json["image"] == null ? null : json["image"],
     address: json["address"] == null ? null : json["address"],
+    language: json["language"] == null ? null : json["language"],
+    gender: json["gender"] == null ? null : json["gender"],
+    age: json["age"] == null ? null : json["age"],
+    cover: json["cover"] == null ? null : json["cover"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -85,5 +97,9 @@ class Personal {
     "type": type == null ? null : type,
     "image": image == null ? null : image,
     "address": address == null ? null : address,
+    "language": language == null ? null : language,
+    "gender": gender == null ? null : gender,
+    "age": age == null ? null : age,
+    "cover": cover == null ? null : cover,
   };
 }

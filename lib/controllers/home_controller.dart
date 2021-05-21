@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:Milto/common_components/MyAlertDilog.dart';
 import 'package:chewie/chewie.dart';
@@ -33,6 +34,9 @@ class HomeController extends GetxController {
   VideoPlayerController videoPlayerController;
   ChewieController chewieController;
   var isLoading = true.obs;
+  var commentFilter = List<CommentData>().obs;
+  var commentRplyList = List<CommentData>().obs;
+
 
   @override
   void onInit() async {
@@ -103,15 +107,27 @@ class HomeController extends GetxController {
   }
 
   requestForSendComment(String postId, String parent) async {
-
     MyAlertDialog.alertDialog('Sending comment', '');
-    await sendComment(
+    var response = await sendComment(
         pref.read("userId"), parent, postId, commentContentController.text);
     commentContentController.clear();
+    if (response == true) {
+      Get.back();
+    } else {
+      Get.back();
+    }
+    print('response of send comment: $response');
   }
 
   requestForCommentListOfPost(String postId) async {
-    try{
+    // var commentFilter = List<CommentData>().obs;
+    //var data = await getComments(postId);
+    //     for(var item in data){
+    //       if(item.id == "0"){
+    //         commentFilter.add(item);
+    //         continue;
+    //       }
+    try {
       isLoading(true);
       var data = await getComments(postId);
       if (data != null || data.length > 0) {
@@ -120,12 +136,31 @@ class HomeController extends GetxController {
         commentList.refresh();
         update();
       }
-    }finally{
+    } finally {
       isLoading(false);
-
-
-
     }
+    commentFilter.clear();
+    for(var item in commentList){
+      String parent = item.parent;
+      if(parent == "0"){
+        commentFilter.add(item);
+        continue;
+      }
+    }
+  }
+
+
+ getCommentsReply(String commentId) async {
+    print('Comments rply id: $commentId');
+    commentRplyList.clear();
+    for(var item in commentList){
+      String parentId = item.parent;
+      if(commentId == parentId){
+        print('Parent id in loop: $parentId');
+        commentRplyList.add(item);
+      }
+    }
+    return commentRplyList;
   }
 
   // send reaction of current user of a post

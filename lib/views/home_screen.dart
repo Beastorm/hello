@@ -1,3 +1,4 @@
+import 'package:Milto/controllers/follow_controller.dart';
 import 'package:Milto/views/comment_view.dart';
 import 'package:Milto/views/image_viewer_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -27,9 +28,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final HomeController _homeController = Get.put(HomeController());
+  final FollowController followController = Get.put(FollowController());
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   var _formKey = GlobalKey<FormState>();
   TabController _tabController;
+  String follow = 'Follow';
 
   @override
   void initState() {
@@ -282,25 +285,48 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       controller.pref
                                                           .read("userId")
                                                   ? Container(
-                                                      height: 30,
-                                                      child: RaisedButton(
-                                                        onPressed: () {
-                                                          // Get.to(EditProfile());
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      height: 35,
+                                                      child: ToggleButtons(
+                                                        children: [
+                                                          Padding(
+                                                            padding: const EdgeInsets.all(8.0),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(left:8.0, right:8.0),
+                                                              child: Text(follow),
+                                                            ),
+                                                          )
+                                                        ],
+                                                        renderBorder: true,
+                                                        disabledColor:
+                                                            Colors.grey,
+                                                        selectedColor:
+                                                            Colors.red,
+                                                        onPressed: (int index) {
+                                                          setState(() {
+                                                            // if(savePostController.selections[index]==false){
+                                                            //   savePostController.addSavePost(postId);
+                                                            follow =
+                                                                'Following';
+                                                            print(
+                                                                'isSelected false');
+                                                            // }else{
+                                                            //   print('isSelected true, in else: ${savePostController.selections}');
+                                                            // }
+
+                                                            followController
+                                                                        .selections[
+                                                                    index] =
+                                                                !followController
+                                                                        .selections[
+                                                                    index];
+                                                          });
                                                         },
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                new BorderRadius
-                                                                        .circular(
-                                                                    30.0)),
-                                                        textColor:
-                                                            AppColors.white,
-                                                        color: AppColors
-                                                            .themeColor,
-                                                        child: Text(
-                                                          'Follow',
-                                                          style: TextStyle(
-                                                              fontSize: 12),
-                                                        ),
+                                                        isSelected:
+                                                            followController
+                                                                .selections,
                                                       ),
                                                     )
                                                   : SizedBox(),
@@ -635,9 +661,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               //comment button
                                               GestureDetector(
                                                 onTap: () async {
-                                                  Get.to(CommentView(
-                                                      controller
-                                                          .postList[index].id));
+                                                  Get.to(CommentView(controller
+                                                      .postList[index].id));
                                                   // await controller
                                                   //     .requestForCommentListOfPost(
                                                   //         controller
@@ -785,10 +810,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         context: context,
         isScrollControlled: true,
         builder: (context) {
-          return
-
-
-            Column(
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -798,9 +820,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               LimitedBox(
                 maxHeight: double.infinity,
                 child: GetX<HomeController>(builder: (controller) {
-                  return
-
-                    ListView.builder(
+                  return ListView.builder(
                     scrollDirection: Axis.vertical,
                     itemCount: controller.commentList.length,
                     shrinkWrap: true,

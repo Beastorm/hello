@@ -13,11 +13,11 @@ class FollowController extends GetxController{
   final box = GetStorage();
 
   followUser(String userId, String followerId){
-    var response = follow(userId, followerId);
-
-    // ignore: unrelated_type_equality_checks
-    if(response == true){
-      print('response follow user $response');
-    }
+    // var response = follow(userId, followerId);
+    //
+    // // ignore: unrelated_type_equality_checks
+    // if(response == true){
+    //   print('response follow user $response');
+    // }
   }
 }

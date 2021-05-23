@@ -88,7 +88,7 @@ class CommentReply extends StatelessWidget {
             child: GetX<HomeController>(builder: (controller) {
               return ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: controller.commentRplyList.length,
+                itemCount: controller.commentReplyList.length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return Card(
@@ -101,7 +101,7 @@ class CommentReply extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                controller.commentRplyList[index].user[0].image ==
+                                controller.commentReplyList[index].user[0].image ==
                                     "https://sritsolution.com/hello/"
                                     ? Icon(
                                   Icons.account_circle_rounded,
@@ -116,7 +116,7 @@ class CommentReply extends StatelessWidget {
                                     height: 25,
                                     fit: BoxFit.cover,
                                     imageUrl: controller
-                                        .commentRplyList[index].user[0].image,
+                                        .commentReplyList[index].user[0].image,
                                     placeholder: (context, url) =>
                                         Image.asset(
                                           'assets/images/loading.gif',
@@ -134,7 +134,7 @@ class CommentReply extends StatelessWidget {
                                   width: 10.0,
                                 ),
                                 Text(
-                                  controller.commentRplyList[index].user[0].name,
+                                  controller.commentReplyList[index].user[0].name,
                                   style: TextStyle(
                                       fontSize: 14.0,
                                       color: Colors.black,
@@ -151,7 +151,7 @@ class CommentReply extends StatelessWidget {
                               child: RichText(
                                   text: TextSpan(
                                       text:
-                                      controller.commentRplyList[index].content,
+                                      controller.commentReplyList[index].content,
                                       style: TextStyle(color: Colors.black))),
                             ),
 

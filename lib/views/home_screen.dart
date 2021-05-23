@@ -283,78 +283,109 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                                               // follow section
                                               controller.checkFollowedUser(
-                                                      controller.postList[index]
-                                                          .user[0].id)==1
+                                                          controller
+                                                              .postList[index]
+                                                              .user[0]
+                                                              .id) ==
+                                                      1
                                                   ? RaisedButton(
-                                                      onPressed: () {},
-                                                      child: Text("UnFollow",style: TextStyle(color: AppColors.themeColor),),
-                                                      color:
-                                                          Colors.transparent,
-                                                elevation: 0.0,
-                                                    ):
-                                              controller.checkFollowedUser(
-                                                  controller.postList[index]
-                                                      .user[0].id)==0?
-                                                  SizedBox():
+                                                      onPressed: () async {
+                                                        await controller
+                                                            .requestForUnFollowUserProcess(
+                                                                controller
+                                                                    .postList[
+                                                                        index]
+                                                                    .user[0]
+                                                                    .id);
+                                                      },
+                                                      child: Text(
+                                                        "UnFollow",
+                                                        style: TextStyle(
+                                                            color: AppColors
+                                                                .themeColor),
+                                                      ),
+                                                      color: Colors.transparent,
+                                                      elevation: 0.0,
+                                                    )
+                                                  : controller.checkFollowedUser(
+                                                              controller
+                                                                  .postList[
+                                                                      index]
+                                                                  .user[0]
+                                                                  .id) ==
+                                                          0
+                                                      ? SizedBox()
+                                                      :
 
-                                                  // controller.postList[index].user[0]
-                                                  //             .id !=
-                                                  //         controller.pref
-                                                  //             .read("userId")
-                                                  //     ? Container(
-                                                  //         decoration: BoxDecoration(
-                                                  //           shape: BoxShape.circle,
-                                                  //         ),
-                                                  //         height: 35,
-                                                  //         child: ToggleButtons(
-                                                  //           children: [
-                                                  //             Padding(
-                                                  //               padding: const EdgeInsets.all(8.0),
-                                                  //               child: Padding(
-                                                  //                 padding: const EdgeInsets.only(left:8.0, right:8.0),
-                                                  //                 child: Text(follow),
-                                                  //               ),
-                                                  //             )
-                                                  //           ],
-                                                  //           renderBorder: true,
-                                                  //           disabledColor:
-                                                  //               Colors.grey,
-                                                  //           selectedColor:
-                                                  //               Colors.red,
-                                                  //           onPressed: (int index) {
-                                                  //             setState(() {
-                                                  //               // if(savePostController.selections[index]==false){
-                                                  //               //   savePostController.addSavePost(postId);
-                                                  //               follow =
-                                                  //                   'Following';
-                                                  //               print(
-                                                  //                   'isSelected false');
-                                                  //               // }else{
-                                                  //               //   print('isSelected true, in else: ${savePostController.selections}');
-                                                  //               // }
-                                                  //
-                                                  //               followController
-                                                  //                           .selections[
-                                                  //                       index] =
-                                                  //                   !followController
-                                                  //                           .selections[
-                                                  //                       index];
-                                                  //             });
-                                                  //           },
-                                                  //           isSelected:
-                                                  //               followController
-                                                  //                   .selections,
-                                                  //         ),
-                                                  //       )
-                                              RaisedButton(
-                                                onPressed: () {
-
-                                                },
-                                                  child: Text("follow",style: TextStyle(color: AppColors.themeColor),),
-                                                  color:
-                                                  Colors.transparent,
-                                                elevation: 0.0,
-                                              ),
+                                                      // controller.postList[index].user[0]
+                                                      //             .id !=
+                                                      //         controller.pref
+                                                      //             .read("userId")
+                                                      //     ? Container(
+                                                      //         decoration: BoxDecoration(
+                                                      //           shape: BoxShape.circle,
+                                                      //         ),
+                                                      //         height: 35,
+                                                      //         child: ToggleButtons(
+                                                      //           children: [
+                                                      //             Padding(
+                                                      //               padding: const EdgeInsets.all(8.0),
+                                                      //               child: Padding(
+                                                      //                 padding: const EdgeInsets.only(left:8.0, right:8.0),
+                                                      //                 child: Text(follow),
+                                                      //               ),
+                                                      //             )
+                                                      //           ],
+                                                      //           renderBorder: true,
+                                                      //           disabledColor:
+                                                      //               Colors.grey,
+                                                      //           selectedColor:
+                                                      //               Colors.red,
+                                                      //           onPressed: (int index) {
+                                                      //             setState(() {
+                                                      //               // if(savePostController.selections[index]==false){
+                                                      //               //   savePostController.addSavePost(postId);
+                                                      //               follow =
+                                                      //                   'Following';
+                                                      //               print(
+                                                      //                   'isSelected false');
+                                                      //               // }else{
+                                                      //               //   print('isSelected true, in else: ${savePostController.selections}');
+                                                      //               // }
+                                                      //
+                                                      //               followController
+                                                      //                           .selections[
+                                                      //                       index] =
+                                                      //                   !followController
+                                                      //                           .selections[
+                                                      //                       index];
+                                                      //             });
+                                                      //           },
+                                                      //           isSelected:
+                                                      //               followController
+                                                      //                   .selections,
+                                                      //         ),
+                                                      //       )
+                                                      RaisedButton(
+                                                          onPressed: () async {
+                                                            await controller
+                                                                .requestForFollowUserProcess(
+                                                                    controller
+                                                                        .postList[
+                                                                            index]
+                                                                        .user[0]
+                                                                        .id);
+                                                          },
+                                                          child: Text(
+                                                            "follow",
+                                                            style: TextStyle(
+                                                                color: AppColors
+                                                                    .themeColor),
+                                                          ),
+                                                          color: Colors
+                                                              .transparent,
+                                                          elevation: 0.0,
+                                                        ),
                                               SizedBox(
                                                 width: 16.0,
                                               )

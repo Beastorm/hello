@@ -94,7 +94,11 @@ class HomeController extends GetxController {
   // 1-> followed
 
   int checkFollowedUser(String userId) {
-    followedIds = followedList.map((element) => element.userid[0].id);
+    //followedIds = followedList.map((element) => element.userid[0].id);
+
+    for (var item in followedList) {
+      followedIds.add(item.userid[0].id);
+    }
     if (followedIds.contains(userId)) {
       if (pref.read("userId") != userId) {
         return 1;

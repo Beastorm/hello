@@ -1,6 +1,3 @@
-import 'package:Milto/controllers/follow_controller.dart';
-import 'package:Milto/views/comment_view.dart';
-import 'package:Milto/views/image_viewer_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +13,12 @@ import 'package:video_player/video_player.dart';
 
 import '../common_components/MySnackBar.dart';
 import '../common_components/langugae_dialog.dart';
+import '../controllers/follow_controller.dart';
 import '../controllers/home_controller.dart';
 import '../models/post_model.dart';
 import '../style/AppColors.dart';
+import 'comment_view.dart';
+import 'image_viewer_view.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -315,58 +315,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                   .id) ==
                                                           0
                                                       ? SizedBox()
-                                                      :
-
-                                                      // controller.postList[index].user[0]
-                                                      //             .id !=
-                                                      //         controller.pref
-                                                      //             .read("userId")
-                                                      //     ? Container(
-                                                      //         decoration: BoxDecoration(
-                                                      //           shape: BoxShape.circle,
-                                                      //         ),
-                                                      //         height: 35,
-                                                      //         child: ToggleButtons(
-                                                      //           children: [
-                                                      //             Padding(
-                                                      //               padding: const EdgeInsets.all(8.0),
-                                                      //               child: Padding(
-                                                      //                 padding: const EdgeInsets.only(left:8.0, right:8.0),
-                                                      //                 child: Text(follow),
-                                                      //               ),
-                                                      //             )
-                                                      //           ],
-                                                      //           renderBorder: true,
-                                                      //           disabledColor:
-                                                      //               Colors.grey,
-                                                      //           selectedColor:
-                                                      //               Colors.red,
-                                                      //           onPressed: (int index) {
-                                                      //             setState(() {
-                                                      //               // if(savePostController.selections[index]==false){
-                                                      //               //   savePostController.addSavePost(postId);
-                                                      //               follow =
-                                                      //                   'Following';
-                                                      //               print(
-                                                      //                   'isSelected false');
-                                                      //               // }else{
-                                                      //               //   print('isSelected true, in else: ${savePostController.selections}');
-                                                      //               // }
-                                                      //
-                                                      //               followController
-                                                      //                           .selections[
-                                                      //                       index] =
-                                                      //                   !followController
-                                                      //                           .selections[
-                                                      //                       index];
-                                                      //             });
-                                                      //           },
-                                                      //           isSelected:
-                                                      //               followController
-                                                      //                   .selections,
-                                                      //         ),
-                                                      //       )
-                                                      RaisedButton(
+                                                      : RaisedButton(
                                                           onPressed: () async {
                                                             await controller
                                                                 .requestForFollowUserProcess(

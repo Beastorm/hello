@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../controllers/home_controller.dart';
 import '../style/AppColors.dart';
 
 languageDialog(bool showDialog) {
   if (!showDialog) return;
-  Get.find<HomeController>();
+  HomeController homeController = Get.find<HomeController>();
   Get.defaultDialog(
     confirm: Container(
       width: double.infinity,
@@ -15,6 +14,7 @@ languageDialog(bool showDialog) {
         color: AppColors.themeColor,
         elevation: 0.0,
         onPressed: () {
+          homeController.postList.refresh();
           Get.back();
         },
         child: Text(
@@ -133,6 +133,6 @@ languageDialog(bool showDialog) {
         }),
       ),
     ),
-    barrierDismissible: true,
+    barrierDismissible: false,
   );
 }

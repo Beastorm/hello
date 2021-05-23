@@ -62,13 +62,17 @@ Future<List<PostData>> viewPost() async {
   var client = http.Client();
   var response = await client.post(url);
   print(response.statusCode);
-  if (response.statusCode == 200) {
-    if (postModelFromJson(response.body).status) {
-      return postModelFromJson(response.body).data;
-    }
+  try {
+    if (response.statusCode == 200) {
+      if (postModelFromJson(response.body).status) {
+        return postModelFromJson(response.body).data;
+      }
+      return null;
+    } else
+      return null;
+  } on Exception catch (e) {
     return null;
-  } else
-    return null;
+  }
 }
 
 uploadPostFile(File file, String postId, String postType) async {

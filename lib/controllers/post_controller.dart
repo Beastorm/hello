@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:Milto/models/language_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,7 +10,6 @@ import '../repos/post_repo.dart';
 import '../utils/location_util.dart';
 
 class PostController extends GetxController {
-
   TextEditingController textEditingController;
 
   var pref = GetStorage();
@@ -27,6 +27,7 @@ class PostController extends GetxController {
   var bgColor = Color(0xffffffff).obs;
   var currentPostLanguage = "English".obs;
   var languageList = List<String>().obs;
+  List<LanguageData> languages;
 
   @override
   void onInit() {
@@ -55,7 +56,7 @@ class PostController extends GetxController {
         isSaveAllowed.value.toString(),
         showInNearByChannel.value.toString(),
         "1",
-        language: currentPostLanguage.value);
+        language: getIdOfCurrentPostLanguage());
 
     if (response.message == "User New Post Successfully Done.") {
       if (postType.value != "text") {
@@ -123,15 +124,22 @@ class PostController extends GetxController {
   }
 
   requestForLanguageList() async {
-    var languages = await getLanguages();
+    languages = await getLanguages();
     for (var item in languages) {
       languageList.add(item.name);
     }
   }
 
+  String getIdOfCurrentPostLanguage() {
+    var currentLanguageTxt = currentPostLanguage;
+    LanguageData languageData = languages
+        .firstWhere((element) => element.name == currentLanguageTxt.value);
+
+    return languageData.id;
+  }
+
   @override
   void onClose() {
-
     super.onClose();
   }
 }

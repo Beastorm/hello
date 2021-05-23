@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
 import '../controllers/home_controller.dart';
@@ -27,6 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   void initState() {
     super.initState();
+    profileController.requestForUserProfile();
     _tabController = new TabController(length: 3, vsync: this);
   }
 
@@ -68,6 +72,27 @@ class _ProfileScreenState extends State<ProfileScreen>
                     height: 150.0,
                     child: Container(
                       color: Colors.pinkAccent,
+                      child: Column(
+                        children: [
+                          profileController.selectedImagePath.value == '' &&
+                                  profileController.pref.read('cover') !=null
+                              ? Image.network(
+                                  profileController.pref.read("cover"),
+                                  fit: BoxFit.fill,
+                                  width: double.infinity,
+                                  height: 150)
+                              : Obx(() {
+                                  return Expanded(
+                                      child: Image.file(
+                                    File(profileController
+                                        .selectedImagePath.value),
+                                    fit: BoxFit.fill,
+                                    width: double.infinity,
+                                    height: 150,
+                                  ));
+                                })
+                        ],
+                      ),
                     )),
                 Container(
                   child: Row(
@@ -78,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: 40),
-                          Text(profileController.name),
+                          Text(profileController.pref.read("name")),
                           Text(profileController.pref.read("email"),
                               style: TextStyle(
                                   color: Colors.black54, fontSize: 13)),
@@ -580,6 +605,51 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ),
                 ),
               ],
+            ),
+            Positioned(
+              top: 110.0,
+              right: 6,
+              child: Container(
+                  height: 30,
+                  child: Obx(() {
+                    return profileController.selectedImagePath.value == ''
+                        ? RaisedButton(
+                            onPressed: () {
+                              profileController.getImage(ImageSource.gallery);
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0)),
+                            textColor: AppColors.white,
+                            color: AppColors.themeColor,
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Cover ',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                Icon(Icons.edit, size: 16)
+                              ],
+                            ),
+                          )
+                        : RaisedButton(
+                            onPressed: () {
+                              profileController.requestForAddCoverPhoto();
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(30.0)),
+                            textColor: AppColors.white,
+                            color: AppColors.themeColor,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Update ',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          );
+                  })),
             ),
             Positioned(
               top: 120.0,

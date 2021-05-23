@@ -52,6 +52,7 @@ dependencies:
   path_provider: ^1.6.24
   permission_handler: 5.0.1+2
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

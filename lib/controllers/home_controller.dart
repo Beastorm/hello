@@ -1,19 +1,17 @@
 import 'dart:io';
 
-import 'package:Milto/common_components/MyAlertDilog.dart';
-import 'package:Milto/models/follow_model.dart';
-import 'package:Milto/repos/follow_repo.dart';
-import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:video_player/video_player.dart';
 
+import '../common_components/MyAlertDilog.dart';
 import '../models/comment_model.dart';
+import '../models/follow_model.dart';
+import '../models/language_model.dart';
 import '../models/post_model.dart';
 import '../repos/comment_repo.dart';
+import '../repos/follow_repo.dart';
 import '../repos/language_repo.dart';
 import '../repos/post_repo.dart';
 import '../repos/reaction_repo.dart';
@@ -30,10 +28,10 @@ class HomeController extends GetxController {
   var currentUserPostList = List<PostData>().obs;
   var commentList = List<CommentData>().obs;
 
+  List<LanguageData> languages;
   var languageList = List<String>().obs;
   var selectedLanguageByUser = "English".obs;
-  VideoPlayerController videoPlayerController;
-  ChewieController chewieController;
+
   var isLoading = true.obs;
   var commentFilter = List<CommentData>().obs;
   var commentReplyList = List<CommentData>().obs;
@@ -46,26 +44,21 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    await requestALLPost();
-    await requestForFollowedUserByCurrentUser();
-
-    // if (pref.hasData("isDialogShown") != true) {
-    //   await languageDialog(true);
-    //   pref.write("isDialogShown", true);
-    // }
-    // await initializePlayer();
-
     await requestForLanguageList();
     selectedLanguageByUser.value = getLanguageFromPref();
+    await requestALLPost();
+    await requestForFollowedUserByCurrentUser();
   }
 
   requestALLPost() async {
-    // Get.dialog(Center(child: CircularProgressIndicator()),
-    //     barrierDismissible: false);
     var posts = await viewPost();
-    if (posts != null) {
-      /// Get.back();
-      postList.assignAll(posts);
+    if (posts != null && posts.length > 0) {
+      //   postList.assignAll(posts);
+      postList.assignAll(posts
+          .where((element) => element.language == getIdOfCurrentLanguage()));
+      print("...................... ");
+      print(getIdOfCurrentLanguage());
+      print(postList);
       getCurrentUserPost(posts);
     }
   }
@@ -108,21 +101,22 @@ class HomeController extends GetxController {
     return -1;
   }
 
-  requestForFollowUserProcess(String postUserId) {
+  requestForFollowUserProcess(String postUserId) async {
     if (!followedIds.contains(postUserId)) followedIds.add(postUserId);
 
     followedIds.refresh();
     postList.refresh();
+
     update();
-    followAUser(pref.read("userId"), postUserId);
+    await followAUser(pref.read("userId"), postUserId);
   }
 
-  requestForUnFollowUserProcess(String postUserId) {
+  requestForUnFollowUserProcess(String postUserId) async {
     if (followedIds.contains(postUserId)) followedIds.remove(postUserId);
     followedIds.refresh();
     postList.refresh();
     update();
-    unFollowAUser(pref.read("userId"), postUserId);
+    await unFollowAUser(pref.read("userId"), postUserId);
   }
 
   requestForSendComment(String postId, String parent) async {
@@ -214,7 +208,7 @@ class HomeController extends GetxController {
   }
 
   requestForLanguageList() async {
-    var languages = await getLanguages();
+    languages = await getLanguages();
     for (var item in languages) {
       languageList.add(item.name);
     }
@@ -224,20 +218,13 @@ class HomeController extends GetxController {
     selectedLanguageByUser.value = languageItem;
   }
 
-  // addLanguageOrDeleteLanguage(String languageItem) {
-  //   languageList.refresh();
-  //   if (selectedLanguagesByUser.indexOf(languageItem) != -1) {
-  //     selectedLanguagesByUser.remove(languageItem);
-  //   } else {
-  //     selectedLanguagesByUser.add(languageItem);
-  //   }
-  //
-  //   selectedLanguagesByUser.refresh();
-  //   pref.write("languages", selectedLanguagesByUser.join(","));
-  //   print("......................");
-  //   print(selectedLanguagesByUser.join(","));
-  //   update();
-  // }
+  String getIdOfCurrentLanguage() {
+    var currentLanguageTxt = pref.read("languages");
+    LanguageData languageData =
+        languages.firstWhere((element) => element.name == currentLanguageTxt);
+
+    return languageData.id;
+  }
 
   String getLanguageFromPref() {
     if (pref.hasData("languages") != true) {
@@ -278,38 +265,8 @@ class HomeController extends GetxController {
     update();
   }
 
-  initializeVideoPlayer(String videoUrl) async {
-    videoPlayerController = VideoPlayerController.network(videoUrl);
-    await Future.wait([videoPlayerController.initialize()]);
-    chewieController = ChewieController(
-      videoPlayerController: videoPlayerController,
-      aspectRatio: 16 / 9,
-      allowedScreenSleep: true,
-      autoInitialize: true,
-      autoPlay: false,
-      looping: false,
-      showControlsOnInitialize: false,
-      deviceOrientationsAfterFullScreen: [
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ],
-      errorBuilder: (context, errorMessage) {
-        return Center(
-          child: Text(
-            errorMessage,
-            style: TextStyle(color: Colors.white),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   void onClose() {
-    // TODO: implement onClose
-
-    videoPlayerController?.dispose();
-    chewieController?.dispose();
     super.onClose();
   }
 }

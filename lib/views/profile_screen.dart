@@ -35,10 +35,12 @@ class _ProfileScreenState extends State<ProfileScreen>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.themeColor,
-
         title: Padding(
-          padding: const EdgeInsets.only(left:16.0),
-          child: Text("Profile",style: TextStyle(fontWeight: FontWeight.w400),),
+          padding: const EdgeInsets.only(left: 16.0),
+          child: Text(
+            "Profile",
+            style: TextStyle(fontWeight: FontWeight.w400),
+          ),
         ),
         elevation: 0.0,
         titleSpacing: 0.0,

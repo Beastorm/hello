@@ -1,7 +1,8 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:Milto/common_components/MyAlertDilog.dart';
+import 'package:Milto/models/follow_model.dart';
+import 'package:Milto/repos/follow_repo.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,13 +36,18 @@ class HomeController extends GetxController {
   ChewieController chewieController;
   var isLoading = true.obs;
   var commentFilter = List<CommentData>().obs;
-  var commentRplyList = List<CommentData>().obs;
+  var commentReplyList = List<CommentData>().obs;
+  var followedIds = List<String>().obs;
 
+  //follow
+
+  var followedList = List<FollowData>().obs;
 
   @override
   void onInit() async {
     super.onInit();
     await requestALLPost();
+    await requestForFollowedUserByCurrentUser();
 
     // if (pref.hasData("isDialogShown") != true) {
     //   await languageDialog(true);
@@ -51,38 +57,6 @@ class HomeController extends GetxController {
 
     await requestForLanguageList();
     selectedLanguageByUser.value = getLanguageFromPref();
-  }
-
-  pickVideoFromGallery() async {
-    File _videoFile;
-    _pickedFile = await picker.getVideo(source: ImageSource.gallery);
-    if (_pickedFile == null) {
-      return;
-    }
-    _videoFile = File(_pickedFile.path);
-    videoFile.value = _videoFile;
-    Get.off(
-        () => CreatePostScreenWidget(file: videoFile.value, postType: "video"));
-    update();
-  }
-
-  pickImageFromGallery() async {
-    File _imageFile;
-    _pickedFile = await picker.getImage(source: ImageSource.gallery);
-    if (_pickedFile == null) {
-      return;
-    }
-    _imageFile = File(_pickedFile.path);
-    imageFile.value = _imageFile;
-    print(_imageFile.path);
-    Get.off(
-        () => CreatePostScreenWidget(file: imageFile.value, postType: "img"));
-    update();
-  }
-
-  createTextPost() {
-    Get.off(() => CreatePostScreenWidget(file: null, postType: "text"));
-    update();
   }
 
   requestALLPost() async {
@@ -96,6 +70,7 @@ class HomeController extends GetxController {
     }
   }
 
+  // checking current user post
   getCurrentUserPost(posts) {
     if (posts.isNotEmpty)
       for (var item in posts) {
@@ -104,6 +79,46 @@ class HomeController extends GetxController {
         }
       }
     print(currentUserPostList.length);
+  }
+
+  requestForFollowedUserByCurrentUser() async {
+    var follows = await followedListByCurrentUser(pref.read("userId"));
+
+    if (follows != null && follows.length > 0) {
+      followedList.assignAll(follows);
+    }
+  }
+
+  //-1-> not followed
+  //0-> current user
+  // 1-> followed
+
+  int checkFollowedUser(String userId) {
+    followedIds = followedList.map((element) => element.userid[0].id);
+    if (followedIds.contains(userId)) {
+      if (pref.read("userId") != userId) {
+        return 1;
+      } else
+        return 0;
+    }
+    return -1;
+  }
+
+  requestForFollowUserProcess(String postUserId) {
+    if (!followedIds.contains(postUserId)) followedIds.add(postUserId);
+
+    followedIds.refresh();
+    postList.refresh();
+    update();
+    followAUser(pref.read("userId"), postUserId);
+  }
+
+  requestForUnFollowUserProcess(String postUserId) {
+    if (followedIds.contains(postUserId)) followedIds.remove(postUserId);
+    followedIds.refresh();
+    postList.refresh();
+    update();
+    unFollowAUser(pref.read("userId"), postUserId);
   }
 
   requestForSendComment(String postId, String parent) async {
@@ -140,27 +155,26 @@ class HomeController extends GetxController {
       isLoading(false);
     }
     commentFilter.clear();
-    for(var item in commentList){
+    for (var item in commentList) {
       String parent = item.parent;
-      if(parent == "0"){
+      if (parent == "0") {
         commentFilter.add(item);
         continue;
       }
     }
   }
 
-
- getCommentsReply(String commentId) async {
+  getCommentsReply(String commentId) async {
     print('Comments rply id: $commentId');
-    commentRplyList.clear();
-    for(var item in commentList){
+    commentReplyList.clear();
+    for (var item in commentList) {
       String parentId = item.parent;
-      if(commentId == parentId){
+      if (commentId == parentId) {
         print('Parent id in loop: $parentId');
-        commentRplyList.add(item);
+        commentReplyList.add(item);
       }
     }
-    return commentRplyList;
+    return commentReplyList;
   }
 
   // send reaction of current user of a post
@@ -226,6 +240,38 @@ class HomeController extends GetxController {
       pref.write("languages", "English");
     }
     return pref.read("languages");
+  }
+
+  pickVideoFromGallery() async {
+    File _videoFile;
+    _pickedFile = await picker.getVideo(source: ImageSource.gallery);
+    if (_pickedFile == null) {
+      return;
+    }
+    _videoFile = File(_pickedFile.path);
+    videoFile.value = _videoFile;
+    Get.off(
+        () => CreatePostScreenWidget(file: videoFile.value, postType: "video"));
+    update();
+  }
+
+  pickImageFromGallery() async {
+    File _imageFile;
+    _pickedFile = await picker.getImage(source: ImageSource.gallery);
+    if (_pickedFile == null) {
+      return;
+    }
+    _imageFile = File(_pickedFile.path);
+    imageFile.value = _imageFile;
+    print(_imageFile.path);
+    Get.off(
+        () => CreatePostScreenWidget(file: imageFile.value, postType: "img"));
+    update();
+  }
+
+  createTextPost() {
+    Get.off(() => CreatePostScreenWidget(file: null, postType: "text"));
+    update();
   }
 
   initializeVideoPlayer(String videoUrl) async {

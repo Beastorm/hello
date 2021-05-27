@@ -38,7 +38,8 @@ class HomeController extends GetxController {
 
   //follow
 
-  var followedList = List<FollowData>().obs;
+  var followerList = List<FollowData>().obs;
+  var followingList = List<FollowData>().obs;
 
   @override
   void onInit() async {
@@ -46,7 +47,7 @@ class HomeController extends GetxController {
     await requestForLanguageList();
     selectedLanguageByUser.value = getLanguageFromPref();
     await requestALLPost();
-    await requestForFollowedUserByCurrentUser();
+    await requestForfollwerList();
   }
 
   requestALLPost() async {
@@ -73,13 +74,34 @@ class HomeController extends GetxController {
     print(currentUserPostList.length);
   }
 
-  requestForFollowedUserByCurrentUser() async {
-    var follows = await followedListByCurrentUser(pref.read("userId"));
+  //FollowerList
+  requestForfollwerList() async {
+    try {
+      isLoading(true);
+      var followers = await followerListApi(pref.read('userId'));
 
-    if (follows != null && follows.length > 0) {
-      followedList.assignAll(follows);
+      if (followers != null) {
+        followerList.assignAll(followers);
+      }
+      print('Followers:.....$followers, list $followerList');
+    } finally {
+      isLoading(false);
     }
   }
+  requestForFollowingList() async {
+    try {
+      isLoading(true);
+      var followings = await followingApi(pref.read('userId'));
+
+      if (followings != null) {
+        followingList.assignAll(followings);
+      }
+      print('Followings:.....$followings, list $followingList');
+    } finally {
+      isLoading(false);
+    }
+  }
+//FollowingList
 
   //-1-> not followed... should show follow
   //-0-> current user...should show nothing
@@ -88,7 +110,7 @@ class HomeController extends GetxController {
   int checkFollowedUser(String userId) {
     //followedIds = followedList.map((element) => element.userid[0].id);
 
-    for (var item in followedList) {
+    for (var item in followerList) {
       followedIds.add(item.userid[0].id);
     }
     if (followedIds.contains(userId)) {

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:Milto/views/followers_view.dart';
+import 'package:Milto/views/following_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
@@ -16,13 +18,15 @@ import '../controllers/profile_controller.dart';
 import '../style/AppColors.dart';
 import 'edit_profile_view.dart';
 
+
+
+
 class ProfileScreen extends StatefulWidget {
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen>
-    with SingleTickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
   HomeController controller = Get.find<HomeController>();
   ProfileController profileController = Get.put(ProfileController());
   TabController _tabController;
@@ -32,6 +36,8 @@ class _ProfileScreenState extends State<ProfileScreen>
     super.initState();
     profileController.requestForUserProfile();
     _tabController = new TabController(length: 3, vsync: this);
+    controller.requestForfollwerList();
+    controller.requestForFollowingList();
   }
 
   @override
@@ -116,8 +122,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                 Row(
                   children: [
                     SizedBox(width: 40),
-                    Expanded(child: Text('Following(0)')),
-                    Expanded(child: Text('Followers(0)')),
+                    Expanded(child: GestureDetector(
+                        onTap: (){
+                          Get.to(FollowingView());
+                        },
+                        child: Text('Following(${controller.followingList.length})'))),
+                    Expanded(child: GestureDetector(
+                        onTap: (){
+                          Get.to(FollowersView());
+                        },
+                        child: Text('Followers(${controller.followerList.length})'))),
                     Expanded(child: Text('Group(0)')),
                   ],
                 ),

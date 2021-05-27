@@ -40,12 +40,12 @@ Future<bool> unFollowAUser(String userId, String followBy) async {
     return false;
 }
 
-Future<bool> followerList(String userId) async {
+Future<List<FollowData>> followerListApi(String userId) async {
   final String url = '${GlobalConfiguration().getValue('base_url')}follow';
 
   var client = http.Client();
   final msg = jsonEncode({
-    "userid": userId,
+    "follow_by": userId,
   });
   var response = await client.post(
     url,
@@ -54,16 +54,16 @@ Future<bool> followerList(String userId) async {
   );
   print(response.statusCode);
   if (response.statusCode == 200) {
-    return true;
+    return followModelFromJson(response.body).data;
   } else
-    return false;
+    return followModelFromJson(response.body).data;
 }
 
-Future<List<FollowData>> followedListByCurrentUser(String followBy) async {
-  final String url = '${GlobalConfiguration().getValue('base_url')}follow_by';
+Future<List<FollowData>> followingApi(String followBy) async {
+  final String url = '${GlobalConfiguration().getValue('base_url')}follow';
   var client = http.Client();
   final msg = jsonEncode({
-    "follow_by": followBy,
+    "userid": followBy,
   });
   var response = await client.post(
     url,

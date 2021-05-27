@@ -73,99 +73,109 @@ class CommentReply extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        title: Text('userid $postId, postid $commentId'),
+        title: Text('Comments Reply'),
       ),
       body:
 
-      GetX<HomeController>(initState: (context) {
-        homeController.getCommentsReply(commentId);
-      }, builder: (controller) {
-        if (controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
-        } else {
-          return Container(
-            margin: EdgeInsets.only(bottom: 66, left: 10, right: 10),
-            child: GetX<HomeController>(builder: (controller) {
-              return ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: controller.commentReplyList.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Container(
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
+      Column(
+        children: [
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text('$comentContent'),
+              )),
+          SizedBox(height: 2,),
+          GetX<HomeController>(initState: (context) {
+            homeController.getCommentsReply(commentId);
+          }, builder: (controller) {
+            if (controller.isLoading.value) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              return Container(
+                margin: EdgeInsets.only(bottom: 66, left: 10, right: 10),
+                child: GetX<HomeController>(builder: (controller) {
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: controller.commentReplyList.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: Container(
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                controller.commentReplyList[index].user[0].image ==
-                                    "https://sritsolution.com/hello/"
-                                    ? Icon(
-                                  Icons.account_circle_rounded,
-                                  size: 48.0,
-                                  color: Colors.grey.shade400,
-                                )
-                                    : ClipRRect(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(50)),
-                                  child: CachedNetworkImage(
-                                    width: 25,
-                                    height: 25,
-                                    fit: BoxFit.cover,
-                                    imageUrl: controller
-                                        .commentReplyList[index].user[0].image,
-                                    placeholder: (context, url) =>
-                                        Image.asset(
-                                          'assets/images/loading.gif',
-                                          fit: BoxFit.cover,
-                                        ),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(
-                                          Icons.account_circle_rounded,
-                                          size: 48.0,
-                                          color: Colors.grey.shade400,
-                                        ),
-                                  ),
+                                Row(
+                                  children: [
+                                    controller.commentReplyList[index].user[0].image ==
+                                        "https://sritsolution.com/hello/"
+                                        ? Icon(
+                                      Icons.account_circle_rounded,
+                                      size: 48.0,
+                                      color: Colors.grey.shade400,
+                                    )
+                                        : ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(50)),
+                                      child: CachedNetworkImage(
+                                        width: 25,
+                                        height: 25,
+                                        fit: BoxFit.cover,
+                                        imageUrl: controller
+                                            .commentReplyList[index].user[0].image,
+                                        placeholder: (context, url) =>
+                                            Image.asset(
+                                              'assets/images/loading.gif',
+                                              fit: BoxFit.cover,
+                                            ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(
+                                              Icons.account_circle_rounded,
+                                              size: 48.0,
+                                              color: Colors.grey.shade400,
+                                            ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(
+                                      controller.commentReplyList[index].user[0].name,
+                                      style: TextStyle(
+                                          fontSize: 14.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                    Spacer(),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 10.0,
+                                SizedBox(height: 10),
+                                //controller.commentList[index].content
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 30, right: 30, top: 6, bottom: 10),
+                                  child: RichText(
+                                      text: TextSpan(
+                                          text:
+                                          controller.commentReplyList[index].content,
+                                          style: TextStyle(color: Colors.black))),
                                 ),
-                                Text(
-                                  controller.commentReplyList[index].user[0].name,
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                Spacer(),
                               ],
                             ),
-                            SizedBox(height: 10),
-                            //controller.commentList[index].content
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 30, right: 30, top: 6, bottom: 10),
-                              child: RichText(
-                                  text: TextSpan(
-                                      text:
-                                      controller.commentReplyList[index].content,
-                                      style: TextStyle(color: Colors.black))),
-                            ),
-
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   );
-                },
+                }),
               );
-            }),
-          );
-        }
-      }),
+            }
+          }),
+        ],
+      )
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:share/share.dart';
 import 'package:video_player/video_player.dart';
 
 import '../common_components/MySnackBar.dart';
@@ -32,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   var _formKey = GlobalKey<FormState>();
   TabController _tabController;
-  String follow = 'Follow';
 
   @override
   void initState() {
@@ -132,7 +132,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   size: 20,
                                   color: Colors.white,
                                 ),
-                                onPressed: () {}),
+                                onPressed: () {
+                                }),
                           ),
                           SizedBox(
                             width: 8.0,
@@ -176,16 +177,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                       tabs: [
                         Tab(
-                          text: 'Popular',
+                          text: 'Follow',
                         ),
                         Tab(
-                          text: 'NearBy',
+                          text: 'Popular',
                         ),
                         Tab(
                           text: 'Video',
                         ),
                         Tab(
-                          text: 'Follow',
+                          text: 'NearBy',
                         )
                       ],
                       controller: _tabController,
@@ -258,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 children: [
                                                   Text(
                                                     (controller.postList[index]
-                                                            .user[0].name) ??
+                                                            .user[0].name.toString()) ??
                                                         "",
                                                     style: TextStyle(
                                                         fontSize: 16.0,
@@ -338,6 +339,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               SizedBox(
                                                 width: 16.0,
                                               )
+                                              //Follow section end
                                             ],
                                           ),
                                           SizedBox(
@@ -368,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 Align(
                                                   child: Text(
                                                     controller.postList[index]
-                                                        .description,
+                                                        .description.toString(),
                                                     style: TextStyle(
                                                       fontSize: 18.0,
                                                       color: controller
@@ -647,20 +649,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                         ),
                                                 ],
                                               ),
-                                              Column(
-                                                children: [
-                                                  Icon(
-                                                    Icons.share_outlined,
-                                                    color: Colors.black54,
-                                                  ),
-                                                  Text(
-                                                    "Share",
-                                                    style: TextStyle(
-                                                      color:
-                                                          Colors.grey.shade400,
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Share.share(
+                                                      'Download our app \n\nhttps://play.google.com/store/apps/details?id=com.milto');
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.share_outlined,
+                                                      color: Colors.black54,
                                                     ),
-                                                  ),
-                                                ],
+                                                    Text(
+                                                      "Share",
+                                                      style: TextStyle(
+                                                        color: Colors
+                                                            .grey.shade400,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
 
                                               //comment button
@@ -701,8 +709,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                             )),
                                                   ],
                                                 ),
-                                              ),
-                                              controller.postList[index].type !=
+                                              ), controller.postList[index].type !=
                                                           "text" ||
                                                       controller.postList[index]
                                                               .content !=
@@ -724,8 +731,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                               await getExternalStorageDirectory();
                                                           if (status
                                                               .isGranted) {
-                                                            final id =
-                                                                await FlutterDownloader
+                                                            final id = await FlutterDownloader
                                                                     .enqueue(
                                                               url: controller
                                                                   .postList[

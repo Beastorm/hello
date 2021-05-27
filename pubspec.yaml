@@ -51,6 +51,8 @@ dependencies:
   flutter_downloader: ^1.5.2
   path_provider: ^1.6.24
   permission_handler: 5.0.1+2
+  url_launcher: any
+  share: any
 
 
 dev_dependencies:

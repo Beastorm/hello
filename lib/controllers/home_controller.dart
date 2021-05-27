@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../common_components/MyAlertDilog.dart';
 import '../models/comment_model.dart';
 import '../models/follow_model.dart';
@@ -82,9 +81,9 @@ class HomeController extends GetxController {
     }
   }
 
-  //-1-> not followed
-  //0-> current user
-  // 1-> followed
+  //-1-> not followed... should show follow
+  //-0-> current user...should show nothing
+  //-1-> followed... should show un follow
 
   int checkFollowedUser(String userId) {
     //followedIds = followedList.map((element) => element.userid[0].id);

@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               decoration: BoxDecoration(
                                   color: Colors.grey.shade300,
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(40.0))),
+                                  BorderRadius.all(Radius.circular(40.0))),
                               height: 35,
                               width: 150,
                               child: Padding(
@@ -171,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       indicatorWeight: 1.0,
                       indicator: UnderlineTabIndicator(
                         borderSide:
-                            BorderSide(width: 3.0, color: Colors.transparent),
+                        BorderSide(width: 3.0, color: Colors.transparent),
                         insets: EdgeInsets.symmetric(horizontal: 32.0),
                       ),
                       tabs: [
@@ -213,57 +213,57 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           Row(
                                             children: [
                                               controller.postList[index].user[0]
-                                                          .image ==
-                                                      "https://sritsolution.com/hello/"
+                                                  .image ==
+                                                  "https://sritsolution.com/hello/"
                                                   ? Icon(
-                                                      Icons
-                                                          .account_circle_rounded,
-                                                      size: 48.0,
-                                                      color:
-                                                          Colors.grey.shade400,
-                                                    )
+                                                Icons
+                                                    .account_circle_rounded,
+                                                size: 48.0,
+                                                color:
+                                                Colors.grey.shade400,
+                                              )
                                                   : ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  50)),
-                                                      child: CachedNetworkImage(
-                                                        width: 48,
-                                                        height: 48,
+                                                borderRadius:
+                                                BorderRadius.all(
+                                                    Radius.circular(
+                                                        50)),
+                                                child: CachedNetworkImage(
+                                                  width: 48,
+                                                  height: 48,
+                                                  fit: BoxFit.cover,
+                                                  imageUrl: controller
+                                                      .postList[index]
+                                                      .user[0]
+                                                      .image,
+                                                  placeholder:
+                                                      (context, url) =>
+                                                      Image.asset(
+                                                        'assets/images/loading.gif',
                                                         fit: BoxFit.cover,
-                                                        imageUrl: controller
-                                                            .postList[index]
-                                                            .user[0]
-                                                            .image,
-                                                        placeholder:
-                                                            (context, url) =>
-                                                                Image.asset(
-                                                          'assets/images/loading.gif',
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            Icon(
-                                                          Icons
-                                                              .account_circle_rounded,
-                                                          size: 48.0,
-                                                          color: Colors
-                                                              .grey.shade400,
-                                                        ),
                                                       ),
-                                                    ),
+                                                  errorWidget: (context,
+                                                      url, error) =>
+                                                      Icon(
+                                                        Icons
+                                                            .account_circle_rounded,
+                                                        size: 48.0,
+                                                        color: Colors
+                                                            .grey.shade400,
+                                                      ),
+                                                ),
+                                              ),
                                               Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     (controller.postList[index]
-                                                            .user[0].name) ??
+                                                        .user[0].name) ??
                                                         "",
                                                     style: TextStyle(
                                                         fontSize: 16.0,
                                                         fontWeight:
-                                                            FontWeight.w400),
+                                                        FontWeight.w400),
                                                   ),
                                                   SizedBox(
                                                     height: 4.0,
@@ -273,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     style: TextStyle(
                                                       fontSize: 16.0,
                                                       color:
-                                                          Colors.grey.shade500,
+                                                      Colors.grey.shade500,
                                                     ),
                                                   ),
                                                 ],
@@ -283,58 +283,59 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                                               // follow section
                                               controller.checkFollowedUser(
-                                                          controller
-                                                              .postList[index]
-                                                              .user[0]
-                                                              .id) ==
-                                                      1
+                                                  controller
+                                                      .postList[index]
+                                                      .user[0]
+                                                      .id) ==
+                                                  1
                                                   ? RaisedButton(
-                                                      onPressed: () async {
-                                                        await controller
-                                                            .requestForUnFollowUserProcess(
-                                                                controller
-                                                                    .postList[
-                                                                        index]
-                                                                    .user[0]
-                                                                    .id);
-                                                      },
-                                                      child: Text(
-                                                        "UnFollow",
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .themeColor),
-                                                      ),
-                                                      color: Colors.transparent,
-                                                      elevation: 0.0,
-                                                    )
-                                                  : controller.checkFollowedUser(
-                                                              controller
-                                                                  .postList[
-                                                                      index]
-                                                                  .user[0]
-                                                                  .id) ==
-                                                          0
-                                                      ? SizedBox()
-                                                      : RaisedButton(
-                                                          onPressed: () async {
-                                                            await controller
-                                                                .requestForFollowUserProcess(
-                                                                    controller
-                                                                        .postList[
-                                                                            index]
-                                                                        .user[0]
-                                                                        .id);
-                                                          },
-                                                          child: Text(
-                                                            "follow",
-                                                            style: TextStyle(
-                                                                color: AppColors
-                                                                    .themeColor),
-                                                          ),
-                                                          color: Colors
-                                                              .transparent,
-                                                          elevation: 0.0,
-                                                        ),
+                                                onPressed: () async {
+                                                  await controller
+                                                      .requestForUnFollowUserProcess(
+                                                      controller
+                                                          .postList[
+                                                      index]
+                                                          .user[0]
+                                                          .id);
+                                                },
+                                                child: Text(
+                                                  "UnFollow",
+                                                  style: TextStyle(
+                                                      color: AppColors
+                                                          .themeColor),
+                                                ),
+                                                color: Colors.transparent,
+                                                elevation: 0.0,
+                                              )
+                                                  : controller
+                                                  .checkFollowedUser(
+                                                  controller
+                                                      .postList[
+                                                  index]
+                                                      .user[0]
+                                                      .id) ==
+                                                  -1
+                                                  ?
+                                              RaisedButton(
+                                                onPressed: () async {
+                                                  await controller
+                                                      .requestForFollowUserProcess(
+                                                      controller
+                                                          .postList[
+                                                      index]
+                                                          .user[0]
+                                                          .id);
+                                                },
+                                                child: Text(
+                                                  "follow",
+                                                  style: TextStyle(
+                                                      color: AppColors
+                                                          .themeColor),
+                                                ),
+                                                color: Colors
+                                                    .transparent,
+                                                elevation: 0.0,
+                                              ) : SizedBox(),
                                               SizedBox(
                                                 width: 16.0,
                                               )
@@ -345,24 +346,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           ),
                                           Container(
                                             padding: controller
-                                                        .postList[index].type !=
-                                                    "text"
+                                                .postList[index].type !=
+                                                "text"
                                                 ? EdgeInsets.symmetric(
-                                                    vertical: 10.0,
-                                                    horizontal: 12.0)
+                                                vertical: 10.0,
+                                                horizontal: 12.0)
                                                 : EdgeInsets.symmetric(
-                                                    vertical: 72.0,
-                                                    horizontal: 12.0),
+                                                vertical: 72.0,
+                                                horizontal: 12.0),
                                             color: controller
-                                                        .postList[index].type !=
-                                                    "text"
+                                                .postList[index].type !=
+                                                "text"
                                                 ? Colors.white
                                                 : controller.postList[index]
-                                                            .color !=
-                                                        "null"
-                                                    ? HexColor(controller
-                                                        .postList[index].color)
-                                                    : Colors.white,
+                                                .color !=
+                                                "null"
+                                                ? HexColor(controller
+                                                .postList[index].color)
+                                                : Colors.white,
                                             child: Column(
                                               children: [
                                                 Align(
@@ -372,32 +373,32 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     style: TextStyle(
                                                       fontSize: 18.0,
                                                       color: controller
-                                                                  .postList[
-                                                                      index]
-                                                                  .type !=
-                                                              "text"
+                                                          .postList[
+                                                      index]
+                                                          .type !=
+                                                          "text"
                                                           ? Colors.grey
                                                           : controller
-                                                                      .postList[
-                                                                          index]
-                                                                      .color !=
-                                                                  "null"
-                                                              ? HexColor(controller
-                                                                              .postList[
-                                                                                  index]
-                                                                              .color)
-                                                                          .computeLuminance() >
-                                                                      0.5
-                                                                  ? Colors.black
-                                                                  : Colors.white
-                                                              : Colors
-                                                                  .grey.shade50,
+                                                          .postList[
+                                                      index]
+                                                          .color !=
+                                                          "null"
+                                                          ? HexColor(controller
+                                                          .postList[
+                                                      index]
+                                                          .color)
+                                                          .computeLuminance() >
+                                                          0.5
+                                                          ? Colors.black
+                                                          : Colors.white
+                                                          : Colors
+                                                          .grey.shade50,
                                                     ),
                                                   ),
                                                   alignment: controller
-                                                              .postList[index]
-                                                              .type ==
-                                                          "text"
+                                                      .postList[index]
+                                                      .type ==
+                                                      "text"
                                                       ? Alignment.center
                                                       : Alignment.topLeft,
                                                 ),
@@ -408,142 +409,142 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             height: 12.0,
                                           ),
                                           controller.postList[index].content !=
-                                                  "https://sritsolution.com/hello/"
+                                              "https://sritsolution.com/hello/"
                                               ? controller.postList[index]
-                                                          .type ==
-                                                      "img"
-                                                  ? GestureDetector(
-                                                      onTap: () {
-                                                        Get.to(ImageViewerView(
-                                                            controller
-                                                                .postList[index]
-                                                                .content));
-                                                      },
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    2.0)),
-                                                        child:
-                                                            CachedNetworkImage(
-                                                          width:
-                                                              double.infinity,
-                                                          height: 420,
-                                                          fit: BoxFit.cover,
-                                                          imageUrl: controller
-                                                              .postList[index]
-                                                              .content,
-                                                          placeholder:
-                                                              (context, url) =>
-                                                                  Image.asset(
-                                                            'assets/images/loading.gif',
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                          errorWidget: (context,
-                                                                  url, error) =>
-                                                              SizedBox(),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  : Container(
-                                                      height: 260,
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Chewie(
-                                                        controller:
-                                                            ChewieController(
-                                                          videoPlayerController:
-                                                              VideoPlayerController
-                                                                  .network(controller
-                                                                      .postList[
-                                                                          index]
-                                                                      .content),
-                                                          aspectRatio: 3 / 2,
-                                                          autoInitialize: true,
-                                                          autoPlay: false,
-                                                          showControlsOnInitialize:
-                                                              false,
-                                                          looping: false,
+                                              .type ==
+                                              "img"
+                                              ? GestureDetector(
+                                            onTap: () {
+                                              Get.to(ImageViewerView(
+                                                  controller
+                                                      .postList[index]
+                                                      .content));
+                                            },
+                                            child: ClipRRect(
+                                              borderRadius:
+                                              BorderRadius.all(
+                                                  Radius.circular(
+                                                      2.0)),
+                                              child:
+                                              CachedNetworkImage(
+                                                width:
+                                                double.infinity,
+                                                height: 420,
+                                                fit: BoxFit.cover,
+                                                imageUrl: controller
+                                                    .postList[index]
+                                                    .content,
+                                                placeholder:
+                                                    (context, url) =>
+                                                    Image.asset(
+                                                      'assets/images/loading.gif',
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                errorWidget: (context,
+                                                    url, error) =>
+                                                    SizedBox(),
+                                              ),
+                                            ),
+                                          )
+                                              : Container(
+                                            height: 260,
+                                            alignment:
+                                            Alignment.center,
+                                            child: Chewie(
+                                              controller:
+                                              ChewieController(
+                                                videoPlayerController:
+                                                VideoPlayerController
+                                                    .network(controller
+                                                    .postList[
+                                                index]
+                                                    .content),
+                                                aspectRatio: 3 / 2,
+                                                autoInitialize: true,
+                                                autoPlay: false,
+                                                showControlsOnInitialize:
+                                                false,
+                                                looping: false,
 
-                                                          deviceOrientationsAfterFullScreen: [
-                                                            DeviceOrientation
-                                                                .portraitUp,
-                                                            DeviceOrientation
-                                                                .portraitDown,
-                                                          ],
-                                                          // customControls: Container(
-                                                          //   height: videoPlayerController.value.size.height,
-                                                          //   width: videoPlayerController.value.size.width,
-                                                          //   child: Column(
-                                                          //     mainAxisAlignment: MainAxisAlignment.center,
-                                                          //     children: [
-                                                          //       Center(
-                                                          //         child: Container(
-                                                          //           height: 70,
-                                                          //           width: 70,
-                                                          //           decoration: BoxDecoration(
-                                                          //             borderRadius: BorderRadius.circular(18),
-                                                          //             color: Colors.black.withOpacity(0.5),
-                                                          //             shape: BoxShape.rectangle,
-                                                          //               border: Border.all(
-                                                          //                 width: 4,
-                                                          //                 color: Colors.white
-                                                          //               )
-                                                          //           ),
-                                                          //           child: IconButton(
-                                                          //             icon: Icon(Icons.play_arrow_rounded,color: Colors.white,),
-                                                          //             onPressed: () {
-                                                          //               if (videoPlayerController.value.isPlaying) {
-                                                          //                 videoPlayerController.pause();
-                                                          //               } else {
-                                                          //                 // If the video is paused, play it.
-                                                          //                 videoPlayerController.play();
-                                                          //               }
-                                                          //             },
-                                                          //           ),
-                                                          //         ),
-                                                          //       ),
-                                                          //     ],
-                                                          //   ),
-                                                          // ),
-                                                          errorBuilder: (context,
-                                                              errorMessage) {
-                                                            return Center(
-                                                              child: Text(
-                                                                errorMessage,
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white),
-                                                              ),
-                                                            );
-                                                          },
-                                                        ),
-                                                      ),
-                                                    )
+                                                deviceOrientationsAfterFullScreen: [
+                                                  DeviceOrientation
+                                                      .portraitUp,
+                                                  DeviceOrientation
+                                                      .portraitDown,
+                                                ],
+                                                // customControls: Container(
+                                                //   height: videoPlayerController.value.size.height,
+                                                //   width: videoPlayerController.value.size.width,
+                                                //   child: Column(
+                                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                                //     children: [
+                                                //       Center(
+                                                //         child: Container(
+                                                //           height: 70,
+                                                //           width: 70,
+                                                //           decoration: BoxDecoration(
+                                                //             borderRadius: BorderRadius.circular(18),
+                                                //             color: Colors.black.withOpacity(0.5),
+                                                //             shape: BoxShape.rectangle,
+                                                //               border: Border.all(
+                                                //                 width: 4,
+                                                //                 color: Colors.white
+                                                //               )
+                                                //           ),
+                                                //           child: IconButton(
+                                                //             icon: Icon(Icons.play_arrow_rounded,color: Colors.white,),
+                                                //             onPressed: () {
+                                                //               if (videoPlayerController.value.isPlaying) {
+                                                //                 videoPlayerController.pause();
+                                                //               } else {
+                                                //                 // If the video is paused, play it.
+                                                //                 videoPlayerController.play();
+                                                //               }
+                                                //             },
+                                                //           ),
+                                                //         ),
+                                                //       ),
+                                                //     ],
+                                                //   ),
+                                                // ),
+                                                errorBuilder: (context,
+                                                    errorMessage) {
+                                                  return Center(
+                                                    child: Text(
+                                                      errorMessage,
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .white),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          )
                                               : SizedBox(),
                                           SizedBox(
                                             height: 24.0,
                                           ),
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
+                                            MainAxisAlignment.spaceAround,
                                             children: [
                                               Column(
                                                 children: [
                                                   FlutterReactionButtonCheck(
                                                     onReactionChanged:
                                                         (reaction, i,
-                                                            isChecked) {
+                                                        isChecked) {
                                                       print(
                                                           'reaction selected index: $index');
                                                       controller
                                                           .requestForToSendReaction(
-                                                              controller
-                                                                  .postList[
-                                                                      index]
-                                                                  .id,
-                                                              (i + 1)
-                                                                  .toString());
+                                                          controller
+                                                              .postList[
+                                                          index]
+                                                              .id,
+                                                          (i + 1)
+                                                              .toString());
                                                     },
                                                     reactions: <Reaction>[
                                                       Reaction(
@@ -551,7 +552,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                         icon: Icon(
                                                           Icons.thumb_up,
                                                           color:
-                                                              Colors.blueAccent,
+                                                          Colors.blueAccent,
                                                         ),
                                                       ),
                                                       Reaction(
@@ -573,7 +574,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       Reaction(
                                                           title: Text("Sad"),
                                                           icon:
-                                                              SvgPicture.asset(
+                                                          SvgPicture.asset(
                                                             "assets/images/sad.svg",
                                                             width: 24.0,
                                                             height: 24.0,
@@ -588,63 +589,71 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       ),
                                                     ],
                                                     initialReaction: Reaction(
-                                                      icon: controller.checkCurrentUserReaction(
-                                                                  controller
-                                                                      .postList[
-                                                                          index]
-                                                                      .postReaction) ==
-                                                              ""
+                                                      icon: controller
+                                                          .checkCurrentUserReaction(
+                                                          controller
+                                                              .postList[
+                                                          index]
+                                                              .postReaction) ==
+                                                          ""
                                                           ? Icon(
-                                                              Icons
-                                                                  .thumb_up_alt_outlined,
-                                                              color: Colors
-                                                                  .black54,
-                                                            )
-                                                          : controller.checkCurrentUserReaction(controller
-                                                                      .postList[
-                                                                          index]
-                                                                      .postReaction) !=
-                                                                  " "
-                                                              ? SvgPicture
-                                                                  .asset(
-                                                                  controller.checkCurrentUserReaction(controller
-                                                                      .postList[
-                                                                          index]
-                                                                      .postReaction),
-                                                                  width: 24.0,
-                                                                  height: 24.0,
-                                                                )
-                                                              : Icon(
-                                                                  Icons
-                                                                      .thumb_up,
-                                                                  color: Colors
-                                                                      .blueAccent,
-                                                                ),
+                                                        Icons
+                                                            .thumb_up_alt_outlined,
+                                                        color: Colors
+                                                            .black54,
+                                                      )
+                                                          : controller
+                                                          .checkCurrentUserReaction(
+                                                          controller
+                                                              .postList[
+                                                          index]
+                                                              .postReaction) !=
+                                                          " "
+                                                          ? SvgPicture
+                                                          .asset(
+                                                        controller
+                                                            .checkCurrentUserReaction(
+                                                            controller
+                                                                .postList[
+                                                            index]
+                                                                .postReaction),
+                                                        width: 24.0,
+                                                        height: 24.0,
+                                                      )
+                                                          : Icon(
+                                                        Icons
+                                                            .thumb_up,
+                                                        color: Colors
+                                                            .blueAccent,
+                                                      ),
                                                     ),
                                                     boxItemsSpacing: 8.0,
                                                     boxPadding:
-                                                        EdgeInsets.all(4.0),
+                                                    EdgeInsets.all(4.0),
                                                     boxAlignment:
-                                                        Alignment.bottomLeft,
+                                                    Alignment.bottomLeft,
                                                     boxDuration: const Duration(
                                                         milliseconds: 100),
                                                   ),
                                                   controller.postList[index]
-                                                          .postReaction.isEmpty
+                                                      .postReaction.isEmpty
                                                       ? Text(
-                                                          "Like",
-                                                          style: TextStyle(
-                                                            color: Colors
-                                                                .grey.shade400,
-                                                          ),
-                                                        )
+                                                    "Like",
+                                                    style: TextStyle(
+                                                      color: Colors
+                                                          .grey.shade400,
+                                                    ),
+                                                  )
                                                       : Text(
-                                                          " ${controller.postList[index].postReaction.length} like",
-                                                          style: TextStyle(
-                                                            color: Colors
-                                                                .grey.shade500,
-                                                          ),
-                                                        ),
+                                                    " ${controller
+                                                        .postList[index]
+                                                        .postReaction
+                                                        .length} like",
+                                                    style: TextStyle(
+                                                      color: Colors
+                                                          .grey.shade500,
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
                                               Column(
@@ -657,7 +666,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     "Share",
                                                     style: TextStyle(
                                                       color:
-                                                          Colors.grey.shade400,
+                                                      Colors.grey.shade400,
                                                     ),
                                                   ),
                                                 ],
@@ -685,85 +694,88 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       color: Colors.black54,
                                                     ),
                                                     controller.postList[index]
-                                                            .postComment.isEmpty
+                                                        .postComment.isEmpty
                                                         ? Text(
-                                                            "Comment",
-                                                            style: TextStyle(
-                                                              color: Colors.grey
-                                                                  .shade400,
-                                                            ),
-                                                          )
+                                                      "Comment",
+                                                      style: TextStyle(
+                                                        color: Colors.grey
+                                                            .shade400,
+                                                      ),
+                                                    )
                                                         : Text(
-                                                            "${controller.postList[index].postComment.length} comment",
-                                                            style: TextStyle(
-                                                              color: Colors.grey
-                                                                  .shade500,
-                                                            )),
+                                                        "${controller
+                                                            .postList[index]
+                                                            .postComment
+                                                            .length} comment",
+                                                        style: TextStyle(
+                                                          color: Colors.grey
+                                                              .shade500,
+                                                        )),
                                                   ],
                                                 ),
                                               ),
                                               controller.postList[index].type !=
-                                                          "text" ||
-                                                      controller.postList[index]
-                                                              .content !=
-                                                          null ||
-                                                      controller.postList[index]
-                                                              .content !=
-                                                          "https://sritsolution.com/hello/"
+                                                  "text" ||
+                                                  controller.postList[index]
+                                                      .content !=
+                                                      null ||
+                                                  controller.postList[index]
+                                                      .content !=
+                                                      "https://sritsolution.com/hello/"
                                                   ? GestureDetector(
-                                                      onTap: () async {
-                                                        if (controller
-                                                                .postList[index]
-                                                                .type ==
-                                                            "img") {
-                                                          final status =
-                                                              await Permission
-                                                                  .storage
-                                                                  .request();
-                                                          final externalDir =
-                                                              await getExternalStorageDirectory();
-                                                          if (status
-                                                              .isGranted) {
-                                                            final id =
-                                                                await FlutterDownloader
-                                                                    .enqueue(
-                                                              url: controller
-                                                                  .postList[
-                                                                      index]
-                                                                  .content,
-                                                              savedDir:
-                                                                  externalDir
-                                                                      .path,
-                                                              fileName:
-                                                                  controller
-                                                                      .postList[
-                                                                          index]
-                                                                      .content,
-                                                              showNotification:
-                                                                  true,
-                                                              openFileFromNotification:
-                                                                  true,
-                                                            );
-                                                          }
-                                                        }
-                                                      },
-                                                      child: Column(
-                                                        children: [
-                                                          Icon(
-                                                            Icons.save_alt,
-                                                            color:
-                                                                Colors.black54,
-                                                          ),
-                                                          Text(
-                                                            "Save",
-                                                            style: TextStyle(
-                                                              color: Colors.grey
-                                                                  .shade400,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                onTap: () async {
+                                                  if (controller
+                                                      .postList[index]
+                                                      .type ==
+                                                      "img") {
+                                                    final status =
+                                                    await Permission
+                                                        .storage
+                                                        .request();
+                                                    final externalDir =
+                                                    await getExternalStorageDirectory();
+                                                    if (status
+                                                        .isGranted) {
+                                                      final id =
+                                                      await FlutterDownloader
+                                                          .enqueue(
+                                                        url: controller
+                                                            .postList[
+                                                        index]
+                                                            .content,
+                                                        savedDir:
+                                                        externalDir
+                                                            .path,
+                                                        fileName:
+                                                        controller
+                                                            .postList[
+                                                        index]
+                                                            .content,
+                                                        showNotification:
+                                                        true,
+                                                        openFileFromNotification:
+                                                        true,
+                                                      );
+                                                    }
+                                                  }
+                                                },
+                                                child: Column(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.save_alt,
+                                                      color:
+                                                      Colors.black54,
+                                                    ),
+                                                    Text(
+                                                      "Save",
+                                                      style: TextStyle(
+                                                        color: Colors.grey
+                                                            .shade400,
                                                       ),
-                                                    )
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
                                                   : SizedBox()
                                             ],
                                           )
@@ -842,37 +854,38 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 Row(
                                   children: [
                                     controller.commentList[index].user[0]
-                                                .image ==
-                                            "https://sritsolution.com/hello/"
+                                        .image ==
+                                        "https://sritsolution.com/hello/"
                                         ? Icon(
-                                            Icons.account_circle_rounded,
-                                            size: 48.0,
-                                            color: Colors.grey.shade400,
-                                          )
+                                      Icons.account_circle_rounded,
+                                      size: 48.0,
+                                      color: Colors.grey.shade400,
+                                    )
                                         : ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50)),
-                                            child: CachedNetworkImage(
-                                              width: 48,
-                                              height: 48,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(50)),
+                                      child: CachedNetworkImage(
+                                        width: 48,
+                                        height: 48,
+                                        fit: BoxFit.cover,
+                                        imageUrl: controller
+                                            .commentList[index]
+                                            .user[0]
+                                            .image,
+                                        placeholder: (context, url) =>
+                                            Image.asset(
+                                              'assets/images/loading.gif',
                                               fit: BoxFit.cover,
-                                              imageUrl: controller
-                                                  .commentList[index]
-                                                  .user[0]
-                                                  .image,
-                                              placeholder: (context, url) =>
-                                                  Image.asset(
-                                                'assets/images/loading.gif',
-                                                fit: BoxFit.cover,
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) => Icon(
-                                                Icons.account_circle_rounded,
-                                                size: 48.0,
-                                                color: Colors.grey.shade400,
-                                              ),
                                             ),
-                                          ),
+                                        errorWidget:
+                                            (context, url, error) =>
+                                            Icon(
+                                              Icons.account_circle_rounded,
+                                              size: 48.0,
+                                              color: Colors.grey.shade400,
+                                            ),
+                                      ),
+                                    ),
                                     SizedBox(
                                       width: 24.0,
                                     ),
@@ -902,10 +915,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                    bottom: MediaQuery
+                        .of(context)
+                        .viewInsets
+                        .bottom),
                 child: Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
                   child: Row(
                     children: [
                       Expanded(
@@ -915,9 +931,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           child: TextFormField(
                             keyboardType: TextInputType.multiline,
                             validator: (input) =>
-                                input.isEmpty ? "Please write something" : null,
+                            input.isEmpty ? "Please write something" : null,
                             controller:
-                                _homeController.commentContentController,
+                            _homeController.commentContentController,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 16.0, vertical: 0.0),
@@ -930,9 +946,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               ),
                               border: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(24.0)),
+                                BorderRadius.all(Radius.circular(24.0)),
                                 borderSide:
-                                    new BorderSide(color: AppColors.themeColor),
+                                new BorderSide(color: AppColors.themeColor),
                               ),
                             ),
                           ),

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
+import '../models/ViewProfileModel.dart';
 import '../models/follow_model.dart';
 
 Future<bool> followAUser(String userId, String followBy) async {
@@ -25,7 +26,6 @@ Future<bool> followAUser(String userId, String followBy) async {
 
 Future<bool> unFollowAUser(String userId, String followBy) async {
   final String url = '${GlobalConfiguration().getValue('base_url')}follow';
-
   var client = http.Client();
   final msg = jsonEncode({"userid": userId, "follow_by": followBy});
   var response = await client.post(
@@ -33,11 +33,13 @@ Future<bool> unFollowAUser(String userId, String followBy) async {
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: msg,
   );
-  print(response.statusCode);
   if (response.statusCode == 200) {
+    print(responseModelFromJson(response.body).message);
+
     return true;
   } else
     return false;
+  print(response.statusCode);
 }
 
 Future<List<FollowData>> followerListApi(String userId) async {

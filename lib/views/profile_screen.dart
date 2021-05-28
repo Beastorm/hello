@@ -36,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     super.initState();
     profileController.requestForUserProfile();
     _tabController = new TabController(length: 3, vsync: this);
-    controller.requestForfollwerList();
+    controller.requestForFollowerList();
     controller.requestForFollowingList();
   }
 

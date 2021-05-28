@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+
 import '../common_components/MyAlertDilog.dart';
 import '../models/comment_model.dart';
 import '../models/follow_model.dart';
@@ -38,7 +39,7 @@ class HomeController extends GetxController {
 
   //follow
 
-  var followerList = List<FollowData>().obs;
+  var followerList = List<FollowData>().obs; //followed
   var followingList = List<FollowData>().obs;
 
   @override
@@ -47,7 +48,7 @@ class HomeController extends GetxController {
     await requestForLanguageList();
     selectedLanguageByUser.value = getLanguageFromPref();
     await requestALLPost();
-    await requestForfollwerList();
+    await requestForFollowerList();
   }
 
   requestALLPost() async {
@@ -74,20 +75,23 @@ class HomeController extends GetxController {
     print(currentUserPostList.length);
   }
 
-  //FollowerList
-  requestForfollwerList() async {
+  //FollowerList //followed
+  requestForFollowerList() async {
     try {
       isLoading(true);
       var followers = await followerListApi(pref.read('userId'));
 
       if (followers != null) {
         followerList.assignAll(followers);
+        getFollowedIds();
       }
-      print('Followers:.....$followers, list $followerList');
+      print('Followed:.... $followedIds');
     } finally {
       isLoading(false);
     }
   }
+
+  //FollowingList
   requestForFollowingList() async {
     try {
       isLoading(true);
@@ -101,18 +105,19 @@ class HomeController extends GetxController {
       isLoading(false);
     }
   }
-//FollowingList
 
   //-1-> not followed... should show follow
   //-0-> current user...should show nothing
   //-1-> followed... should show un follow
 
-  int checkFollowedUser(String userId) {
-    //followedIds = followedList.map((element) => element.userid[0].id);
-
+  getFollowedIds() {
     for (var item in followerList) {
       followedIds.add(item.userid[0].id);
     }
+  }
+
+  int checkFollowedUser(String userId) {
+
     if (followedIds.contains(userId)) {
       if (pref.read("userId") != userId) {
         return 1;
@@ -124,12 +129,13 @@ class HomeController extends GetxController {
 
   requestForFollowUserProcess(String postUserId) async {
     if (!followedIds.contains(postUserId)) followedIds.add(postUserId);
-
     followedIds.refresh();
     postList.refresh();
-
     update();
-    await followAUser(pref.read("userId"), postUserId);
+    print('Followed:.... $followedIds');
+    var response=  await followAUser(postUserId,pref.read("userId"));
+
+    print('Followed:.... $followedIds   $response');
   }
 
   requestForUnFollowUserProcess(String postUserId) async {
@@ -137,7 +143,9 @@ class HomeController extends GetxController {
     followedIds.refresh();
     postList.refresh();
     update();
-    await unFollowAUser(pref.read("userId"), postUserId);
+
+   var response=  await unFollowAUser(postUserId,pref.read("userId"));
+    print('Followed:.... $followedIds   $response');
   }
 
   requestForSendComment(String postId, String parent) async {

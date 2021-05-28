@@ -279,62 +279,69 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 ],
                                               ),
                                               Spacer(),
-                                              // Icon(Icons.more_vert_outlined),
 
                                               // follow section
-                                              controller.checkFollowedUser(
-                                                          controller
-                                                              .postList[index]
-                                                              .user[0]
-                                                              .id) ==
-                                                      1
-                                                  ? RaisedButton(
-                                                      onPressed: () async {
-                                                        await controller
-                                                            .requestForUnFollowUserProcess(
+                                              Obx(() {
+                                                return controller
+                                                            .checkFollowedUser(
                                                                 controller
                                                                     .postList[
                                                                         index]
                                                                     .user[0]
-                                                                    .id);
-                                                      },
-                                                      child: Text(
-                                                        "UnFollow",
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .themeColor),
-                                                      ),
-                                                      color: Colors.transparent,
-                                                      elevation: 0.0,
-                                                    )
-                                                  : controller.checkFollowedUser(
-                                                              controller
-                                                                  .postList[
-                                                                      index]
-                                                                  .user[0]
-                                                                  .id) ==
-                                                          0
-                                                      ? SizedBox()
-                                                      : RaisedButton(
-                                                          onPressed: () async {
-                                                            await controller
-                                                                .requestForFollowUserProcess(
-                                                                    controller
-                                                                        .postList[
-                                                                            index]
-                                                                        .user[0]
-                                                                        .id);
-                                                          },
-                                                          child: Text(
-                                                            "follow",
-                                                            style: TextStyle(
-                                                                color: AppColors
-                                                                    .themeColor),
-                                                          ),
-                                                          color: Colors
-                                                              .transparent,
-                                                          elevation: 0.0,
+                                                                    .id) ==
+                                                        1
+                                                    ? RaisedButton(
+                                                        onPressed: () async {
+                                                          await controller
+                                                              .requestForUnFollowUserProcess(
+                                                                  controller
+                                                                      .postList[
+                                                                          index]
+                                                                      .user[0]
+                                                                      .id);
+                                                        },
+                                                        child: Text(
+                                                          "UnFollow",
+                                                          style: TextStyle(
+                                                              color: AppColors
+                                                                  .themeColor),
                                                         ),
+                                                        color:
+                                                            Colors.transparent,
+                                                        elevation: 0.0,
+                                                      )
+                                                    : controller.checkFollowedUser(
+                                                                controller
+                                                                    .postList[
+                                                                        index]
+                                                                    .user[0]
+                                                                    .id) ==
+                                                            -1
+                                                        ? RaisedButton(
+                                                            onPressed:
+                                                                () async {
+                                                              await controller
+                                                                  .requestForFollowUserProcess(
+                                                                      controller
+                                                                          .postList[
+                                                                              index]
+                                                                          .user[
+                                                                              0]
+                                                                          .id);
+                                                            },
+                                                            child: Text(
+                                                              "follow",
+                                                              style: TextStyle(
+                                                                  color: AppColors
+                                                                      .themeColor),
+                                                            ),
+                                                            color: Colors
+                                                                .transparent,
+                                                            elevation: 0.0,
+                                                          )
+                                                        : SizedBox();
+                                              }),
+
                                               SizedBox(
                                                 width: 16.0,
                                               )

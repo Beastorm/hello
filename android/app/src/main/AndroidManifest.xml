@@ -8,36 +8,14 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <application
 
         android:name="io.flutter.app.FlutterApplication"
         android:label="milto"
         android:icon="@mipmap/launcher_icon">
         android:requestLegacyExternalStorage="true"
-<!--        <provider-->
-<!--            android:name="androidx.work.impl.WorkManagerInitializer"-->
-<!--            android:authorities="${applicationId}.workmanager-init"-->
-<!--            />-->
 
-<!--        <provider-->
-<!--            android:name="vn.hunghd.flutterdownloader.FlutterDownloaderInitializer"-->
-<!--            android:authorities="${applicationId}.flutter-downloader-init"-->
-<!--            android:exported="false">-->
-<!--            &lt;!&ndash; changes this number to configure the maximum number of concurrent tasks &ndash;&gt;-->
-<!--            <meta-data-->
-<!--                android:name="vn.hunghd.flutterdownloader.MAX_CONCURRENT_TASKS"-->
-<!--                android:value="5" />-->
-<!--        </provider>-->
-        <provider
-            android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
-            android:authorities="${applicationId}.flutter_downloader.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
-        </provider>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -84,7 +62,15 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
+        <provider
+            android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
+            android:authorities="${applicationId}.flutter_downloader.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

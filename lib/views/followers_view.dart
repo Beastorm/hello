@@ -17,7 +17,7 @@ class FollowersView extends StatelessWidget {
         ),
         body: GetX<HomeController>(
           initState: (context) {
-            homeController .requestForfollwerList();
+            homeController .requestForFollowerList();
           },
           builder: (controller) {
             if (controller.isLoading.value) {

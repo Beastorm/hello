@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../common_components/MyAlertDilog.dart';
 import '../models/comment_model.dart';
@@ -19,6 +21,7 @@ import '../views/create_post_screen.dart';
 
 class HomeController extends GetxController {
   final pref = GetStorage();
+  Dio dio = Dio();
   var videoFile = File("").obs;
   var imageFile = File("").obs;
   ImagePicker picker = ImagePicker();
@@ -41,6 +44,11 @@ class HomeController extends GetxController {
 
   var followerList = List<FollowData>().obs; //followed
   var followingList = List<FollowData>().obs;
+
+  var isFileDownloading = false.obs;
+  var fileDownloadingPer = "0%".obs;
+
+  var fileDownloadingStatus = "Downloading ...".obs;
 
   @override
   void onInit() async {
@@ -117,7 +125,6 @@ class HomeController extends GetxController {
   }
 
   int checkFollowedUser(String userId) {
-
     if (followedIds.contains(userId)) {
       if (pref.read("userId") != userId) {
         return 1;
@@ -133,7 +140,7 @@ class HomeController extends GetxController {
     postList.refresh();
     update();
     print('Followed:.... $followedIds');
-    var response=  await followAUser(postUserId,pref.read("userId"));
+    var response = await followAUser(postUserId, pref.read("userId"));
 
     print('Followed:.... $followedIds   $response');
   }
@@ -144,7 +151,7 @@ class HomeController extends GetxController {
     postList.refresh();
     update();
 
-   var response=  await unFollowAUser(postUserId,pref.read("userId"));
+    var response = await unFollowAUser(postUserId, pref.read("userId"));
     print('Followed:.... $followedIds   $response');
   }
 
@@ -297,5 +304,38 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  downloadFile(String url) async {
+    var dir = await getExternalStorageDirectory();
+
+    // Get.snackbar("Downloading", "$fileDownloadingPer}",
+    //     backgroundColor: AppColors.themeColor,
+    //     colorText: Colors.white,
+    //     snackPosition: SnackPosition.BOTTOM,
+    //     duration: Duration(days: 1));
+
+    try {
+      final status = await Permission.storage.request();
+
+      if (status.isGranted)
+        await dio.download(
+            url, "${dir.path}/${url.substring(url.lastIndexOf("/") + 1)}",
+            onReceiveProgress: (received, total) {
+          isFileDownloading(true);
+
+          fileDownloadingPer.value =
+              (received / total * 100).toStringAsFixed(0) + "%";
+
+          update();
+          print((received / total * 100).toStringAsFixed(0) + "%");
+          print(url.substring(url.lastIndexOf("/") + 1));
+        });
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+
+    isFileDownloading(false);
+    fileDownloadingStatus.value = "Download Completed";
   }
 }

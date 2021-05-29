@@ -2,20 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_reaction_button/flutter_reaction_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:video_player/video_player.dart';
 
 import '../common_components/MySnackBar.dart';
 import '../common_components/langugae_dialog.dart';
 import '../controllers/follow_controller.dart';
 import '../controllers/home_controller.dart';
-import '../models/post_model.dart';
 import '../style/AppColors.dart';
 import 'comment_view.dart';
 import 'image_viewer_view.dart';
@@ -723,35 +719,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                 .postList[index]
                                                                 .type ==
                                                             "img") {
-                                                          final status =
-                                                              await Permission
-                                                                  .storage
-                                                                  .request();
-                                                          final externalDir =
-                                                              await getExternalStorageDirectory();
-                                                          if (status
-                                                              .isGranted) {
-                                                            final id =
-                                                                await FlutterDownloader
-                                                                    .enqueue(
-                                                              url: controller
-                                                                  .postList[
-                                                                      index]
-                                                                  .content,
-                                                              savedDir:
-                                                                  externalDir
-                                                                      .path,
-                                                              fileName:
+                                                          controller
+                                                              .downloadFile(
                                                                   controller
                                                                       .postList[
                                                                           index]
-                                                                      .content,
-                                                              showNotification:
-                                                                  true,
-                                                              openFileFromNotification:
-                                                                  true,
-                                                            );
-                                                          }
+                                                                      .content);
+                                                          showDownloadingBottomSheet(
+                                                              context,
+                                                              controller);
+                                                          controller
+                                                              .fileDownloadingPer
+                                                              .value = "0%";
                                                         }
                                                       },
                                                       child: Column(
@@ -817,8 +796,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  showCommentBottomSheet(context, PostData postData) {
+  showDownloadingBottomSheet(context, HomeController controller) {
     showModalBottomSheet(
+        backgroundColor: AppColors.themeColor,
         context: context,
         isScrollControlled: true,
         builder: (context) {
@@ -829,138 +809,27 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               SizedBox(
                 height: 16.0,
               ),
-              LimitedBox(
-                maxHeight: double.infinity,
-                child: GetX<HomeController>(builder: (controller) {
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: controller.commentList.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          color: Colors.grey.shade200,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    controller.commentList[index].user[0]
-                                                .image ==
-                                            "https://sritsolution.com/hello/"
-                                        ? Icon(
-                                            Icons.account_circle_rounded,
-                                            size: 48.0,
-                                            color: Colors.grey.shade400,
-                                          )
-                                        : ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(50)),
-                                            child: CachedNetworkImage(
-                                              width: 48,
-                                              height: 48,
-                                              fit: BoxFit.cover,
-                                              imageUrl: controller
-                                                  .commentList[index]
-                                                  .user[0]
-                                                  .image,
-                                              placeholder: (context, url) =>
-                                                  Image.asset(
-                                                'assets/images/loading.gif',
-                                                fit: BoxFit.cover,
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) => Icon(
-                                                Icons.account_circle_rounded,
-                                                size: 48.0,
-                                                color: Colors.grey.shade400,
-                                              ),
-                                            ),
-                                          ),
-                                    SizedBox(
-                                      width: 24.0,
-                                    ),
-                                    Text(
-                                      controller
-                                          .commentList[index].user[0].name,
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: Colors.grey.shade400,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                    Spacer(),
-                                  ],
-                                ),
-                                Text(controller.commentList[index].content),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }),
-              ),
-              SizedBox(
-                height: 16.0,
-              ),
               Padding(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 5,
-                        child: Form(
-                          key: _formKey,
-                          child: TextFormField(
-                            keyboardType: TextInputType.multiline,
-                            validator: (input) =>
-                                input.isEmpty ? "Please write something" : null,
-                            controller:
-                                _homeController.commentContentController,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 0.0),
-                              hintText: 'Write Something...',
-                              hintStyle: TextStyle(color: Colors.grey.shade400),
-                              labelStyle: TextStyle(
-                                fontSize: 15,
-                                color: Colors.grey,
-                                fontStyle: FontStyle.normal,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(24.0)),
-                                borderSide:
-                                    new BorderSide(color: AppColors.themeColor),
-                              ),
-                            ),
-                          ),
+                  child: Obx(() {
+                    return Row(
+                      children: [
+                        Text(
+                          controller.fileDownloadingStatus.value,
+                          style: TextStyle(color: Colors.white, fontSize: 18.0),
                         ),
-                      ),
-                      Expanded(
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.send,
-                            color: AppColors.themeColor,
-                          ),
-                          onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              await _homeController.requestForSendComment(
-                                  postData.id, "0");
-                            }
-                          },
+                        Spacer(),
+                        Expanded(
+                          child: Text(controller.fileDownloadingPer.value,
+                              style: TextStyle(color: Colors.white)),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    );
+                  }),
                 ),
               ),
               SizedBox(height: 10),

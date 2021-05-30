@@ -35,7 +35,6 @@ Future<bool> unFollowAUser(String userId, String followBy) async {
   );
   if (response.statusCode == 200) {
     print(responseModelFromJson(response.body).message);
-
     return true;
   } else
     return false;

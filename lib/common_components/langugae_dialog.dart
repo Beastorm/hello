@@ -16,6 +16,7 @@ languageDialog(bool showDialog) {
         elevation: 0.0,
         onPressed: () {
           homeController.postList.refresh();
+          homeController.requestALLPost();
           Get.back();
         },
         child: Text(

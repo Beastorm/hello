@@ -26,9 +26,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final HomeController _homeController = Get.put(HomeController());
   final FollowController followController = Get.put(FollowController());
   var refreshKey = GlobalKey<RefreshIndicatorState>();
-  var _formKey = GlobalKey<FormState>();
   TabController _tabController;
-  String follow = 'Follow';
+
 
   @override
   void initState() {
@@ -716,9 +715,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   ? GestureDetector(
                                                       onTap: () async {
                                                         if (controller
-                                                                .postList[index]
-                                                                .type ==
-                                                            "img") {
+                                                                    .postList[
+                                                                        index]
+                                                                    .type ==
+                                                                "img" ||
+                                                            controller
+                                                                    .postList[
+                                                                        index]
+                                                                    .type ==
+                                                                "video") {
                                                           controller
                                                               .downloadFile(
                                                                   controller
@@ -728,6 +733,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                           showDownloadingBottomSheet(
                                                               context,
                                                               controller);
+
+                                                          //  resetting the file downloading percentage
                                                           controller
                                                               .fileDownloadingPer
                                                               .value = "0%";
@@ -827,6 +834,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           child: Text(controller.fileDownloadingPer.value,
                               style: TextStyle(color: Colors.white)),
                         ),
+                        // Expanded(
+                        //   child: RaisedButton(
+                        //     onPressed: () {
+                        //       openFile(controller.dir.path);
+                        //     },
+                        //     child: Text("open"),
+                        //   ),
+                        // )
                       ],
                     );
                   }),

@@ -54,6 +54,7 @@ dependencies:
   url_launcher: any
   share: any
   dio: any
+  gallery_saver: any
 
 
 dev_dependencies:

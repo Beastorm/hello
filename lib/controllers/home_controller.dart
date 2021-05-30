@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -45,10 +46,12 @@ class HomeController extends GetxController {
   var followerList = List<FollowData>().obs; //followed
   var followingList = List<FollowData>().obs;
 
-  var isFileDownloading = false.obs;
+  //file downloading
   var fileDownloadingPer = "0%".obs;
-
   var fileDownloadingStatus = "Downloading ...".obs;
+  var dir;
+
+  // language selection
 
   @override
   void onInit() async {
@@ -68,6 +71,7 @@ class HomeController extends GetxController {
       print("...................... ");
       print(getIdOfCurrentLanguage());
       print(postList);
+      postList.refresh();
       getCurrentUserPost(posts);
     }
   }
@@ -307,13 +311,16 @@ class HomeController extends GetxController {
   }
 
   downloadFile(String url) async {
-    var dir = await getExternalStorageDirectory();
+    dir = await getExternalStorageDirectory();
 
     // Get.snackbar("Downloading", "$fileDownloadingPer}",
     //     backgroundColor: AppColors.themeColor,
     //     colorText: Colors.white,
     //     snackPosition: SnackPosition.BOTTOM,
     //     duration: Duration(days: 1));
+
+    print(".........................................dsdsds");
+    print(dir.path);
 
     try {
       final status = await Permission.storage.request();
@@ -322,8 +329,6 @@ class HomeController extends GetxController {
         await dio.download(
             url, "${dir.path}/${url.substring(url.lastIndexOf("/") + 1)}",
             onReceiveProgress: (received, total) {
-          isFileDownloading(true);
-
           fileDownloadingPer.value =
               (received / total * 100).toStringAsFixed(0) + "%";
 
@@ -335,7 +340,15 @@ class HomeController extends GetxController {
       print(e.toString());
     }
 
-    isFileDownloading(false);
     fileDownloadingStatus.value = "Download Completed";
+    await openFile("${dir.path}/${url.substring(url.lastIndexOf("/") + 1)}");
+  }
+
+  Future<void> openFile(String path) async {
+    if (path.isImageFileName) {
+      await GallerySaver.saveImage(path);
+    } else {
+      await GallerySaver.saveVideo(path);
+    }
   }
 }
